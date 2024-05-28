@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "289126405750",
+    "project_id": "krossfit-a7614",
+    "storage_bucket": "krossfit-a7614.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:289126405750:android:4d703a608c75e1bf6af157",
+        "android_client_info": {
+          "package_name": "kr.cosine.krossfit"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBsTPi4Us8xx8Cn5gmv6KjvT9sspiYbB04"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
