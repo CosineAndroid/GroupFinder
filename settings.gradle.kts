@@ -14,6 +14,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "KrossFit"
+rootProject.name = "GroupFinder"
 include(":app")
  

@@ -14,11 +14,11 @@ val properties = Properties().apply {
 }
 
 android {
-    namespace = "kr.cosine.krossfit"
+    namespace = "kr.cosine.groupfinder"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "kr.cosine.krossfit"
+        applicationId = "kr.cosine.groupfinder"
         minSdk = 26
         targetSdk = 34
         versionCode = 1
