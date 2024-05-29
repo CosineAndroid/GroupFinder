@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="90dp"
+    android:layout_marginVertical="8dp"
+    android:layout_marginHorizontal="16dp"
+    android:background="@drawable/item_list_group_background"
+    android:elevation="2dp">
+
+    <TextView
+        android:id="@+id/groupTitleTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="5인 TEST"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/groupIdTextView"
+        app:layout_constraintEnd_toStartOf="@+id/groupLaneRecyclerView"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/groupIdTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="페이커#KR1"
+        android:textColor="@color/black"
+        android:textSize="11sp"
+        app:layout_constraintBottom_toTopOf="@+id/groupTagRecyclerView"
+        app:layout_constraintEnd_toEndOf="@+id/groupTitleTextView"
+        app:layout_constraintStart_toStartOf="@+id/groupTitleTextView"
+        app:layout_constraintTop_toBottomOf="@+id/groupTitleTextView" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/groupTagRecyclerView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="8dp"
+        android:orientation="horizontal"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/groupIdTextView"
+        app:layout_constraintTop_toBottomOf="@+id/groupIdTextView"
+        tools:itemCount="6"
+        tools:listitem="@layout/item_tag" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/groupLaneRecyclerView"
+        android:layout_width="wrap_content"
+        android:layout_height="26dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:orientation="horizontal"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toTopOf="@+id/groupPeopleTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:itemCount="5"
+        tools:listitem="@layout/item_group_lane" />
+
+    <TextView
+        android:id="@+id/groupPeopleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:text="4/5"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@+id/groupTimeTextView"
+        app:layout_constraintEnd_toEndOf="@+id/groupLaneRecyclerView"
+        app:layout_constraintTop_toBottomOf="@+id/groupLaneRecyclerView" />
+
+    <TextView
+        android:id="@+id/groupTimeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="8dp"
+        android:text="1분 전"
+        android:textSize="8sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/groupPeopleTextView"
+        app:layout_constraintTop_toBottomOf="@+id/groupPeopleTextView" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

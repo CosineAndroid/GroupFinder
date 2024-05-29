@@ -1,8 +1,8 @@
 package kr.cosine.groupfinder.data.model
 
+import com.google.firebase.Timestamp
 import kr.cosine.groupfinder.enums.Mode
 import kr.cosine.groupfinder.enums.Lane
-import java.time.Instant
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.util.UUID
@@ -15,10 +15,10 @@ data class PostModel(
     val id: String,
     val tags: List<String>,
     val laneMap: Map<String, String?>,
-    val time: Long
+    val time: Timestamp
 ) {
 
-    constructor() : this("", "", "", "", "", listOf(), emptyMap(), 0)
+    constructor() : this("", "", "", "", "", listOf(), emptyMap(), Timestamp.now())
 
     constructor(
         uniqueId: UUID,
@@ -27,9 +27,8 @@ data class PostModel(
         body: String,
         id: String,
         tags: List<String>,
-        laneMap: Map<Lane, String?>,
-        time: Long
-    ) : this(uniqueId.toString(), mode.name, title, body, id, tags, laneMap.mapKeys { it.key.name }, time)
+        laneMap: Map<Lane, String?>
+    ) : this(uniqueId.toString(), mode.name, title, body, id, tags, laneMap.mapKeys { it.key.name }, Timestamp.now())
 
     companion object {
         fun PostModel.getUniqueId(): UUID = UUID.fromString(uniqueId)
@@ -38,8 +37,8 @@ data class PostModel(
 
         fun PostModel.findLaneOwner(lane: Lane): String? = laneMap[lane.name]
 
-        fun PostModel.getTime(): ZonedDateTime {
-            val instant = Instant.ofEpochMilli(time)
+        fun PostModel.getZonedDateTime(): ZonedDateTime {
+            val instant = time.toInstant()
             return instant.atZone(ZoneId.of("Asia/Seoul"))
         }
     }
