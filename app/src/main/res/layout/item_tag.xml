@@ -3,16 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="20dp"
-    android:background="@drawable/item_category_room_background">
+    android:background="@drawable/tag_background">
 
     <TextView
-        android:id="@+id/roomCategoryItemTextView"
+        android:id="@+id/tagTextView"
         android:layout_width="wrap_content"
         android:layout_height="20dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:gravity="center"
-        android:text="빡겜"
+        android:text="@string/tag_format"
         android:textColor="@color/black"
         android:textSize="10sp"
         app:layout_constraintEnd_toEndOf="parent"
