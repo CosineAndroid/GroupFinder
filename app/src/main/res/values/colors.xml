@@ -2,4 +2,5 @@
 <resources>
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
+    <color name="profile_withdraw_button_background">#FF8078</color>
 </resources>

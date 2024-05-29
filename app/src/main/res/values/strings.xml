@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">GroupFinder</string>
+    <string name="profile_title">내 프로필</string>
+    <string name="profile_id_title">아이디</string>
+    <string name="profile_id_replacer">아이디#KR1</string>
+    <string name="profile_group_title">참여중인 그룹</string>
+    <string name="profile_withdraw_title">탈퇴하기</string>
 </resources>

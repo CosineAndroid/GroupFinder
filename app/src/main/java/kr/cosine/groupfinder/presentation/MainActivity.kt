@@ -10,6 +10,9 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
+import com.google.firebase.firestore.DocumentChange
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -26,7 +29,7 @@ class MainActivity : AppCompatActivity() {
 
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
 
-    private lateinit var firestore: FirebaseDatabase
+    private lateinit var firestore: FirebaseFirestore
 
     private val postViewModel by viewModels<PostViewModel>()
 
@@ -34,40 +37,29 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        firestore = Firebase.database
-        firestore.getReference("posts").addValueEventListener(object : ValueEventListener {
-
-            override fun onDataChange(snapshot: DataSnapshot) {
-                Log.d("GroupFinderTest", "데이터 바뀜 ${snapshot.key}")
+        firestore = Firebase.firestore
+        firestore.collection("posts").addSnapshotListener { it, _ ->
+            val querySnapshot = it ?: return@addSnapshotListener
+            if (querySnapshot.metadata.isFromCache) return@addSnapshotListener
+            querySnapshot.documentChanges.forEach { documentChange ->
+                if (documentChange.type == DocumentChange.Type.ADDED) {
+                    val postModel = documentChange.document.toObject(PostModel::class.java)
+                    Log.d("GroupFinderTest", "[ADDED] PostModel : $postModel")
+                }
             }
-
-            override fun onCancelled(error: DatabaseError) {
-
-            }
-        })
-        registerView()
-    }
-
-    fun main() {
-        val list = (1..5).shuffled().toMutableList()
-        repeat(5) {
-            println(list.removeLast())
         }
+        registerView()
     }
 
     private fun registerView() {
         binding.button.setOnClickListener {
             postViewModel.createPost(listOf("태그1", "태그2", "태그4"))
             Log.d("GroupFinderTest2", "눌렀음")
-            postViewModel.getPosts { list ->
+            /*postViewModel.getPosts { list ->
                 list.forEach {
                     Log.d("GroupFinderTest2", it.toString())
                 }
-            }
-            val time = System.currentTimeMillis()
-            val instant = Instant.ofEpochMilli(time)
-            val time2 = instant.atZone(ZoneId.of("Asia/Seoul"))
-            return@setOnClickListener
+            }*/
             /*val uniqueId = UUID.randomUUID()
             val uniqueIdText = "$uniqueId"
             val postModel = PostModel(uniqueIdText, "ㅎㅇ", "${(1..10000000).random()}", "아이디", listOf("태그1", "태그2"), emptyMap())

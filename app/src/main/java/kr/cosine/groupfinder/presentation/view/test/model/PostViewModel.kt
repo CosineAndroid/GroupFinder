@@ -24,8 +24,7 @@ class PostViewModel @Inject constructor(
             "${(1..10000000).random()}",
             "아이디",
             tags,
-            mapOf(Lane.MID to "테스트"),
-            System.currentTimeMillis()
+            mapOf(Lane.MID to "테스트")
         )
         postRepository.createPost(postModel)
     }
