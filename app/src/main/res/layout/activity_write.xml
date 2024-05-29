@@ -13,8 +13,10 @@
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        >
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -81,7 +83,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/item_category_room_background"
+                    android:background="@drawable/tag_background"
                     android:gravity="center">
 
                     <ImageView
@@ -101,7 +103,7 @@
                 app:layout_constraintStart_toStartOf="@+id/tagTextView"
                 app:layout_constraintTop_toBottomOf="@+id/tagTextView"
                 tools:itemCount="2"
-                tools:listitem="@layout/item_tag" />
+                tools:listitem="@layout/item_tag_with_remove" />
 
             <TextView
                 android:id="@+id/myLaneTextview"
@@ -120,10 +122,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="200dp"
                 app:cardCornerRadius="10dp"
-                app:cardElevation="6dp"
+                app:cardElevation="1dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/myLaneTextview">
@@ -163,17 +165,50 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
+                android:layout_marginEnd="75dp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/needLaneTextView"
-                app:layout_constraintTop_toBottomOf="@+id/needLaneTextView" />
+                app:layout_constraintTop_toBottomOf="@+id/needLaneTextView"
+                tools:itemCount="4"
+                tools:listitem="@layout/item_selectlane" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/addLaneCardView"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                app:cardCornerRadius="32dp"
+                app:cardElevation="1dp"
+                app:cardUseCompatPadding="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/selectLanesRecyclerView">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/buttoncustom_write"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/plusLaneImageView"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:src="@drawable/ic_app_plus" />
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
 
     <Button
+        android:layout_width="110dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/buttoncustom_write"
         android:text="생성하기"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
