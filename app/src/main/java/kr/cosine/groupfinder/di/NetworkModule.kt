@@ -1,10 +1,14 @@
 package kr.cosine.groupfinder.di
 
+import com.google.firebase.database.ktx.database
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kr.cosine.groupfinder.data.model.TestResponse
+import kr.cosine.groupfinder.data.remote.FirebaseDataSource
 import kr.cosine.groupfinder.data.remote.TestDataSource
 
 @Module
@@ -17,6 +21,13 @@ class NetworkModule {
             override fun onTest(): TestResponse {
                 return TestResponse("테스트")
             }
+        }
+    }
+
+    @Provides
+    fun provideFirebaseDataSource(): FirebaseDataSource {
+        return object : FirebaseDataSource {
+            override val firestore = Firebase.firestore
         }
     }
 }
