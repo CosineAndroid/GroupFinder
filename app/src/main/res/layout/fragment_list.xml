@@ -35,22 +35,22 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="6dp"
             android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/clearTagImageButton"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:listitem="@layout/item_tag_with_remove" />
+            tools:listitem="@layout/item_tag" />
 
         <ImageButton
             android:id="@+id/clearTagImageButton"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="15dp"
             android:background="@android:color/transparent"
-            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            android:src="@drawable/ic_search_tag_clear"
             app:layout_constraintBottom_toBottomOf="@+id/showAllTagImageButton"
             app:layout_constraintEnd_toStartOf="@+id/showAllTagImageButton"
             app:layout_constraintTop_toTopOf="@+id/showAllTagImageButton"
@@ -60,9 +60,20 @@
             android:id="@+id/showAllTagImageButton"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="10dp"
             android:background="@android:color/transparent"
             android:src="@drawable/ic_arrow_down"
+            app:layout_constraintBottom_toBottomOf="@+id/searchImageButton"
+            app:layout_constraintEnd_toStartOf="@+id/searchImageButton"
+            app:layout_constraintTop_toTopOf="@+id/searchImageButton" />
+
+        <ImageButton
+            android:id="@+id/searchImageButton"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginEnd="8dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_search"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

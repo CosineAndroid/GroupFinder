@@ -16,8 +16,12 @@ class TagItemDecoration(
         state: RecyclerView.State
     ) {
         super.getItemOffsets(outRect, view, parent, state)
-        outRect.right = right
-        outRect.bottom = bottom
+        if (parent.getChildAdapterPosition(view) == state.itemCount - 1) {
+            outRect.setEmpty()
+        } else {
+            outRect.right = right
+            outRect.bottom = bottom
+        }
     }
 
     private companion object {
