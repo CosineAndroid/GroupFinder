@@ -1,14 +1,29 @@
 package kr.cosine.groupfinder.domain.repository
 
+import android.app.Activity
+import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.EventListener
+import com.google.firebase.firestore.ListenerRegistration
+import com.google.firebase.firestore.QuerySnapshot
 import kr.cosine.groupfinder.data.model.PostModel
 
-interface PostRepository {
+abstract class PostRepository(
+    protected val path: String
+) {
 
-    suspend fun createPost(postModel: PostModel)
+    protected val reference get() = getReference(path)
 
-    suspend fun deletePost(postModel: PostModel)
+    abstract fun getReference(path: String): CollectionReference
 
-    suspend fun updatePost(postModel: PostModel)
+    abstract suspend fun createPost(postModel: PostModel)
 
-    suspend fun getPosts(tags: List<String>): List<PostModel>
+    abstract suspend fun deletePost(postModel: PostModel)
+
+    abstract suspend fun updatePost(postModel: PostModel)
+
+    abstract suspend fun getPosts(tags: List<String> = emptyList()): List<PostModel>
+
+    abstract fun addSnapshotListener(listener: EventListener<QuerySnapshot>): ListenerRegistration
+
+    abstract fun addSnapshotListener(activity: Activity, listener: EventListener<QuerySnapshot>)
 }
