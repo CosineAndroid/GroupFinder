@@ -1,4 +1,4 @@
-package kr.cosine.groupfinder.presentation
+package kr.cosine.groupfinder.presentation.view.write
 
 import android.os.Bundle
 import android.widget.Spinner
@@ -7,8 +7,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import kr.cosine.groupfinder.R
+import kr.cosine.groupfinder.data.model.SpinnerModel
+import kr.cosine.groupfinder.presentation.view.write.adapter.SpinnerAdapter
 
 class WriteActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -18,8 +21,6 @@ class WriteActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
-
         val spinner = findViewById<Spinner>(R.id.selectMyLaneSpinner)
         val items = listOf(
             SpinnerModel(R.drawable.ic_lane_top, "탑"),
