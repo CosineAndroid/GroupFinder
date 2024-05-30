@@ -52,11 +52,21 @@ data class PostModel(
 
         fun PostModel.getMode(): Mode = Mode.valueOf(mode)
 
+        fun PostModel.getLaneMap(): Map<Lane, String?> {
+            return laneMap.mapKeys { Lane.valueOf(it.key) }.toSortedMap(compareBy { it.ordinal })
+        }
+
         fun PostModel.findLaneOwner(lane: Lane): String? = laneMap[lane.name]
 
         fun PostModel.getZonedDateTime(): ZonedDateTime {
             val instant = time.toInstant()
             return instant.atZone(ZoneId.of("Asia/Seoul"))
+        }
+
+        fun PostModel.getTotalPeopleCount(): Int = laneMap.size
+
+        fun PostModel.getAvaliablePeopleCount(): Int {
+            return laneMap.values.count { it != null }
         }
     }
 }
