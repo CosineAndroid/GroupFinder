@@ -18,17 +18,34 @@ data class PostModel(
     val time: Timestamp
 ) {
 
-    constructor() : this("", "", "", "", "", listOf(), emptyMap(), Timestamp.now())
+    constructor() : this(
+        UUID.randomUUID().toString(),
+        "",
+        "",
+        "",
+        "",
+        listOf(),
+        mutableMapOf(),
+        Timestamp.now()
+    )
 
     constructor(
-        uniqueId: UUID,
         mode: Mode,
         title: String,
         body: String,
         id: String,
         tags: List<String>,
         laneMap: Map<Lane, String?>
-    ) : this(uniqueId.toString(), mode.name, title, body, id, tags, laneMap.mapKeys { it.key.name }, Timestamp.now())
+    ) : this(
+        UUID.randomUUID().toString(),
+        mode.name,
+        title,
+        body,
+        id,
+        tags,
+        laneMap.mapKeys { it.key.name },
+        Timestamp.now()
+    )
 
     companion object {
         fun PostModel.getUniqueId(): UUID = UUID.fromString(uniqueId)

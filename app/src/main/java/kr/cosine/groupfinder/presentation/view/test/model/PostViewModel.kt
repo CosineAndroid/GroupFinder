@@ -18,7 +18,6 @@ class PostViewModel @Inject constructor(
 
     fun createPost(tags: List<String>) = viewModelScope.launch {
         val postModel = PostModel(
-            UUID.randomUUID(),
             Mode.ARAM,
             "ㅎㅇ",
             "${(1..10000000).random()}",
@@ -29,7 +28,7 @@ class PostViewModel @Inject constructor(
         postRepository.createPost(postModel)
     }
 
-    fun getPosts(listScope: (List<PostModel>) -> Unit) = viewModelScope.launch {
-        listScope(postRepository.getPosts(listOf("태그1", "태그4")))
+    fun getPosts(tags: List<String> = emptyList(), listScope: (List<PostModel>) -> Unit) = viewModelScope.launch {
+        listScope(postRepository.getPosts(tags))
     }
 }
