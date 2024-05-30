@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GroupFinder">
         <activity
-            android:name=".presentation.DetailActivity"
+            android:name=".presentation.view.detail.DetailActivity"
             android:exported="false" />
         <activity
             android:name=".presentation.MainActivity"

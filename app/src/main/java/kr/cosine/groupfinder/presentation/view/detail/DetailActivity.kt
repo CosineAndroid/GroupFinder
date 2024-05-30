@@ -1,4 +1,4 @@
-package kr.cosine.groupfinder.presentation
+package kr.cosine.groupfinder.presentation.view.detail
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
