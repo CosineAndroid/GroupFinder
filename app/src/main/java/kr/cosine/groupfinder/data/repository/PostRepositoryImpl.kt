@@ -9,6 +9,7 @@ import kotlinx.coroutines.tasks.await
 import kr.cosine.groupfinder.data.model.PostModel
 import kr.cosine.groupfinder.data.remote.FirebaseDataSource
 import kr.cosine.groupfinder.domain.repository.PostRepository
+import java.util.UUID
 import javax.inject.Inject
 
 class PostRepositoryImpl @Inject constructor(
@@ -37,6 +38,13 @@ class PostRepositoryImpl @Inject constructor(
                 it.tags.containsAll(tags)
             }
         }
+    }
+
+    override suspend fun getPostByUniqueId(uniqueId:UUID): PostModel? {
+        return runCatching {
+            val documentSnapshot = reference.document(uniqueId.toString()).get().await()
+            documentSnapshot.toObject(PostModel::class.java)
+        }.getOrNull() // 예외가 발생한 경우 null 반환
     }
 
     override fun addSnapshotListener(listener: EventListener<QuerySnapshot>): ListenerRegistration {
