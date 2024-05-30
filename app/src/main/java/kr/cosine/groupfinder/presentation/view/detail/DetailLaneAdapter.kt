@@ -1,6 +1,5 @@
 package kr.cosine.groupfinder.presentation.view.detail
 
-import android.health.connect.datatypes.units.Power
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
