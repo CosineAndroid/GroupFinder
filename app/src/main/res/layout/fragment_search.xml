@@ -35,8 +35,7 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:spanCount="5"
                 tools:listitem="@layout/item_tag"
-                android:orientation="horizontal"
-                />
+                android:orientation="horizontal" />
 
             <TextView
                 android:id="@+id/styleTextView"

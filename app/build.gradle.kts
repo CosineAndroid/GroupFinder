@@ -66,7 +66,6 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor:4.10.0")
 
     implementation("com.google.dagger:hilt-android:2.50")
-    implementation("com.google.android.gms:play-services-ads-lite:23.1.0")
     kapt("com.google.dagger:hilt-compiler:2.50")
 
     implementation(platform("com.google.firebase:firebase-bom:33.0.0"))
