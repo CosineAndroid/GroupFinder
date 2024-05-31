@@ -86,7 +86,9 @@ class GroupFragment(
 
         }
         searchImageButton.setOnClickListener {
-            groupViewModel.onSearch(mode, tagViewModel.tags)
+            val tags = tagViewModel.tags
+            if (tags.isEmpty()) return@setOnClickListener
+            groupViewModel.onSearch(mode, tags)
         }
     }
 

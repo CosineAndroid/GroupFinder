@@ -17,7 +17,7 @@
             android:name=".presentation.view.detail.DetailActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.MainActivity"
+            android:name=".presentation.view.test.TestActivity"
             android:exported="true"
             android:theme="@style/Theme.GroupFinder">
             <intent-filter>

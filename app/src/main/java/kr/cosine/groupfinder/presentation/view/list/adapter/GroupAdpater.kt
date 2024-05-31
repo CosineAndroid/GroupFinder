@@ -8,18 +8,20 @@ import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.RecyclerView
 import kr.cosine.groupfinder.R
-import kr.cosine.groupfinder.data.model.PostModel
 import kr.cosine.groupfinder.data.model.PostModel.Companion.getJoinedPeopleCount
 import kr.cosine.groupfinder.data.model.PostModel.Companion.getLaneMap
 import kr.cosine.groupfinder.data.model.PostModel.Companion.getTotalPeopleCount
 import kr.cosine.groupfinder.databinding.ItemGroupBinding
+import kr.cosine.groupfinder.domain.extension.getJoinedPeopleCount
+import kr.cosine.groupfinder.domain.extension.getTotalPeopleCount
+import kr.cosine.groupfinder.domain.model.PostEntity
 import kr.cosine.groupfinder.presentation.view.list.adapter.decoration.impl.GroupTagItemDecoration
 import kr.cosine.groupfinder.presentation.view.list.adapter.listener.TagScrollListener
 import kr.cosine.groupfinder.util.TimeUtil
 
 class GroupAdpater(
     private val context: Context,
-    private val onItemClick: (PostModel) -> Unit = {}
+    private val onItemClick: (PostEntity) -> Unit = {}
 ) : RecyclerView.Adapter<GroupAdpater.GroupViewHolder>() {
 
     inner class GroupViewHolder(
@@ -30,15 +32,15 @@ class GroupAdpater(
 
         init {
             root.setOnClickListener {
-                val postModel = posts[bindingAdapterPosition]
-                onItemClick(postModel)
+                val post = posts[bindingAdapterPosition]
+                onItemClick(post)
             }
         }
 
-        fun bind(postModel: PostModel) = with(binding) {
-            groupTitleTextView.text = postModel.title
-            groupIdTextView.text = postModel.id
-            val tags = postModel.tags
+        fun bind(post: PostEntity) = with(binding) {
+            groupTitleTextView.text = post.title
+            groupIdTextView.text = post.id
+            val tags = post.tags
             val isMaxTag = tags.size >= MAX_TAG
             if (isMaxTag) {
                 noticeMoreTagImageView.visibility = View.VISIBLE
@@ -50,9 +52,9 @@ class GroupAdpater(
                 addItemDecoration(GroupTagItemDecoration)
                 addOnScrollListener(TagScrollListener(noticeMoreTagImageView, isMaxTag))
             }
-            val laneMap = postModel.getLaneMap()
-            val joinedPeopleCount = postModel.getJoinedPeopleCount()
-            val totalPeopleCount = postModel.getTotalPeopleCount()
+            val laneMap = post.laneMap
+            val joinedPeopleCount = post.getJoinedPeopleCount()
+            val totalPeopleCount = post.getTotalPeopleCount()
             val isMaxGroup = joinedPeopleCount == totalPeopleCount
             groupLaneRecyclerView.adapter = GroupLaneAdpater(laneMap, isMaxGroup)
             groupPeopleTextView.text = context.getString(
@@ -62,7 +64,7 @@ class GroupAdpater(
             )
             groupTimeTextView.text = context.getString(
                 R.string.group_time_format,
-                TimeUtil.getFormattedTime(postModel.time)
+                TimeUtil.getFormattedTime(post.time)
             )
             root.background = AppCompatResources.getDrawable(
                 context,
@@ -72,7 +74,7 @@ class GroupAdpater(
         }
     }
 
-    private val posts = mutableListOf<PostModel>(
+    private val posts = mutableListOf<PostEntity>(
         // PostModel(Mode.NORMAL, "5인큐 구함", "반갑습니다", "페이커#KR1", listOf("빡겜", "즐겜", "하이", "가나", "다라", "마바", "사아", "자차", "카타", "파하"), mapOf(Lane.TOP to null, Lane.SUPPORT to null, Lane.AD to "구마유시#KR1", Lane.JUNGLE to null, Lane.MID to null, Lane.MID to "페이커#KR1")),
         // PostModel(Mode.NORMAL, "바텀 듀오 할 사람", "ㅎㅇ", "구마유시#KR1", listOf("즐겜", "마이크X"), mapOf(Lane.AD to "구마유시#KR1", Lane.SUPPORT to null)),
         // PostModel(Mode.NORMAL, "정글 듀오 구함", "안녕하세요", "제우스#KR1", listOf("욕X"), mapOf(Lane.JUNGLE to null, Lane.TOP to "제우스#KR1")),
@@ -93,7 +95,7 @@ class GroupAdpater(
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setPosts(posts: List<PostModel>) {
+    fun setPosts(posts: List<PostEntity>) {
         this.posts.apply {
             clear()
             addAll(posts)
