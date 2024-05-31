@@ -48,11 +48,19 @@ class GroupFragment(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        registerNavigationButton()
         registerGroupRecyclerView()
         registerTagRecyclerView()
         registerSearchBarButton()
+        registerWriteButton()
         registerGroupViewModelEvent()
         registerTagViewModel()
+    }
+
+    private fun registerNavigationButton() {
+        binding.navigationImageButton.setOnClickListener {
+
+        }
     }
 
     private fun registerGroupRecyclerView() = with(binding.groupRecyclerView) {
@@ -75,12 +83,16 @@ class GroupFragment(
             tagViewModel.clearTag()
         }
         showAllTagImageButton.setOnClickListener {
-            tagViewModel.setTag(
-                (10 downTo 1).map { "태그$it" }
-            )
+
         }
         searchImageButton.setOnClickListener {
             groupViewModel.onSearch(mode, tagViewModel.tags)
+        }
+    }
+
+    private fun registerWriteButton() {
+        binding.writeImageButton.setOnClickListener {
+
         }
     }
 
