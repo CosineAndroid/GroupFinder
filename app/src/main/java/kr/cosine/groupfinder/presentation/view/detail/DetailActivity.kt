@@ -18,7 +18,9 @@ import kr.cosine.groupfinder.data.model.PostModel
 import kr.cosine.groupfinder.data.model.PostModel.Companion.getLaneMap
 import kr.cosine.groupfinder.databinding.ActivityDetailBinding
 import kr.cosine.groupfinder.enums.Lane
+import kr.cosine.groupfinder.enums.TestGlobalUserData
 import kr.cosine.groupfinder.enums.TestGlobalUserData.HOST
+import kr.cosine.groupfinder.enums.TestGlobalUserData.PARTICIPANT
 import kr.cosine.groupfinder.enums.TestGlobalUserData.userID
 import kr.cosine.groupfinder.presentation.view.list.adapter.decoration.TagItemDecoration
 import java.util.UUID
@@ -106,7 +108,21 @@ class DetailActivity : AppCompatActivity() {
     private fun laneOnClick() {
         laneAdapter.itemClick = object : DetailLaneAdapter.ItemClick {
             override fun onClick(view: View, lane: Lane) {
-                Log.d("test", "onClick: ${lane}")
+                Log.d("test", "onClick: ${lane}, Empty") // 참가요청 보내는 로직
+            }
+
+            override fun onExitClick(view: View, lane: Lane, userName: String?) {
+                val userRole = TestGlobalUserData.role
+                val loginUserName = TestGlobalUserData.userID
+                if(userRole == HOST) {
+                    if(loginUserName == userName) {
+                        Log.d("test", "onExitClick: 방을 닫겠습니까?")
+                    } else {
+                        Log.d("test", "onExitClick: ${userName} 유저를 강퇴 하시겠습니까?")
+                    }
+                } else if (userRole == PARTICIPANT) {
+                    Log.d("test", "onExitClick: 방을 나가겠습니까?")
+                }
             }
         }
     }

@@ -8,22 +8,24 @@ import kr.cosine.groupfinder.R
 import kr.cosine.groupfinder.databinding.ActivityDetailSelectLaneBinding
 import kr.cosine.groupfinder.enums.Lane
 import kr.cosine.groupfinder.enums.TestGlobalUserData.HOST
+import kr.cosine.groupfinder.enums.TestGlobalUserData.NONE
 import kr.cosine.groupfinder.enums.TestGlobalUserData.PARTICIPANT
 import kr.cosine.groupfinder.enums.TestGlobalUserData.userID
 
-class DetailLaneAdapter(): RecyclerView.Adapter<DetailLaneAdapter.Holder>() {
+class DetailLaneAdapter : RecyclerView.Adapter<DetailLaneAdapter.Holder>() {
     private var laneMap: Map<Lane, String?> = emptyMap()
     private var power: Int = 0
 
     interface ItemClick {
         fun onClick(view: View, lane: Lane)
+        fun onExitClick(view: View, lane: Lane, userName: String?)
     }
 
     var itemClick: ItemClick? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val binding = ActivityDetailSelectLaneBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return Holder(binding)
+        return Holder(binding, itemClick)
     }
 
     override fun getItemCount(): Int {
@@ -32,16 +34,13 @@ class DetailLaneAdapter(): RecyclerView.Adapter<DetailLaneAdapter.Holder>() {
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
         val entry = laneMap.entries.toList()[position]
-        holder.itemView.setOnClickListener {
-            if (entry.value == null) {
-                itemClick?.onClick(it, entry.key)
-            }
-        }
-        holder.bind(entry.key,entry.value, power)
-
+        holder.bind(entry.key, entry.value, power)
     }
 
-    class Holder(private val binding: ActivityDetailSelectLaneBinding) : RecyclerView.ViewHolder(binding.root) {
+    class Holder(
+        private val binding: ActivityDetailSelectLaneBinding,
+        private val itemClick: ItemClick?
+    ) : RecyclerView.ViewHolder(binding.root) {
 
         companion object {
             private val laneIcons = mapOf(
@@ -58,21 +57,35 @@ class DetailLaneAdapter(): RecyclerView.Adapter<DetailLaneAdapter.Holder>() {
             binding.selectLaneImageView.setImageResource(if (userName != null) icon else emptyIcon)
             binding.selectIdTextView.text = userName ?: "없음"
 
-            binding.selectExitImageView.visibility = when(power) {
-                HOST -> View.VISIBLE
-                PARTICIPANT -> if(userName == userID) View.VISIBLE else View.INVISIBLE
-                else -> View.INVISIBLE
+            val isExitVisible = when(power) {
+                HOST -> true
+                PARTICIPANT -> userName == userID
+                else -> false
+            }
+
+            binding.selectExitImageView.visibility = if (isExitVisible && (userName != null)) View.VISIBLE else View.INVISIBLE
+
+            binding.selectExitImageView.setOnClickListener {
+                if (isExitVisible) {
+                    itemClick?.onExitClick(it, lane, userName)
+                }
+            }
+
+            binding.root.setOnClickListener {
+                if (power == NONE && userName == null) {
+                    itemClick?.onClick(it, lane)
+                }
             }
         }
     }
 
-    fun laneUpdate(item: Map<Lane,String?>) {
+    fun laneUpdate(item: Map<Lane, String?>) {
         this.laneMap = item
+        notifyDataSetChanged()
     }
 
     fun powerUpdate(item: Int) {
         this.power = item
         notifyDataSetChanged()
     }
-
 }
