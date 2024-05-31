@@ -10,19 +10,25 @@ import kr.cosine.groupfinder.enums.Mode
 import javax.inject.Inject
 
 @ViewModelScoped
-class ListUseCase @Inject constructor(
+class GroupUseCase @Inject constructor(
     private val postRepository: PostRepository
 ) {
 
-    suspend operator fun invoke(mode: Mode, tags: List<String>): List<PostModel> {
-        return postRepository.getPosts(tags).filter {
-            it.getMode() == mode
-        }.sortedWith(
-            compareBy<PostModel> {
-                it.getJoinedPeopleCount() == it.getTotalPeopleCount()
-            }.thenByDescending {
-                it.time
+    suspend operator fun invoke(mode: Mode?, tags: List<String>): Result<List<PostModel>> {
+        return runCatching {
+            var posts = postRepository.getPosts(tags)
+            if (mode != null) {
+                posts = posts.filter {
+                    it.getMode() == mode
+                }
             }
-        )
+            posts.sortedWith(
+                compareBy<PostModel> {
+                    it.getJoinedPeopleCount() == it.getTotalPeopleCount()
+                }.thenByDescending {
+                    it.time
+                }
+            )
+        }
     }
 }

@@ -5,11 +5,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kr.cosine.groupfinder.databinding.ItemTagBinding
 
-class TagAdpater(
+class GroupTagAdpater(
     private val tags: List<String>
-) : RecyclerView.Adapter<TagAdpater.TagViewHolder>() {
+) : RecyclerView.Adapter<GroupTagAdpater.GroupTagViewHolder>() {
 
-    inner class TagViewHolder(
+    inner class GroupTagViewHolder(
         private val binding: ItemTagBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
@@ -18,15 +18,15 @@ class TagAdpater(
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TagViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GroupTagViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = ItemTagBinding.inflate(layoutInflater, parent, false)
-        return TagViewHolder(binding)
+        return GroupTagViewHolder(binding)
     }
 
     override fun getItemCount(): Int = tags.size
 
-    override fun onBindViewHolder(holder: TagViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: GroupTagViewHolder, position: Int) {
         holder.bind(tags[position])
     }
 }

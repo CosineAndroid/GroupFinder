@@ -6,12 +6,12 @@ import androidx.recyclerview.widget.RecyclerView
 import kr.cosine.groupfinder.databinding.ItemGroupLaneBinding
 import kr.cosine.groupfinder.enums.Lane
 
-class LaneAdpater(
+class GroupLaneAdpater(
     private val laneMap: Map<Lane, String?>,
     private val isMaxGroup: Boolean
-) : RecyclerView.Adapter<LaneAdpater.LaneViewHolder>() {
+) : RecyclerView.Adapter<GroupLaneAdpater.GroupLaneViewHolder>() {
 
-    inner class LaneViewHolder(
+    inner class GroupLaneViewHolder(
         private val binding: ItemGroupLaneBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
@@ -21,15 +21,15 @@ class LaneAdpater(
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LaneViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GroupLaneViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = ItemGroupLaneBinding.inflate(layoutInflater, parent, false)
-        return LaneViewHolder(binding)
+        return GroupLaneViewHolder(binding)
     }
 
     override fun getItemCount(): Int = laneMap.size
 
-    override fun onBindViewHolder(holder: LaneViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: GroupLaneViewHolder, position: Int) {
         val laneEntry = laneMap.entries.toList()[position]
         holder.bind(laneEntry.key, laneEntry.value)
     }
