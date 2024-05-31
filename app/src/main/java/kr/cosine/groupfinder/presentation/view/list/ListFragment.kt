@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import kr.cosine.groupfinder.R
+import kr.cosine.groupfinder.presentation.view.search.Tag
+import kr.cosine.groupfinder.presentation.view.search.Tags
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -27,6 +29,11 @@ class ListFragment : Fragment() {
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
+
+            Tags.addTag(Tag("마이크X"))
+            Tags.addTag(Tag("즐겜"))
+            Tags.addTag(Tag("욕X"))
+            Tags.addTag(Tag("듣톡"))
         }
     }
 
