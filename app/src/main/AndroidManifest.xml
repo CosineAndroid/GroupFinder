@@ -13,11 +13,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.GroupFinder">
+
         <activity
-            android:name=".presentation.view.detail.DetailActivity"
-            android:exported="false" />
-        <activity
-            android:name=".presentation.MainActivity"
+            android:name=".presentation.view.write.WriteActivity"
             android:exported="true"
             android:theme="@style/Theme.GroupFinder">
             <intent-filter>
