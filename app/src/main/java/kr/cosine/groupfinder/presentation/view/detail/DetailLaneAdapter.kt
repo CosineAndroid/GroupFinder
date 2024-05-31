@@ -25,7 +25,7 @@ class DetailLaneAdapter : RecyclerView.Adapter<DetailLaneAdapter.Holder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val binding = ActivityDetailSelectLaneBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return Holder(binding, itemClick)
+        return Holder(binding)
     }
 
     override fun getItemCount(): Int {
@@ -34,13 +34,10 @@ class DetailLaneAdapter : RecyclerView.Adapter<DetailLaneAdapter.Holder>() {
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
         val entry = laneMap.entries.toList()[position]
-        holder.bind(entry.key, entry.value, power)
+        holder.bind(entry.key, entry.value, power, itemClick)
     }
 
-    class Holder(
-        private val binding: ActivityDetailSelectLaneBinding,
-        private val itemClick: ItemClick?
-    ) : RecyclerView.ViewHolder(binding.root) {
+    class Holder(private val binding: ActivityDetailSelectLaneBinding) : RecyclerView.ViewHolder(binding.root) {
 
         companion object {
             private val laneIcons = mapOf(
@@ -52,7 +49,7 @@ class DetailLaneAdapter : RecyclerView.Adapter<DetailLaneAdapter.Holder>() {
             )
         }
 
-        fun bind(lane: Lane, userName: String?, power: Int) {
+        fun bind(lane: Lane, userName: String?, power: Int, itemClick: ItemClick?) {
             val (icon, emptyIcon) = laneIcons[lane] ?: return
             binding.selectLaneImageView.setImageResource(if (userName != null) icon else emptyIcon)
             binding.selectIdTextView.text = userName ?: "없음"
@@ -81,7 +78,6 @@ class DetailLaneAdapter : RecyclerView.Adapter<DetailLaneAdapter.Holder>() {
 
     fun laneUpdate(item: Map<Lane, String?>) {
         this.laneMap = item
-        notifyDataSetChanged()
     }
 
     fun powerUpdate(item: Int) {
@@ -89,3 +85,4 @@ class DetailLaneAdapter : RecyclerView.Adapter<DetailLaneAdapter.Holder>() {
         notifyDataSetChanged()
     }
 }
+
