@@ -112,8 +112,8 @@ class DetailActivity : AppCompatActivity() {
             }
 
             override fun onExitClick(view: View, lane: Lane, userName: String?) {
-                val userRole = TestGlobalUserData.role
-                val loginUserName = TestGlobalUserData.userID
+                val userRole = detailViewModel.groupRole.value
+                val loginUserName = userID
                 if(userRole == HOST) {
                     if(loginUserName == userName) {
                         Log.d("test", "onExitClick: 방을 닫겠습니까?")

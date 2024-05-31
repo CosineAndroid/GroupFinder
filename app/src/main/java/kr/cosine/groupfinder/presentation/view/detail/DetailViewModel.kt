@@ -13,7 +13,7 @@ import kr.cosine.groupfinder.enums.TestGlobalUserData.ANOTHER
 import kr.cosine.groupfinder.enums.TestGlobalUserData.HOST
 import kr.cosine.groupfinder.enums.TestGlobalUserData.NONE
 import kr.cosine.groupfinder.enums.TestGlobalUserData.PARTICIPANT
-import kr.cosine.groupfinder.enums.TestGlobalUserData.role
+import kr.cosine.groupfinder.enums.TestGlobalUserData.userID
 import kr.cosine.groupfinder.enums.TestGlobalUserData.uuID
 import java.util.UUID
 import javax.inject.Inject
@@ -33,10 +33,11 @@ class DetailViewModel @Inject constructor(private val repositry: PostRepository)
     }
 
     private fun checkRole() {
-        when {
-            role == NONE -> _groupRole.value = NONE
-            postDetail.value?.uniqueId != uuID.toString() -> _groupRole.value = ANOTHER
-            else -> _groupRole.value = role
+        _groupRole.value = when {
+            uuID == null -> NONE
+            postDetail.value?.uniqueId != uuID.toString() -> ANOTHER
+            uuID.toString() == postDetail.value?.uniqueId && userID == postDetail.value?.id -> HOST
+            else -> PARTICIPANT
         }
     }
 
