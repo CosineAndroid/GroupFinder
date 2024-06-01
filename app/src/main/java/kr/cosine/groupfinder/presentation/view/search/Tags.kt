@@ -6,17 +6,18 @@ val styleTags = listOf("빡겜", "즐겜", "욕X", "듣톡", "채팅X", "빡겜"
 data class Tag(val tag: String)
 
 object Tags {
-    var tagList : MutableList<Tag> = mutableListOf()
+//    var List : MutableList<Tag> = mutableListOf()
+    var selectedTagList = mutableListOf("마이크X", "빡겜", "듣톡")
 
     fun addTag(tag: Tag){
-        tagList.add(tag)
+        selectedTagList.add(tag.toString())
     }
 
     fun deleteTag(tag: Tag){
-        tagList.remove(tag)
+        selectedTagList.remove(tag.toString())
     }
 
     fun getTag(tag: Tag): MutableList<Tag>{
-        return tagList
+        return selectedTagList
     }
 }

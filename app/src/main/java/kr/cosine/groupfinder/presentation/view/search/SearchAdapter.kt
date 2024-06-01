@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kr.cosine.groupfinder.databinding.ItemTagWithRemoveBinding
+import kr.cosine.groupfinder.presentation.view.search.Tags.tagList
 
 class SearchAdapter(
     private val items: List<String>,
@@ -26,6 +27,11 @@ class SearchAdapter(
                 val position = adapterPosition
                 if(position!=RecyclerView.NO_POSITION){
                     onAddClick(items[position])
+                }
+
+                val clickedText = tag.text.toString() // 클릭한 아이템의 텍스트 가져오기
+                if (tagList.contains(clickedText)) {
+                    // 처리할 작업 수행
                 }
             }
 

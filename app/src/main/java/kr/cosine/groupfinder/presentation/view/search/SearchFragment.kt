@@ -41,11 +41,11 @@ class SearchFragment : Fragment() {
         searchAdatper = SearchAdapter(
             micTags,
             onAddClick = { position ->
+                val tagText = mic
                 if (tagList.contains(position.text)) {
 
 
                 }
-            }
         //클릭한 태그 observe하는 코드
 
 
