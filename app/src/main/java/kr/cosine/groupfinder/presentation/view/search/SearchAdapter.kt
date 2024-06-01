@@ -6,16 +6,14 @@ import androidx.recyclerview.widget.RecyclerView
 import kr.cosine.groupfinder.databinding.ItemTagWithRemoveBinding
 
 class SearchAdapter(
-    private val items: List<String>,
-    private val onAddClick: (String) -> Unit,
-    private val onDeleteClick: (String) -> Unit)
+    private val items: List<String>)
     : RecyclerView.Adapter<SearchAdapter.SearchViewHolder>() {
 
-//    interface ItemClick {
-//        fun onItemClick(id: String)
-//    }
-//
-//    var itemClick: ItemClick? = null
+    interface ItemClick {
+        fun onItemClick(id: CharSequence)
+    }
+
+    var itemClick: ItemClick? = null
 
     inner class SearchViewHolder(binding: ItemTagWithRemoveBinding): RecyclerView.ViewHolder(binding.root){
         val tag = binding.tagTextView
@@ -24,10 +22,11 @@ class SearchAdapter(
         init {
             tag.setOnClickListener{
                 val position = adapterPosition
-//                val tagText = tag.text
-                if(position!=RecyclerView.NO_POSITION){
-                    onAddClick(items[position])
-                }
+                val tagText = tag.text
+//                if(position!=RecyclerView.NO_POSITION){
+//                    onAddClick(items[position])
+//                }
+                itemClick?.onItemClick(tagText)
 
 //                val clickedText = tag.text.toString() // 클릭한 아이템의 텍스트 가져오기
 //                if (tagList.contains(clickedText)) {
@@ -35,12 +34,12 @@ class SearchAdapter(
 //                }
             }
 
-            removeButton.setOnClickListener{
-                val position = adapterPosition
-                if(position!=RecyclerView.NO_POSITION){
-                    onDeleteClick(items[position])
-                }
-            }
+//            removeButton.setOnClickListener{
+//                val position = adapterPosition
+//                if(position!=RecyclerView.NO_POSITION){
+//                    onDeleteClick(items[position])
+//                }
+//            }
             }
         }
 
@@ -55,6 +54,9 @@ class SearchAdapter(
 
     override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
         holder.tag.text = items[position]
+        holder.itemView.setOnClickListener{
+            itemClick?.onItemClick(holder.tag.text)
+        }
     }
 }
 

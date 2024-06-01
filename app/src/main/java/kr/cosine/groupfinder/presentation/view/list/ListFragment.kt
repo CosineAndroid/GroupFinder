@@ -29,11 +29,6 @@ class ListFragment : Fragment() {
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
-
-            Tags.addTag(Tag("마이크X"))
-            Tags.addTag(Tag("즐겜"))
-            Tags.addTag(Tag("욕X"))
-            Tags.addTag(Tag("듣톡"))
         }
     }
 

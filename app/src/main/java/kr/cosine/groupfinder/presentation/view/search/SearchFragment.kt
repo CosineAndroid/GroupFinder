@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import kr.cosine.groupfinder.databinding.FragmentSearchBinding
-import kr.cosine.groupfinder.presentation.view.search.Tags.tagList
 
 class SearchFragment : Fragment() {
 
@@ -29,6 +28,14 @@ class SearchFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         initRecyclerView()
+        searchAdatper.itemClick = object : SearchAdapter.ItemClick {
+            override fun onItemClick(id: CharSequence) {
+                if(!Tags.selectedTagList.contains(id)){
+                    Tags.addTag(id)
+                }
+            }
+
+        }
 
     }
 
@@ -38,27 +45,29 @@ class SearchFragment : Fragment() {
     }
 
     private fun initRecyclerView() {
-        searchAdatper = SearchAdapter(
-            micTags,
-            onAddClick = { position ->
-                    if (Tags.selectedTagList.contains()){
+//        searchAdatper = SearchAdapter(
+//            micTags,
+//            onAddClick = { position ->
+//                    if (Tags.selectedTagList.contains()){
+//
+//                    }
+//                }
 
-                    }
-                }
+        binding.apply {
+            tagMicRecyClerView.adapter = SearchAdapter(micTags)
+            tagStyleRecyClerView.adapter = SearchAdapter(styleTags)
+
+            tagMicRecyClerView.layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            tagStyleRecyClerView.layoutManager =
+                StaggeredGridLayoutManager(7, StaggeredGridLayoutManager.VERTICAL)
+        }
     }
         //클릭한 태그 observe하는 코드
 
 
 
-//        binding.apply {
-//            tagMicRecyClerView.adapter = SearchAdapter(micTags)
-//            tagStyleRecyClerView.adapter = SearchAdapter(styleTags)
-//
-//            tagMicRecyClerView.layoutManager =
-//                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-//            tagStyleRecyClerView.layoutManager =
-//                StaggeredGridLayoutManager(7, StaggeredGridLayoutManager.VERTICAL)
-//        }
+
 
 
 }

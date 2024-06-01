@@ -9,7 +9,7 @@ object Tags {
 //    var List : MutableList<Tag> = mutableListOf()
     var selectedTagList = mutableListOf("마이크X", "빡겜", "듣톡")
 
-    fun addTag(tag: Tag){
+    fun addTag(tag: CharSequence){
         selectedTagList.add(tag.toString())
     }
 
@@ -17,7 +17,7 @@ object Tags {
         selectedTagList.remove(tag.toString())
     }
 
-    fun getTag(tag: Tag): MutableList<Tag>{
+    fun getTag(tag: Tag): MutableList<String>{
         return selectedTagList
     }
 }
