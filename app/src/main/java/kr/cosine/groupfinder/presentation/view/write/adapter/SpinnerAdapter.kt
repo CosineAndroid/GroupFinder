@@ -9,12 +9,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import kr.cosine.groupfinder.R
 import kr.cosine.groupfinder.data.model.SpinnerModel
+import kr.cosine.groupfinder.presentation.view.write.LaneSpinnerItem
 
 class SpinnerAdapter(
     private val context: Context,
     private val items: List<SpinnerModel>
 ) : ArrayAdapter<SpinnerModel>(context, 0, items) {
-
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         return initView(position, convertView, parent)
     }
