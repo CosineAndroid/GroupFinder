@@ -60,17 +60,19 @@ class RegisterActivity : ComponentActivity() {
                         .padding(horizontal = 30.dp)
                 ) {
                     InfoTextField(
-                        text = "닉네임 (16글자 이하)",
+                        text = "닉네임",
                         borderColor = uiState.nickname.color,
                         onValueChange = registerViewModel::checkNickname
                     )
                     InfoTextField(
-                        text = "태그 (16글자 이하)",
+                        text = "태그",
                         borderColor = uiState.tag.color,
                         onValueChange = registerViewModel::checkTag
                     )
                 }
+                registerViewModel.checkButtonEnable()
                 BaseButton(
+                    isEnabled = uiState.isButtonEnabled,
                     text = "회원가입",
                     containerColor = CustomColor.RegisterButtonBackground
                 ) {

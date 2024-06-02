@@ -16,11 +16,13 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun BaseButton(
     modifier: Modifier = Modifier,
+    isEnabled: Boolean = true,
     text: String,
     containerColor: Color = Color.White,
     onClick: () -> Unit,
 ) {
     Button(
+        enabled = isEnabled,
         onClick = onClick,
         shape = RoundedCornerShape(8.dp),
         colors = ButtonDefaults.buttonColors(

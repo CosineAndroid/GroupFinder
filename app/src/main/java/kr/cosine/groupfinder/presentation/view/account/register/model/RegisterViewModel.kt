@@ -57,8 +57,22 @@ class RegisterViewModel : ViewModel() {
                 tag = when {
                     tag.isBlank() -> RegisterErrorUiState.Blank
                     tag.length > INFO_LENGTH -> RegisterErrorUiState.Length
-                    else -> RegisterErrorUiState.Valid
+                    else -> {
+                        checkButtonEnable()
+                        RegisterErrorUiState.Valid
+                    }
                 }
+            )
+        }
+    }
+
+    fun checkButtonEnable() {
+        _uiState.update { prevUiState ->
+            prevUiState.copy(
+                isButtonEnabled = prevUiState.id is RegisterErrorUiState.Valid
+                        && prevUiState.password is RegisterErrorUiState.Valid
+                        && prevUiState.nickname is RegisterErrorUiState.Valid
+                        && prevUiState.tag is RegisterErrorUiState.Valid
             )
         }
     }

@@ -5,7 +5,7 @@ data class RegisterUiState(
     val password: RegisterErrorUiState,
     val nickname: RegisterErrorUiState,
     val tag: RegisterErrorUiState,
-    val isEnabled: Boolean
+    val isButtonEnabled: Boolean
 ) {
 
     companion object {
@@ -15,7 +15,7 @@ data class RegisterUiState(
                 password= RegisterErrorUiState.Init,
                 nickname= RegisterErrorUiState.Init,
                 tag= RegisterErrorUiState.Init,
-                isEnabled = false
+                isButtonEnabled = false
             )
         }
     }
