@@ -1,19 +1,26 @@
 package kr.cosine.groupfinder.presentation.view.account.register.model
 
 import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kr.cosine.groupfinder.presentation.view.account.register.state.RegisterUiState
 import kr.cosine.groupfinder.presentation.view.account.register.state.RegisterErrorUiState
+import javax.inject.Inject
 
-class RegisterViewModel : ViewModel() {
+@HiltViewModel
+class RegisterViewModel @Inject constructor(
+
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(RegisterUiState.newInstance())
     val uiState: StateFlow<RegisterUiState> get() = _uiState.asStateFlow()
 
     private val passwordRegex = Regex("^.*(?=^.{10,}\$)(?=.*\\d)(?=.*[a-zA-Z])(?=.*[!@^*~]).*\$")
+
+    private val RegisterErrorUiState.text get() = (this as RegisterErrorUiState.Valid).text
 
     fun checkId(id: String) {
         _uiState.update { prevUiState ->
@@ -21,7 +28,7 @@ class RegisterViewModel : ViewModel() {
                 id = when {
                     id.isBlank() -> RegisterErrorUiState.Blank
                     id.length < NICKNAME_LENGTH -> RegisterErrorUiState.Length
-                    else -> RegisterErrorUiState.Valid
+                    else -> RegisterErrorUiState.Valid(id)
                 }
             )
         }
@@ -33,7 +40,7 @@ class RegisterViewModel : ViewModel() {
                 password = when {
                     password.isBlank() -> RegisterErrorUiState.Blank
                     !passwordRegex.matches(password) -> RegisterErrorUiState.Password
-                    else -> RegisterErrorUiState.Valid
+                    else -> RegisterErrorUiState.Valid(password)
                 }
             )
         }
@@ -45,7 +52,7 @@ class RegisterViewModel : ViewModel() {
                 nickname = when {
                     nickname.isBlank() -> RegisterErrorUiState.Blank
                     nickname.length > INFO_LENGTH -> RegisterErrorUiState.Length
-                    else -> RegisterErrorUiState.Valid
+                    else -> RegisterErrorUiState.Valid(nickname)
                 }
             )
         }
@@ -59,7 +66,7 @@ class RegisterViewModel : ViewModel() {
                     tag.length > INFO_LENGTH -> RegisterErrorUiState.Length
                     else -> {
                         checkButtonEnable()
-                        RegisterErrorUiState.Valid
+                        RegisterErrorUiState.Valid(tag)
                     }
                 }
             )
@@ -75,6 +82,14 @@ class RegisterViewModel : ViewModel() {
                         && prevUiState.tag is RegisterErrorUiState.Valid
             )
         }
+    }
+
+    fun register() {
+        val uiState = _uiState.value
+        val id = uiState.id.text
+        val password = uiState.password.text
+        val nickname = uiState.nickname.text
+        val tag = uiState.tag.text
     }
 
     private companion object {

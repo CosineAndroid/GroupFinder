@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import dagger.hilt.android.AndroidEntryPoint
 import kr.cosine.groupfinder.presentation.view.account.component.BaseTextField
 import kr.cosine.groupfinder.presentation.view.account.component.BaseButton
 import kr.cosine.groupfinder.presentation.view.account.register.component.InfoTextField
@@ -23,6 +24,7 @@ import kr.cosine.groupfinder.presentation.view.account.register.model.RegisterVi
 import kr.cosine.groupfinder.presentation.view.account.register.state.RegisterErrorUiState
 import kr.cosine.groupfinder.presentation.view.account.ui.CustomColor
 
+@AndroidEntryPoint
 class RegisterActivity : ComponentActivity() {
 
     private val registerViewModel by viewModels<RegisterViewModel>()
@@ -76,7 +78,7 @@ class RegisterActivity : ComponentActivity() {
                     text = "회원가입",
                     containerColor = CustomColor.RegisterButtonBackground
                 ) {
-
+                    registerViewModel.register()
                 }
             }
         }
