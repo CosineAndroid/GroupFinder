@@ -1,5 +1,6 @@
 package kr.cosine.groupfinder.presentation.view.account.login
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -9,10 +10,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import kr.cosine.groupfinder.presentation.view.account.component.BaseTextField
-import kr.cosine.groupfinder.presentation.view.account.component.Space
-import kr.cosine.groupfinder.presentation.view.account.login.component.BaseButton
+import kr.cosine.groupfinder.presentation.view.account.component.BaseButton
+import kr.cosine.groupfinder.presentation.view.account.register.RegisterActivity
+import kr.cosine.groupfinder.presentation.view.account.ui.CustomColor
 
 class LoginActivity : ComponentActivity() {
 
@@ -21,17 +24,33 @@ class LoginActivity : ComponentActivity() {
         setContent {
             Column(
                 modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
+                verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                BaseTextField(hint = "아이디")
-                Space(height = 10.dp)
-                BaseTextField(hint = "비밀번호")
-                Space(height = 10.dp)
-                BaseButton(text = "로그인") {
-                    Toast.makeText(this@LoginActivity, "클릭", Toast.LENGTH_SHORT).show()
+                BaseTextField(
+                    hint = "아이디"
+                )
+                BaseTextField(
+                    hint = "비밀번호",
+                    visualTransformation = PasswordVisualTransformation()
+                )
+                BaseButton(
+                    text = "로그인"
+                ) {
+                    Toast.makeText(this@LoginActivity, "로그인", Toast.LENGTH_SHORT).show()
+                }
+                BaseButton(
+                    text = "회원가입",
+                    containerColor = CustomColor.RegisterButtonBackground
+                ) {
+                    startRegisterActivity()
                 }
             }
         }
+    }
+
+    private fun startRegisterActivity() {
+        val intent = Intent(this, RegisterActivity::class.java)
+        startActivity(intent)
     }
 }
