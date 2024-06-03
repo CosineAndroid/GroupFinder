@@ -10,4 +10,6 @@
     <string name="group_people_format">%d/%d</string>
     <string name="group_time_format">%s 전</string>
     <string name="tag_format">%s</string>
+    <string name="open_navigation">Open Navigation Drawer</string>
+    <string name="close_navigation">Close Navigation Drawer</string>
 </resources>
