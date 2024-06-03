@@ -9,7 +9,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
-import kr.cosine.groupfinder.data.model.PostModel
+import kr.cosine.groupfinder.data.model.PostResponse
 import kr.cosine.groupfinder.databinding.ActivityMainBinding
 import kr.cosine.groupfinder.presentation.view.test.model.PostViewModel
 
@@ -32,8 +32,8 @@ class MainActivity : AppCompatActivity() {
             if (querySnapshot.metadata.isFromCache) return@addSnapshotListener
             querySnapshot.documentChanges.forEach { documentChange ->
                 if (documentChange.type == DocumentChange.Type.ADDED) {
-                    val postModel = documentChange.document.toObject(PostModel::class.java)
-                    Log.d("GroupFinderTest", "[ADDED] PostModel : $postModel")
+                    val postResponse = documentChange.document.toObject(PostResponse::class.java)
+                    Log.d("GroupFinderTest", "[ADDED] PostModel : $postResponse")
                 }
             }
         }

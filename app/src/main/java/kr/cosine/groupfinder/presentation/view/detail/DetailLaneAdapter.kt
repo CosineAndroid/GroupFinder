@@ -37,20 +37,12 @@ class DetailLaneAdapter : RecyclerView.Adapter<DetailLaneAdapter.Holder>() {
         holder.bind(entry.key, entry.value, power, itemClick)
     }
 
-    class Holder(private val binding: ActivityDetailSelectLaneBinding) : RecyclerView.ViewHolder(binding.root) {
-
-        companion object {
-            private val laneIcons = mapOf(
-                Lane.TOP to Pair(R.drawable.ic_lane_top, R.drawable.ic_lane_empty_top),
-                Lane.JUNGLE to Pair(R.drawable.ic_lane_jungle, R.drawable.ic_lane_empty_jungle),
-                Lane.MID to Pair(R.drawable.ic_lane_mid, R.drawable.ic_lane_empty_mid),
-                Lane.AD to Pair(R.drawable.ic_lane_ad, R.drawable.ic_lane_empty_ad),
-                Lane.SUPPORT to Pair(R.drawable.ic_lane_spt, R.drawable.ic_lane_empty_spt)
-            )
-        }
+    class Holder(
+        private val binding: ActivityDetailSelectLaneBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(lane: Lane, userName: String?, power: Int, itemClick: ItemClick?) {
-            val (icon, emptyIcon) = laneIcons[lane] ?: return
+            val (icon, emptyIcon) = lane.drawableId to lane.emptyDrawableId
             binding.selectLaneImageView.setImageResource(if (userName != null) icon else emptyIcon)
             binding.selectIdTextView.text = userName ?: "없음"
 

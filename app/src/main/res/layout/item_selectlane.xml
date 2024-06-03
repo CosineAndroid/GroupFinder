@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <Spinner
-            android:id="@+id/selectedLaneSpinner"
+            android:id="@+id/require_lane_spinner"
             android:layout_width="250dp"
             android:layout_height="match_parent"
             android:layout_marginStart="10dp" />
@@ -41,7 +41,7 @@
             android:gravity="center">
 
             <ImageView
-                android:id="@+id/plusImageView"
+                android:id="@+id/removeImageView"
                 android:layout_width="15dp"
                 android:layout_height="15dp"
                 android:src="@drawable/ic_app_minus" />

@@ -1,24 +1,15 @@
 package kr.cosine.groupfinder.presentation.view.detail
 
-import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.firebase.Firebase
-import com.google.firebase.firestore.DocumentChange
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.firestore
 import dagger.hilt.android.AndroidEntryPoint
-import kr.cosine.groupfinder.data.model.PostModel
-import kr.cosine.groupfinder.data.model.PostModel.Companion.getLaneMap
 import kr.cosine.groupfinder.databinding.ActivityDetailBinding
+import kr.cosine.groupfinder.domain.model.PostEntity
 import kr.cosine.groupfinder.enums.Lane
-import kr.cosine.groupfinder.enums.TestGlobalUserData
 import kr.cosine.groupfinder.enums.TestGlobalUserData.HOST
 import kr.cosine.groupfinder.enums.TestGlobalUserData.PARTICIPANT
 import kr.cosine.groupfinder.enums.TestGlobalUserData.userID
@@ -30,8 +21,6 @@ class DetailActivity : AppCompatActivity() {
 
     private val binding by lazy { ActivityDetailBinding.inflate(layoutInflater) }
 
-    private lateinit var firestore: FirebaseFirestore
-
     private val detailViewModel: DetailViewModel by viewModels()
 
     private val categoryAdapter by lazy { DetailCategoryAdapter() }
@@ -41,18 +30,6 @@ class DetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-
-        firestore = Firebase.firestore
-        firestore.collection("posts").addSnapshotListener { it, _ ->
-            val querySnapshot = it ?: return@addSnapshotListener
-            if (querySnapshot.metadata.isFromCache) return@addSnapshotListener
-            querySnapshot.documentChanges.forEach { documentChange ->
-                if (documentChange.type == DocumentChange.Type.ADDED) {
-                    val postModel = documentChange.document.toObject(PostModel::class.java)
-                    Log.d("GroupFinderTest", "[ADDED] PostModel : $postModel")
-                }
-            }
-        }
         observeData()
         detailViewModel.getTest()
         laneOnClick()
@@ -65,26 +42,26 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun observeData() {
-        detailViewModel.postDetail.observe(this, Observer { post ->
+        detailViewModel.postDetail.observe(this) { post ->
             if (post != null) {
                 bindDetailInformation(post)
                 bindCategoriesFromData(post.tags)
-                bindLanesFromData(post.getLaneMap())
+                bindLanesFromData(post.laneMap)
             } else {
                 Log.d("Error", "onCreate: 비 정상적인 로딩")
                 // 잘못된 게시글 로드시 에러처리 오류창 디자인 요청.
             }
-        })
-        detailViewModel.groupRole.observe(this, Observer { role ->
+        }
+        detailViewModel.groupRole.observe(this) { role ->
             laneAdapter.powerUpdate(role)
-        })
+        }
     }
 
-    private fun bindDetailInformation(postModel: PostModel) {
+    private fun bindDetailInformation(postEntity: PostEntity) {
         with(binding) {
-            titleTextView.text = postModel.title
-            idTextView.text = postModel.id
-            memoTextView.text = postModel.body
+            titleTextView.text = postEntity.title
+            idTextView.text = postEntity.id
+            memoTextView.text = postEntity.body
         }
     }
 
@@ -97,10 +74,10 @@ class DetailActivity : AppCompatActivity() {
         categoryAdapter.categoriesUpdate(tags)
     }
 
-    private fun bindLanesFromData(lanes: Map<Lane,String?>) {
+    private fun bindLanesFromData(lanes: Map<Lane, String?>) {
         with(binding.lanes) {
             adapter = laneAdapter
-            layoutManager = LinearLayoutManager(context,LinearLayoutManager.VERTICAL, false)
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         }
         laneAdapter.laneUpdate(lanes)
     }
@@ -114,8 +91,8 @@ class DetailActivity : AppCompatActivity() {
             override fun onExitClick(view: View, lane: Lane, userName: String?) {
                 val userRole = detailViewModel.groupRole.value
                 val loginUserName = userID
-                if(userRole == HOST) {
-                    if(loginUserName == userName) {
+                if (userRole == HOST) {
+                    if (loginUserName == userName) {
                         Log.d("test", "onExitClick: 방을 닫겠습니까?")
                     } else {
                         Log.d("test", "onExitClick: ${userName} 유저를 강퇴 하시겠습니까?")

@@ -4,7 +4,7 @@ import android.graphics.Rect
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 
-class TagItemDecoration(
+open class TagItemDecoration(
     private val right: Int = DISTANCE,
     private val bottom: Int = DISTANCE
 ) : RecyclerView.ItemDecoration() {
@@ -16,11 +16,17 @@ class TagItemDecoration(
         state: RecyclerView.State
     ) {
         super.getItemOffsets(outRect, view, parent, state)
-        outRect.right = right
-        outRect.bottom = bottom
+        if (parent.getChildAdapterPosition(view) == state.itemCount - 1) {
+            outRect.setEmpty()
+        } else {
+            outRect.right = right
+            outRect.bottom = bottom
+        }
     }
 
-    private companion object {
-        const val DISTANCE = 15
+    companion object {
+        private const val DISTANCE = 15
+
+        val defaultTagItemDecoration = TagItemDecoration(bottom = 0)
     }
 }
