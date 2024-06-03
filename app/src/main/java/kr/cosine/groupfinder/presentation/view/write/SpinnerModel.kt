@@ -1,4 +1,4 @@
-package kr.cosine.groupfinder.data.model
+package kr.cosine.groupfinder.presentation.view.write
 
 data class SpinnerModel(
     val image: Int,

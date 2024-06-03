@@ -1,7 +1,7 @@
 package kr.cosine.groupfinder.domain.usecase
 
 import dagger.hilt.android.scopes.ViewModelScoped
-import kr.cosine.groupfinder.data.model.PostModel
+import kr.cosine.groupfinder.data.model.PostResponse
 import kr.cosine.groupfinder.domain.extension.getJoinedPeopleCount
 import kr.cosine.groupfinder.domain.extension.getTotalPeopleCount
 import kr.cosine.groupfinder.domain.mapper.toEntity
@@ -17,7 +17,7 @@ class GroupUseCase @Inject constructor(
 
     suspend operator fun invoke(mode: Mode?, tags: List<String>): Result<List<PostEntity>> {
         return runCatching {
-            var posts = postRepository.getPosts(tags).map(PostModel::toEntity)
+            var posts = postRepository.getPosts(tags).map(PostResponse::toEntity)
             if (mode != null) {
                 posts = posts.filter {
                     it.mode == mode

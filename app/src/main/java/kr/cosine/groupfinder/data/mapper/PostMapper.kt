@@ -1,10 +1,10 @@
 package kr.cosine.groupfinder.data.mapper
 
-import kr.cosine.groupfinder.data.model.PostModel
+import kr.cosine.groupfinder.data.model.PostResponse
 import kr.cosine.groupfinder.domain.model.PostEntity
 
-fun PostEntity.toPostResponse(): PostModel {
-    return PostModel(
+fun PostEntity.toPostResponse(): PostResponse {
+    return PostResponse(
         uniqueId = uniqueId.toString(),
         mode = mode.name,
         title = title,

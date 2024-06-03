@@ -1,7 +1,6 @@
 package kr.cosine.groupfinder.presentation.view.write
 
 import kr.cosine.groupfinder.R
-import kr.cosine.groupfinder.data.model.SpinnerModel
 
 object LaneSpinnerItem {
     val laneItems = mutableListOf(

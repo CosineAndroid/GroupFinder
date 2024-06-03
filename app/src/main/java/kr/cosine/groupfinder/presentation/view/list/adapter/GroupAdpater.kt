@@ -8,9 +8,6 @@ import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.RecyclerView
 import kr.cosine.groupfinder.R
-import kr.cosine.groupfinder.data.model.PostModel.Companion.getJoinedPeopleCount
-import kr.cosine.groupfinder.data.model.PostModel.Companion.getLaneMap
-import kr.cosine.groupfinder.data.model.PostModel.Companion.getTotalPeopleCount
 import kr.cosine.groupfinder.databinding.ItemGroupBinding
 import kr.cosine.groupfinder.domain.extension.getJoinedPeopleCount
 import kr.cosine.groupfinder.domain.extension.getTotalPeopleCount

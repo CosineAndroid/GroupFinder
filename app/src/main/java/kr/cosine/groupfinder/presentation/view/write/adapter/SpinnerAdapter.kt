@@ -8,8 +8,7 @@ import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import kr.cosine.groupfinder.R
-import kr.cosine.groupfinder.data.model.SpinnerModel
-import kr.cosine.groupfinder.presentation.view.write.LaneSpinnerItem
+import kr.cosine.groupfinder.presentation.view.write.SpinnerModel
 
 class SpinnerAdapter(
     private val context: Context,

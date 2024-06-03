@@ -14,4 +14,23 @@ data class PostEntity(
     val tags: List<String>,
     val laneMap: Map<Lane, String?>,
     val time: Timestamp
-)
+) {
+
+    constructor(
+        mode: Mode,
+        title: String,
+        body: String,
+        id: String,
+        tags: List<String>,
+        laneMap: Map<Lane, String?>
+    ) : this(
+        UUID.randomUUID(),
+        mode,
+        title,
+        body,
+        id,
+        tags,
+        laneMap,
+        Timestamp.now()
+    )
+}
