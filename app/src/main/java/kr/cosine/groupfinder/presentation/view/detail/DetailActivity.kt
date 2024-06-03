@@ -6,7 +6,11 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
+import com.google.firebase.messaging.RemoteMessage
 import dagger.hilt.android.AndroidEntryPoint
+import kr.cosine.groupfinder.R
 import kr.cosine.groupfinder.databinding.ActivityDetailBinding
 import kr.cosine.groupfinder.domain.model.PostEntity
 import kr.cosine.groupfinder.enums.Lane
@@ -33,6 +37,13 @@ class DetailActivity : AppCompatActivity() {
         observeData()
         detailViewModel.getTest()
         laneOnClick()
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.w("FCM", "Fetching FCM registration token failed", task.exception )
+                return@OnCompleteListener
+            }
+            val token = task.result
+        })
     }
 
     private fun test() {
@@ -104,5 +115,11 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
-
+    private fun sendJoinRequest(lane: Lane) {
+        val message = mapOf(
+            "type" to "join_request",
+            "lane" to lane.displayName,
+            "userId" to userID
+        )
+    }
 }
