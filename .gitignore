@@ -9,3 +9,5 @@ gradle
 .externalNativeBuild
 .cxx
 local.properties
+/.idea/deploymentTargetDropDown.xml
+/.idea/git_toolbox_prj.xml
