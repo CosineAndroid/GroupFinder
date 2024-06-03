@@ -15,6 +15,7 @@ import kotlinx.coroutines.launch
 import kr.cosine.groupfinder.domain.usecase.LoginUseCase
 import kr.cosine.groupfinder.presentation.view.account.login.event.LoginEvent
 import kr.cosine.groupfinder.presentation.view.account.login.state.LoginUiState
+import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
@@ -53,15 +54,18 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    fun login() = viewModelScope.launch(Dispatchers.IO) {
+    fun loginByInput() = viewModelScope.launch(Dispatchers.IO) {
         val (id, password) = uiState.value.let { it.id to it.password }
-        val accountEntity = loginUseCase(id, password)
-        if (accountEntity == null) {
-            val event = LoginEvent.Fail
-            _event.emit(event)
-        } else {
-            val event = LoginEvent.Success(accountEntity)
-            _event.emit(event)
-        }
+        val event = loginUseCase.findAccountEntityByIdAndPassword(id, password)?.let { accountEntity ->
+            LoginEvent.Success(accountEntity)
+        } ?: LoginEvent.Fail
+        _event.emit(event)
+    }
+
+    fun loginByUniqueId(uniqueId: UUID) = viewModelScope.launch(Dispatchers.IO) {
+        val event = loginUseCase.findAccountEntityByUniqueId(uniqueId)?.let { accountEntity ->
+            LoginEvent.Success(accountEntity)
+        } ?: LoginEvent.Fail
+        _event.emit(event)
     }
 }

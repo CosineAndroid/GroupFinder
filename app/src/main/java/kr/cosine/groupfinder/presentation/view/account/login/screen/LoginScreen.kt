@@ -31,6 +31,7 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.flow.collectLatest
 import kr.cosine.groupfinder.R
+import kr.cosine.groupfinder.presentation.MainActivity
 import kr.cosine.groupfinder.presentation.view.account.component.BaseButton
 import kr.cosine.groupfinder.presentation.view.account.component.BaseTextField
 import kr.cosine.groupfinder.presentation.view.account.component.LoadingScreen
@@ -85,7 +86,7 @@ fun LoginScreen(
                 text = stringResource(R.string.login),
             ) {
                 loadingViewModel.show()
-                loginViewModel.login()
+                loginViewModel.loginByInput()
             }
             val context = LocalContext.current
             val registerResultLauncher = getRegisterResultLanuncher()
@@ -110,7 +111,7 @@ private suspend fun onLoginEvent(
         loadingViewModel.hide()
         when (event) {
             is LoginEvent.Success -> {
-                snackbarHostState.showSnackbar(Message.SUCCESS_LOGIN)
+                startMainActivity(activity)
             }
             is LoginEvent.Fail -> {
                 snackbarHostState.showSnackbar(Message.INVALID_ACCOUNT)
@@ -136,10 +137,14 @@ private fun getRegisterResultLanuncher(
     }
 }
 
-private fun startLoginActivity(
+private fun startMainActivity(
     context: Context
 ) {
-    // val intent = Intent(context, )
+    val intent = Intent(context, MainActivity::class.java).apply {
+        addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+    }
+    context.startActivity(intent)
 }
 
 private fun startRegisterActivity(

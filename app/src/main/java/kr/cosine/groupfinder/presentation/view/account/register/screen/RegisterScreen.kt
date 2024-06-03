@@ -127,16 +127,16 @@ private suspend fun onRegisterEvent(
     loadingViewModel: LoadingViewModel
 ) {
     registerViewModel.event.flowWithLifecycle(lifecycle).collectLatest { event ->
+        loadingViewModel.hide()
         when (event) {
             is RegisterEvent.Success -> {
+                val accountEntity = event.accountEntity
                 val intent = Intent(activity, LoginActivity::class.java).apply {
-                    putExtra(IntentKey.ID, event.id)
-                    putExtra(IntentKey.PASSWORD, event.password)
+                    putExtra(IntentKey.ID, accountEntity.id)
+                    putExtra(IntentKey.PASSWORD, accountEntity.password)
                 }
                 activity.setResult(Activity.RESULT_OK, intent)
                 activity.finish()
-                snackbarHostState.showSnackbar(Message.SUCCESS_REGISTER)
-                loadingViewModel.hide()
             }
 
             is RegisterEvent.IdDuplicationFail -> snackbarHostState.showSnackbar(Message.ID_DUPLICATION)

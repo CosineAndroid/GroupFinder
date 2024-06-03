@@ -104,8 +104,8 @@ class RegisterViewModel @Inject constructor(
         val password = uiState.password.text
         val nickname = uiState.nickname.text
         val tag = uiState.tag.text
-        registerUseCase(id, password, nickname, tag).onSuccess {
-            val event = RegisterEvent.Success(id, password)
+        registerUseCase(id, password, nickname, tag).onSuccess { accountEntity ->
+            val event = RegisterEvent.Success(accountEntity)
             _event.emit(event)
         }.onFailure { throwable ->
             val event = when (throwable) {

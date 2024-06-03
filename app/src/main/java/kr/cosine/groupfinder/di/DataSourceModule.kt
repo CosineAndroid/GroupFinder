@@ -12,7 +12,7 @@ import kr.cosine.groupfinder.data.remote.TestDataSource
 
 @Module
 @InstallIn(SingletonComponent::class)
-class NetworkModule {
+class DataSourceModule {
 
     @Provides
     fun provideTestDataSource(): TestDataSource {
