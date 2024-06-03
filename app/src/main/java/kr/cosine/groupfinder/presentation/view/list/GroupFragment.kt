@@ -58,9 +58,9 @@ class GroupFragment(
     }
 
     private fun registerNavigationButton() {
-        binding.navigationImageButton.setOnClickListener {
+        /*binding.navigationImageButton.setOnClickListener {
 
-        }
+        }*/
     }
 
     private fun registerGroupRecyclerView() = with(binding.groupRecyclerView) {
