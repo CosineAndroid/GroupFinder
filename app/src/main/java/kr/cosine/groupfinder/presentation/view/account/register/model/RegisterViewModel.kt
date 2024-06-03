@@ -1,22 +1,35 @@
 package kr.cosine.groupfinder.presentation.view.account.register.model
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import kr.cosine.groupfinder.domain.exception.IdAlreadyExistsException
+import kr.cosine.groupfinder.domain.exception.TaggedNicknameAlreadyExistsException
+import kr.cosine.groupfinder.domain.usecase.RegisterUseCase
+import kr.cosine.groupfinder.presentation.view.account.register.event.RegisterEvent
 import kr.cosine.groupfinder.presentation.view.account.register.state.RegisterUiState
 import kr.cosine.groupfinder.presentation.view.account.register.state.RegisterErrorUiState
 import javax.inject.Inject
 
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
-
+    private val registerUseCase: RegisterUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(RegisterUiState.newInstance())
     val uiState: StateFlow<RegisterUiState> get() = _uiState.asStateFlow()
+
+    private val _event = MutableSharedFlow<RegisterEvent>()
+    val event: SharedFlow<RegisterEvent> get() = _event.asSharedFlow()
 
     private val passwordRegex = Regex("^.*(?=^.{10,}\$)(?=.*\\d)(?=.*[a-zA-Z])(?=.*[!@^*~]).*\$")
 
@@ -84,12 +97,23 @@ class RegisterViewModel @Inject constructor(
         }
     }
 
-    fun register() {
+    fun register() = viewModelScope.launch(Dispatchers.IO) {
         val uiState = _uiState.value
         val id = uiState.id.text
         val password = uiState.password.text
         val nickname = uiState.nickname.text
         val tag = uiState.tag.text
+        registerUseCase(id, password, nickname, tag).onSuccess {
+            val event = RegisterEvent.Success(id, password)
+            _event.emit(event)
+        }.onFailure { throwable ->
+            val event = when (throwable) {
+                is IdAlreadyExistsException -> RegisterEvent.IdDuplicationFail
+                is TaggedNicknameAlreadyExistsException -> RegisterEvent.TaggedNicknameDuplicationFail
+                else -> RegisterEvent.UnknownFail
+            }
+            _event.emit(event)
+        }
     }
 
     private companion object {

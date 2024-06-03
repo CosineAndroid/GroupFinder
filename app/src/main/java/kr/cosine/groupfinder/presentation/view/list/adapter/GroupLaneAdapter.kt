@@ -6,10 +6,10 @@ import androidx.recyclerview.widget.RecyclerView
 import kr.cosine.groupfinder.databinding.ItemGroupLaneBinding
 import kr.cosine.groupfinder.enums.Lane
 
-class GroupLaneAdpater(
+class GroupLaneAdapter(
     private val laneMap: Map<Lane, String?>,
     private val isMaxGroup: Boolean
-) : RecyclerView.Adapter<GroupLaneAdpater.GroupLaneViewHolder>() {
+) : RecyclerView.Adapter<GroupLaneAdapter.GroupLaneViewHolder>() {
 
     inner class GroupLaneViewHolder(
         private val binding: ItemGroupLaneBinding

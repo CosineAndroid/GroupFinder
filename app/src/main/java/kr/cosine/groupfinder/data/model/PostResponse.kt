@@ -15,7 +15,7 @@ data class PostResponse(
 ) {
 
     constructor() : this(
-        UUID.randomUUID().toString(),
+        "",
         "",
         "",
         "",

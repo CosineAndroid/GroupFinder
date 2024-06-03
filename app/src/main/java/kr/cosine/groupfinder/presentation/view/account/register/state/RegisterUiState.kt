@@ -12,9 +12,9 @@ data class RegisterUiState(
         fun newInstance(): RegisterUiState {
             return RegisterUiState(
                 id = RegisterErrorUiState.Init,
-                password= RegisterErrorUiState.Init,
-                nickname= RegisterErrorUiState.Init,
-                tag= RegisterErrorUiState.Init,
+                password = RegisterErrorUiState.Init,
+                nickname = RegisterErrorUiState.Init,
+                tag = RegisterErrorUiState.Init,
                 isButtonEnabled = false
             )
         }

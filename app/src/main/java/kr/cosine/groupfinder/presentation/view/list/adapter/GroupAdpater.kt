@@ -43,8 +43,8 @@ class GroupAdpater(
                 noticeMoreTagImageView.visibility = View.VISIBLE
             }
             groupTagRecyclerView.apply {
-                val groupTagAdpater = GroupTagAdpater(tags)
-                adapter = groupTagAdpater
+                val groupTagAdapter = GroupTagAdapter(tags)
+                adapter = groupTagAdapter
                 removeItemDecoration(GroupTagItemDecoration)
                 addItemDecoration(GroupTagItemDecoration)
                 addOnScrollListener(TagScrollListener(noticeMoreTagImageView, isMaxTag))
@@ -53,7 +53,7 @@ class GroupAdpater(
             val joinedPeopleCount = post.getJoinedPeopleCount()
             val totalPeopleCount = post.getTotalPeopleCount()
             val isMaxGroup = joinedPeopleCount == totalPeopleCount
-            groupLaneRecyclerView.adapter = GroupLaneAdpater(laneMap, isMaxGroup)
+            groupLaneRecyclerView.adapter = GroupLaneAdapter(laneMap, isMaxGroup)
             groupPeopleTextView.text = context.getString(
                 R.string.group_people_format,
                 joinedPeopleCount,
