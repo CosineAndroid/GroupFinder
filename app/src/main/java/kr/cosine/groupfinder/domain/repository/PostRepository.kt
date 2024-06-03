@@ -5,7 +5,8 @@ import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.EventListener
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.QuerySnapshot
-import kr.cosine.groupfinder.data.model.PostModel
+import kr.cosine.groupfinder.data.model.PostResponse
+import java.util.UUID
 
 abstract class PostRepository(
     protected val path: String
@@ -15,13 +16,15 @@ abstract class PostRepository(
 
     abstract fun getReference(path: String): CollectionReference
 
-    abstract suspend fun createPost(postModel: PostModel)
+    abstract suspend fun createPost(postResponse: PostResponse)
 
-    abstract suspend fun deletePost(postModel: PostModel)
+    abstract suspend fun deletePost(postResponse: PostResponse)
 
-    abstract suspend fun updatePost(postModel: PostModel)
+    abstract suspend fun updatePost(postResponse: PostResponse)
 
-    abstract suspend fun getPosts(tags: List<String> = emptyList()): List<PostModel>
+    abstract suspend fun getPosts(tags: List<String> = emptyList()): List<PostResponse>
+
+    abstract suspend fun findPostByUniqueId(uniqueId: UUID): PostResponse?
 
     abstract fun addSnapshotListener(listener: EventListener<QuerySnapshot>): ListenerRegistration
 
