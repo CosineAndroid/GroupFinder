@@ -6,6 +6,7 @@
     tools:context=".presentation.view.search.SearchFragment"
     android:layout_width="match_parent"
     android:layout_height="350dp"
+    android:translationZ="1dp"
     android:padding="16dp">
 
     <ScrollView

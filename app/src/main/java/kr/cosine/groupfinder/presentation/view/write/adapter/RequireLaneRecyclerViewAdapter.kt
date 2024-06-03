@@ -1,33 +1,31 @@
 package kr.cosine.groupfinder.presentation.view.write.adapter
 
-import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
-import android.widget.Spinner
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import kr.cosine.groupfinder.databinding.ItemSelectlaneBinding
 import kr.cosine.groupfinder.presentation.view.write.LaneSpinnerItem
-import kr.cosine.groupfinder.presentation.view.write.WriteActivity
+import kr.cosine.groupfinder.presentation.view.write.RequireLane
 
 class RequireLaneRecyclerViewAdapter(
-    private val lanes: MutableList<String>,
+    private val lanes: MutableList<RequireLane>
+    //생성자로 안하고
 ) : RecyclerView.Adapter<RequireLaneRecyclerViewAdapter.ViewHolder>() {
-    private val selectedRequireLanes = mutableMapOf<Int, String>()
-
-
+//    private var newLanes = emptyList<RequireLane>()
+//    fun submitList(lanes:List<RequireLane>){
+//        this.newLanes = lanes
+//        notifyDataSetChanged()
+//    } 튜터님한테 물어보기 -> 어케하는지 모르겟음
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding =
-            ItemSelectlaneBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ItemSelectlaneBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val laneRemoveIcon = lanes.size <= 1
-        holder.bind(holder.itemView.context, laneRemoveIcon)
+        holder.bind(lanes[position],position)
     }
 
     override fun getItemCount(): Int {
@@ -35,72 +33,50 @@ class RequireLaneRecyclerViewAdapter(
     }
 
     inner class ViewHolder(
-        private val binding: ItemSelectlaneBinding,
+        private val binding: ItemSelectlaneBinding
     ) : RecyclerView.ViewHolder(binding.root) {
+
         init {
             binding.removeImageView.setOnClickListener {
-                (binding.root.context as WriteActivity).requireLaneRecyclerViewAdapter.removeLane(
-                    bindingAdapterPosition
-                )
-                Log.d("checkSelectedLansesListRemove", selectedRequireLanes.toString())
+                removeLane(bindingAdapterPosition)
             }
         }
 
-        fun bind(context: Context, laneRemoveIcon: Boolean) {
+        fun bind(lane: RequireLane, requireLanePosition: Int) {
             val spinner = binding.requireLaneSpinner
-            val adapter = RequireLaneSpinnerAdapter(context, LaneSpinnerItem.laneItems)
+            val adapter = RequireLaneSpinnerAdapter(binding.root.context, LaneSpinnerItem.laneItems)
             spinner.adapter = adapter
-            binding.tagbackgroundCardView.visibility =
-                if (laneRemoveIcon) View.INVISIBLE else View.VISIBLE
-            setOnSelectedLaneClickListener(spinner, context)
-        }
 
-        private fun setOnSelectedLaneClickListener(spinner: Spinner, context: Context) {
+            binding.tagbackgroundCardView.visibility = if (requireLanePosition > 0) View.VISIBLE else View.INVISIBLE
+
+            spinner.setSelection(LaneSpinnerItem.laneItems.indexOfFirst { it.lane == lane.lane })
             spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(
-                    parent: AdapterView<*>?,
-                    view: View?,
-                    position: Int,
-                    id: Long
-                ) {
+                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                     val selectedLane = LaneSpinnerItem.laneItems[position].lane
-                    val defaultLane = LaneSpinnerItem.laneItems[0].lane
-
-                    if (selectedLane != defaultLane) {
-                        selectedRequireLanes[bindingAdapterPosition] = selectedLane
-
-                    } else {
-                        selectedRequireLanes.remove(bindingAdapterPosition)
-                    }
-                    Log.d("checkSelected", selectedLane)
-                    Log.d("checkSelectedLansesList", selectedRequireLanes.toString())
+                    lane.lane = selectedLane
                 }
 
-                override fun onNothingSelected(parent: AdapterView<*>?) {
-                    TODO("Not yet implemented")
-                }
-
+                override fun onNothingSelected(parent: AdapterView<*>?) {}
             }
         }
+    }
 
+    fun getLanes(): List<RequireLane> {
+        return lanes.toList()
     }
 
     fun removeLane(position: Int) {
         if (lanes.size > 1 && position < lanes.size) {
             lanes.removeAt(position)
-            selectedRequireLanes.remove(position)
             notifyItemRemoved(position)
             notifyItemRangeChanged(position, lanes.size)
         }
     }
 
-
-    //데이터 구조를 다시 잡아야 할듯?
-    //보여주고 중복된 값이라고 알려주는게 낫다  SnackBar? Toast?
     fun addLane(newLane: String) {
-        lanes.add(newLane)
+        //val newIndex = lanes.size
+        val newRequireLane = RequireLane(newLane)
+        lanes.add(newRequireLane)
         notifyItemInserted(lanes.size - 1)
     }
-
-
 }
