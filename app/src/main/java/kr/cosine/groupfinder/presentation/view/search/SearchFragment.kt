@@ -15,8 +15,8 @@ class SearchFragment : Fragment() {
 
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
-    private lateinit var micAdapter : SearchAdapter
-    private lateinit var styleAdapter : SearchAdapter
+    private lateinit var micAdapter: SearchAdapter
+    private lateinit var styleAdapter: SearchAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,71 +33,27 @@ class SearchFragment : Fragment() {
         styleAdapter = SearchAdapter(styleTags)
 
         binding.apply {
-            tagMicRecyClerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-            tagStyleRecyClerView.layoutManager = StaggeredGridLayoutManager(7, StaggeredGridLayoutManager.VERTICAL)
+            tagMicRecyClerView.layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            tagStyleRecyClerView.layoutManager =
+                StaggeredGridLayoutManager(7, StaggeredGridLayoutManager.VERTICAL)
 
             tagMicRecyClerView.adapter = micAdapter
             tagStyleRecyClerView.adapter = styleAdapter
         }
 
-        micAdapter.itemClick = object : SearchAdapter.ItemClick{
-            override fun onItemClick(id: CharSequence) {
-                if(!Tags.selectedTagList.contains(id)){
+        micAdapter.itemClick = object : SearchAdapter.ItemClick {
+            override fun onItemClick(id: String) {
+                if (!Tags.selectedTagList.contains(id)) {
                     Tags.addTag("id")
                     Log.d("tag", "${Tags.selectedTagList}")
                 }
             }
-
         }
-
-//        val micTagAdatper = binding.tagMicRecyClerView.adapter
-//        val styleTagAdapter = binding.tagStyleRecyClerView.adapter
-//
-//        binding.tagMicRecyClerView.adapter = SearchAdapter(micTags)
-//        binding.tagMicRecyClerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-//
-//        binding.tagStyleRecyClerView.adapter = SearchAdapter(styleTags)
-//
-//        binding.apply {
-//            tagMicRecyClerView.adapter = SearchAdapter(micTags)
-//            tagStyleRecyClerView.adapter = SearchAdapter(styleTags)
-
-//            tagMicRecyClerView.layoutManager =
-//                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-//            tagStyleRecyClerView.layoutManager =
-//                StaggeredGridLayoutManager(7, StaggeredGridLayoutManager.VERTICAL)
-//        }
-
-//        micTagAdatper.itemClick = object : SearchAdapter.ItemClick {
-//            override fun onItemClick(id: CharSequence) {
-//                if(!Tags.selectedTagList.contains(id)){
-//                    Tags.addTag(id)
-//                }
-//            }
-//
-//        }
-
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
-
-    private fun initRecyclerView() {
-//        searchAdatper = SearchAdapter(
-//            micTags,
-//            onAddClick = { position ->
-//                    if (Tags.selectedTagList.contains()){
-//
-//                    }
-//                }
-
-
-    }
-
-
-
-
-
 }

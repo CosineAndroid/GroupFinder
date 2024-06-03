@@ -6,8 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import kr.cosine.groupfinder.R
-import kr.cosine.groupfinder.presentation.view.search.Tag
-import kr.cosine.groupfinder.presentation.view.search.Tags
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
