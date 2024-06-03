@@ -1,4 +1,4 @@
-package kr.cosine.groupfinder.presentation.view.account.register.component
+package kr.cosine.groupfinder.presentation.view.account.register.screen.component
 
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.runtime.Composable
