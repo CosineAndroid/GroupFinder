@@ -5,9 +5,11 @@
     <string name="profile_id_replacer">아이디#KR1</string>
     <string name="profile_group_title">참여중인 그룹</string>
     <string name="profile_withdraw_title">탈퇴하기</string>
-    <string name="group_title_replacer">제목</string>
-    <string name="group_id_replacer">아이디</string>
+    <string name="group_title_format">%s</string>
+    <string name="group_id_format">%s</string>
     <string name="group_people_format">%d/%d</string>
     <string name="group_time_format">%s 전</string>
     <string name="tag_replacer">태그</string>
+    <string name="open_navigation">Open Navigation Drawer</string>
+    <string name="close_navigation">Close Navigation Drawer</string>
 </resources>
