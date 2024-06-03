@@ -6,6 +6,7 @@ import com.google.firebase.firestore.EventListener
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.QuerySnapshot
 import kr.cosine.groupfinder.data.model.PostModel
+import java.util.UUID
 
 abstract class PostRepository(
     protected val path: String
@@ -22,6 +23,8 @@ abstract class PostRepository(
     abstract suspend fun updatePost(postModel: PostModel)
 
     abstract suspend fun getPosts(tags: List<String> = emptyList()): List<PostModel>
+
+    abstract suspend fun getPostByUniqueId(uniqueId: UUID): PostModel?
 
     abstract fun addSnapshotListener(listener: EventListener<QuerySnapshot>): ListenerRegistration
 

@@ -84,6 +84,7 @@
         app:layout_constraintTop_toBottomOf="@+id/memoTextView" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/lanes"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         tools:listitem="@layout/activity_detail_select_lane"

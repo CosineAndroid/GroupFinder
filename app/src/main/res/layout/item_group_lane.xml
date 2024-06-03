@@ -5,10 +5,10 @@
     android:layout_height="26dp">
 
     <ImageView
-        android:id="@+id/lineIconImageView"
+        android:id="@+id/laneImageView"
         android:layout_width="26dp"
         android:layout_height="26dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_lane_ad" />
+        app:srcCompat="@drawable/ic_lane_empty_ad" />
 </androidx.constraintlayout.widget.ConstraintLayout>

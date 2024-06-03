@@ -13,9 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.GroupFinder">
-
         <activity
-            android:name=".presentation.view.write.WriteActivity"
+            android:name=".presentation.view.account.login.LoginActivity"
             android:exported="true"
             android:theme="@style/Theme.GroupFinder">
             <intent-filter>
@@ -23,5 +22,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".presentation.view.account.register.RegisterActivity"
+            android:exported="true" />
+        <activity
+            android:name=".presentation.view.write.WriteActivity"
+            android:exported="true" />
+        <activity
+            android:name=".presentation.view.detail.DetailActivity"
+            android:exported="true" />
     </application>
 </manifest>

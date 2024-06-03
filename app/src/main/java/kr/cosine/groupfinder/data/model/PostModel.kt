@@ -65,7 +65,7 @@ data class PostModel(
 
         fun PostModel.getTotalPeopleCount(): Int = laneMap.size
 
-        fun PostModel.getAvaliablePeopleCount(): Int {
+        fun PostModel.getJoinedPeopleCount(): Int {
             return laneMap.values.count { it != null }
         }
     }
