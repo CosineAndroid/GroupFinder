@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+        <item
+            android:id="@+id/navigation_All"
+            android:title="전체" />
+
+        <item
+            android:id="@+id/navigation_Normal"
+            android:title="일반" />
+
+        <item
+            android:id="@+id/navigation_Wind"
+            android:title="칼바람 나락" />
+
+        <item
+            android:id="@+id/navigation_Solo"
+            android:title="솔로/듀오 랭크" />
+
+        <item
+            android:id="@+id/navigation_Free"
+            android:title="자유랭크" />
+
+        <item
+            android:id="@+id/navigation_myProfile"
+            android:title="내 프로필" />
+
+</menu>

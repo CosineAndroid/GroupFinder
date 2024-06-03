@@ -5,4 +5,9 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+
+    <style name="navigationItemTextAppearance">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">40sp</item>
+    </style>
 </resources>
