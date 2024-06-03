@@ -1,8 +1,12 @@
 package kr.cosine.groupfinder.presentation.view.account.login.event
 
+import kr.cosine.groupfinder.domain.model.AccountEntity
+
 sealed interface LoginEvent {
 
-    data object Success : LoginEvent
+    data class Success(
+        val accountEntity: AccountEntity
+    ) : LoginEvent
 
-    data object InvalidAccount : LoginEvent
+    data object Fail : LoginEvent
 }

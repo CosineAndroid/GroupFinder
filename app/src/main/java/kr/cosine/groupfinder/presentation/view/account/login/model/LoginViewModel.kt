@@ -12,13 +12,14 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kr.cosine.groupfinder.domain.usecase.LoginUseCase
 import kr.cosine.groupfinder.presentation.view.account.login.event.LoginEvent
 import kr.cosine.groupfinder.presentation.view.account.login.state.LoginUiState
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-
+    private val loginUseCase: LoginUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(LoginUiState.newInstance())
@@ -54,6 +55,13 @@ class LoginViewModel @Inject constructor(
 
     fun login() = viewModelScope.launch(Dispatchers.IO) {
         val (id, password) = uiState.value.let { it.id to it.password }
-
+        val accountEntity = loginUseCase(id, password)
+        if (accountEntity == null) {
+            val event = LoginEvent.Fail
+            _event.emit(event)
+        } else {
+            val event = LoginEvent.Success(accountEntity)
+            _event.emit(event)
+        }
     }
 }

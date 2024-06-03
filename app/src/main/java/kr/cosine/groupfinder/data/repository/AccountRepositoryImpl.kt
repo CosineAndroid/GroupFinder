@@ -5,6 +5,7 @@ import kotlinx.coroutines.tasks.await
 import kr.cosine.groupfinder.data.model.AccountResponse
 import kr.cosine.groupfinder.data.remote.FirebaseDataSource
 import kr.cosine.groupfinder.domain.repository.AccountRepository
+import org.mindrot.jbcrypt.BCrypt
 import java.util.UUID
 import javax.inject.Inject
 
@@ -52,7 +53,7 @@ class AccountRepositoryImpl @Inject constructor(
         return runCatching {
             getDocumentSnapshots().forEach { documentSnapshot ->
                 val accountResponse = documentSnapshot.toObject(AccountResponse::class.java)
-                if (accountResponse != null && accountResponse.id == id && accountResponse.password == password) {
+                if (accountResponse != null && accountResponse.id == id && BCrypt.checkpw(password, accountResponse.password)) {
                     return accountResponse
                 }
             }
