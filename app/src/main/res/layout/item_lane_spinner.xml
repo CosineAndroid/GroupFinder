@@ -10,15 +10,14 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-         />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/myLaneTextview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="15sp"
         android:layout_marginLeft="10dp"
+        android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="@+id/myLaneImageView"
         app:layout_constraintStart_toEndOf="@+id/myLaneImageView"
         app:layout_constraintTop_toTopOf="@+id/myLaneImageView" />

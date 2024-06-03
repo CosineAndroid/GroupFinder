@@ -4,11 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import kr.cosine.groupfinder.data.model.PostModel
+import kr.cosine.groupfinder.data.model.PostResponse
 import kr.cosine.groupfinder.domain.repository.PostRepository
 import kr.cosine.groupfinder.enums.Mode
 import kr.cosine.groupfinder.enums.Lane
-import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
@@ -17,7 +16,7 @@ class PostViewModel @Inject constructor(
 ) : ViewModel() {
 
     fun createPost(tags: List<String>) = viewModelScope.launch {
-        val postModel = PostModel(
+        /*val postResponse = PostResponse(
             Mode.ARAM,
             "ㅎㅇ",
             "${(1..10000000).random()}",
@@ -25,10 +24,10 @@ class PostViewModel @Inject constructor(
             tags,
             mapOf(Lane.MID to "테스트")
         )
-        postRepository.createPost(postModel)
+        postRepository.createPost(postResponse)*/
     }
 
-    fun getPosts(tags: List<String> = emptyList(), listScope: (List<PostModel>) -> Unit) = viewModelScope.launch {
+    fun getPosts(tags: List<String> = emptyList(), listScope: (List<PostResponse>) -> Unit) = viewModelScope.launch {
         listScope(postRepository.getPosts(tags))
     }
 }

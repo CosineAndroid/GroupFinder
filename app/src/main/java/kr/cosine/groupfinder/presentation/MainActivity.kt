@@ -11,6 +11,8 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 //import androidx.fragment.app.ListFragment
 import com.google.android.material.navigation.NavigationView
+import androidx.fragment.app.ListFragment
+import androidx.fragment.app.commit
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
@@ -18,6 +20,7 @@ import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 import kr.cosine.groupfinder.R
 import kr.cosine.groupfinder.data.model.PostModel
+import kr.cosine.groupfinder.data.model.PostResponse
 import kr.cosine.groupfinder.databinding.ActivityMainBinding
 import kr.cosine.groupfinder.presentation.view.list.ListFragment
 import kr.cosine.groupfinder.presentation.view.profile.ProfileFragment
@@ -44,8 +47,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             if (querySnapshot.metadata.isFromCache) return@addSnapshotListener
             querySnapshot.documentChanges.forEach { documentChange ->
                 if (documentChange.type == DocumentChange.Type.ADDED) {
-                    val postModel = documentChange.document.toObject(PostModel::class.java)
-                    Log.d("GroupFinderTest", "[ADDED] PostModel : $postModel")
+                    val postResponse = documentChange.document.toObject(PostResponse::class.java)
+                    Log.d("GroupFinderTest", "[ADDED] PostModel : $postResponse")
                 }
             }
         }
