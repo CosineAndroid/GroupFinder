@@ -9,12 +9,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import kr.cosine.groupfinder.R
 import kr.cosine.groupfinder.data.model.SpinnerModel
-import kr.cosine.groupfinder.presentation.view.write.LaneSpinnerItem
 
-class SpinnerAdapter(
+class RequireLaneSpinnerAdapter (
     private val context: Context,
     private val items: List<SpinnerModel>
 ) : ArrayAdapter<SpinnerModel>(context, 0, items) {
+
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         return initView(position, convertView, parent)
     }
@@ -24,9 +24,9 @@ class SpinnerAdapter(
     }
 
     private fun initView(position: Int, convertView: View?, parent: ViewGroup): View {
-        val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.item_lane_spinner, parent, false)
-        val imageView = view.findViewById<ImageView>(R.id.myLaneImageView)
-        val textView = view.findViewById<TextView>(R.id.myLaneTextview)
+        val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.item_requirelane_spinner, parent, false)
+        val imageView = view.findViewById<ImageView>(R.id.requireLaneImageView)
+        val textView = view.findViewById<TextView>(R.id.requireLaneTextview)
         val item = items[position]
         imageView.setImageResource(item.image)
         textView.text = item.lane

@@ -5,6 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clickable="true"
     tools:context=".presentation.view.write.WriteActivity">
 
     <ScrollView
@@ -13,10 +14,8 @@
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        >
+        app:layout_constraintTop_toTopOf="parent">
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -27,7 +26,7 @@
                 android:id="@+id/gameModeTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:text="일반"
                 android:textColor="@color/black"
@@ -35,12 +34,14 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
+            <EditText
                 android:id="@+id/titleTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:text="2명 구함"
+                android:background="@android:color/transparent"
+                android:hint="제목을 입력하세요"
+                android:maxLines="2"
                 android:textColor="@color/black"
                 android:textSize="23sp"
                 android:textStyle="bold"
@@ -48,12 +49,12 @@
                 app:layout_constraintTop_toBottomOf="@+id/gameModeTextView" />
 
 
-            <TextView
+            <EditText
                 android:id="@+id/bodyTextTextView"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
+                android:hint="내용을 입력하세요"
                 android:maxLines="3"
-                android:text="3줄까지 가능한 본문"
                 android:textSize="15sp"
                 app:layout_constraintStart_toStartOf="@+id/titleTextView"
                 app:layout_constraintTop_toBottomOf="@+id/titleTextView" />
@@ -74,7 +75,7 @@
                 android:id="@+id/tagbackgroundCardView"
                 android:layout_width="15dp"
                 android:layout_height="15dp"
-                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
                 app:cardCornerRadius="32dp"
                 app:layout_constraintBottom_toBottomOf="@+id/tagTextView"
                 app:layout_constraintStart_toEndOf="@+id/tagTextView"
@@ -96,7 +97,7 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/writeCategoryRecyclerView"
+                android:id="@+id/writeTagRecyclerView"
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
                 android:layout_marginTop="8dp"
@@ -136,7 +137,7 @@
 
                     <Spinner
                         android:id="@+id/selectMyLaneSpinner"
-                        android:layout_width="150dp"
+                        android:layout_width="200dp"
                         android:layout_height="wrap_content"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -161,11 +162,12 @@
 
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/selectLanesRecyclerView"
+                android:id="@+id/requireLanesRecyclerView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:layout_marginEnd="75dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/needLaneTextView"
                 app:layout_constraintTop_toBottomOf="@+id/needLaneTextView"
@@ -181,7 +183,7 @@
                 app:cardUseCompatPadding="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/selectLanesRecyclerView">
+                app:layout_constraintTop_toBottomOf="@+id/requireLanesRecyclerView">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -203,6 +205,7 @@
     </ScrollView>
 
     <Button
+        android:id="@+id/createRoomButton"
         android:layout_width="110dp"
         android:layout_height="40dp"
         android:layout_marginBottom="16dp"
