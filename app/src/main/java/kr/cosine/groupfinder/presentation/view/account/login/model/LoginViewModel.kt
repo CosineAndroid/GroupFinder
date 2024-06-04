@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kr.cosine.groupfinder.domain.exception.IdBlankException
 import kr.cosine.groupfinder.domain.exception.PasswordBlankException
-import kr.cosine.groupfinder.domain.usecase.LoginUseCase
+import kr.cosine.groupfinder.domain.usecase.GetAccountUseCase
 import kr.cosine.groupfinder.presentation.view.account.login.event.LoginEvent
 import kr.cosine.groupfinder.presentation.view.account.login.state.LoginUiState
 import java.util.UUID
@@ -22,7 +22,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val loginUseCase: LoginUseCase
+    private val getAccountUseCase: GetAccountUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(LoginUiState.newInstance())
@@ -58,7 +58,7 @@ class LoginViewModel @Inject constructor(
 
     fun loginByInput() = viewModelScope.launch(Dispatchers.IO) {
         val (id, password) = uiState.value.let { it.id to it.password }
-        loginUseCase.findAccountEntityByIdAndPassword(id, password).onSuccess { accountEntity ->
+        getAccountUseCase(id, password).onSuccess { accountEntity ->
             val event = accountEntity?.let {
                 LoginEvent.Success(it)
             } ?: LoginEvent.InvalidIdAndPassword
@@ -74,7 +74,7 @@ class LoginViewModel @Inject constructor(
     }
 
     fun loginByUniqueId(uniqueId: UUID) = viewModelScope.launch(Dispatchers.IO) {
-       loginUseCase.findAccountEntityByUniqueId(uniqueId).onSuccess { accountEntity ->
+       getAccountUseCase(uniqueId).onSuccess { accountEntity ->
            val event = accountEntity?.let {
                LoginEvent.Success(it)
            } ?: LoginEvent.InvalidAccount

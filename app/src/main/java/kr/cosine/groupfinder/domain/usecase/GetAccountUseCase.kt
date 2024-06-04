@@ -10,17 +10,17 @@ import java.util.UUID
 import javax.inject.Inject
 
 @ViewModelScoped
-class LoginUseCase @Inject constructor(
+class GetAccountUseCase @Inject constructor(
     private val accountRepository: AccountRepository
 ) {
 
-    suspend fun findAccountEntityByUniqueId(uniqueId: UUID): Result<AccountEntity?> {
+    suspend operator fun invoke(uniqueId: UUID): Result<AccountEntity?> {
         return runCatching {
             accountRepository.findAccountByUniqueId(uniqueId)?.toEntity()
         }
     }
 
-    suspend fun findAccountEntityByIdAndPassword(id: String, password: String): Result<AccountEntity?> {
+    suspend operator fun invoke(id: String, password: String): Result<AccountEntity?> {
         return runCatching {
             if (id.isBlank()) {
                 throw IdBlankException()

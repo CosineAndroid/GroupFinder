@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kr.cosine.groupfinder.domain.exception.IdAlreadyExistsException
 import kr.cosine.groupfinder.domain.exception.TaggedNicknameAlreadyExistsException
-import kr.cosine.groupfinder.domain.usecase.RegisterUseCase
+import kr.cosine.groupfinder.domain.usecase.RegisterAccountUseCase
 import kr.cosine.groupfinder.presentation.view.account.register.event.RegisterEvent
 import kr.cosine.groupfinder.presentation.view.account.register.state.RegisterUiState
 import kr.cosine.groupfinder.presentation.view.account.register.state.RegisterErrorUiState
@@ -22,7 +22,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
-    private val registerUseCase: RegisterUseCase
+    private val registerUseCase: RegisterAccountUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(RegisterUiState.newInstance())

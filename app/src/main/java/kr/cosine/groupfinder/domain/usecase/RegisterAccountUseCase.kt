@@ -11,7 +11,7 @@ import org.mindrot.jbcrypt.BCrypt
 import javax.inject.Inject
 
 @ViewModelScoped
-class RegisterUseCase @Inject constructor(
+class RegisterAccountUseCase @Inject constructor(
     private val accountRepository: AccountRepository
 ) {
 
