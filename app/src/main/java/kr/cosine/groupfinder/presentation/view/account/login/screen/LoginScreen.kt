@@ -40,6 +40,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.flow.collectLatest
 import kr.cosine.groupfinder.R
 import kr.cosine.groupfinder.data.manager.LocalAccountManager
+import kr.cosine.groupfinder.data.registry.LocalAccountRegistry
 import kr.cosine.groupfinder.presentation.MainActivity
 import kr.cosine.groupfinder.presentation.view.account.component.BaseButton
 import kr.cosine.groupfinder.presentation.view.account.component.BaseText
@@ -162,6 +163,7 @@ private suspend fun onLoginEvent(
     loginViewModel.event.flowWithLifecycle(lifecycle).collectLatest { event ->
         when (event) {
             is LoginEvent.Success -> {
+                LocalAccountRegistry.uniqueId = event.accountEntity.uniqueId
                 startMainActivity(activity)
                 loadingViewModel.hide()
             }
