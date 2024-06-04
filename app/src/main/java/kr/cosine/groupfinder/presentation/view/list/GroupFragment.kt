@@ -1,5 +1,6 @@
 package kr.cosine.groupfinder.presentation.view.list
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -22,6 +23,7 @@ import kr.cosine.groupfinder.presentation.view.list.event.TagEvent
 import kr.cosine.groupfinder.presentation.view.list.model.GroupViewModel
 import kr.cosine.groupfinder.presentation.view.list.model.TagViewModel
 import kr.cosine.groupfinder.presentation.view.list.state.GroupUiState
+import kr.cosine.groupfinder.presentation.view.write.WriteActivity
 
 @AndroidEntryPoint
 class GroupFragment(
@@ -98,9 +100,14 @@ class GroupFragment(
         }
     }
 
-    private fun registerWriteButton() {
-        binding.writeImageButton.setOnClickListener {
-
+    private fun registerWriteButton() = with(binding.writeImageButton) {
+        if (mode == null) {
+            visibility = View.GONE
+            return@with
+        }
+        setOnClickListener {
+            val intent = Intent(context, WriteActivity::class.java)
+            startActivity(intent)
         }
     }
 
