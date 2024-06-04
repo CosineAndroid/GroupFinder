@@ -42,6 +42,7 @@ class SearchFragment : Fragment() {
             tagStyleRecyClerView.adapter = styleAdapter
         }
 
+
         micAdapter.itemClick = object : SearchAdapter.ItemClick {
             override fun onItemClick(id: String) {
                 if (!Tags.selectedTagList.contains(id)) {
