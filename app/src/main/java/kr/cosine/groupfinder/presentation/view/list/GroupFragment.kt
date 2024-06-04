@@ -1,5 +1,6 @@
 package kr.cosine.groupfinder.presentation.view.list
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -22,6 +23,8 @@ import kr.cosine.groupfinder.presentation.view.list.event.TagEvent
 import kr.cosine.groupfinder.presentation.view.list.model.GroupViewModel
 import kr.cosine.groupfinder.presentation.view.list.model.TagViewModel
 import kr.cosine.groupfinder.presentation.view.list.state.GroupUiState
+import kr.cosine.groupfinder.presentation.view.test.model.PostViewModel
+import kr.cosine.groupfinder.presentation.view.write.WriteActivity
 
 @AndroidEntryPoint
 class GroupFragment(
@@ -33,6 +36,7 @@ class GroupFragment(
 
     private val groupViewModel by viewModels<GroupViewModel>()
     private val tagViewModel by activityViewModels<TagViewModel>()
+    private val postViewModel by viewModels<PostViewModel>()
 
     private lateinit var groupAdpater: GroupAdpater
     private lateinit var searchTagAdapter: SearchTagAdapter
@@ -49,6 +53,7 @@ class GroupFragment(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         registerNavigationButton()
+        registerSwipeRefreshLayout()
         registerGroupRecyclerView()
         registerTagRecyclerView()
         registerSearchBarButton()
@@ -61,6 +66,13 @@ class GroupFragment(
         /*binding.navigationImageButton.setOnClickListener {
 
         }*/
+    }
+
+    private fun registerSwipeRefreshLayout() = with(binding.swipeRefreshLayout) {
+        setOnRefreshListener {
+            isRefreshing = false
+            search()
+        }
     }
 
     private fun registerGroupRecyclerView() = with(binding.groupRecyclerView) {
@@ -86,15 +98,19 @@ class GroupFragment(
 
         }
         searchImageButton.setOnClickListener {
-            val tags = tagViewModel.tags
-            if (tags.isEmpty()) return@setOnClickListener
-            groupViewModel.onSearch(mode, tags)
+            search()
         }
     }
 
-    private fun registerWriteButton() {
-        binding.writeImageButton.setOnClickListener {
-
+    private fun registerWriteButton() = with(binding.writeImageButton) {
+        if (mode == null) {
+            visibility = View.GONE
+            return@with
+        }
+        setOnClickListener {
+            postViewModel.createPost(listOf("태그1", "태그2"))
+            /*val intent = Intent(context, WriteActivity::class.java)
+            startActivity(intent)*/
         }
     }
 
@@ -121,6 +137,7 @@ class GroupFragment(
                         }
                         searchResultNoticeTextView.text = uiState.message
                     }
+
                     else -> {}
                 }
             }
@@ -137,6 +154,10 @@ class GroupFragment(
                 }
             }
         }
+    }
+
+    private fun search() {
+        groupViewModel.onSearch(mode, tagViewModel.tags)
     }
 
     override fun onDestroyView() {

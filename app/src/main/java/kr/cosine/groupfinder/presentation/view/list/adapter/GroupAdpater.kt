@@ -8,17 +8,19 @@ import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.RecyclerView
 import kr.cosine.groupfinder.R
+import kr.cosine.groupfinder.data.registry.LocalAccountRegistry
 import kr.cosine.groupfinder.databinding.ItemGroupBinding
-import kr.cosine.groupfinder.domain.extension.getJoinedPeopleCount
-import kr.cosine.groupfinder.domain.extension.getTotalPeopleCount
-import kr.cosine.groupfinder.domain.model.PostEntity
 import kr.cosine.groupfinder.presentation.view.list.adapter.decoration.impl.GroupTagItemDecoration
 import kr.cosine.groupfinder.presentation.view.list.adapter.listener.TagScrollListener
+import kr.cosine.groupfinder.presentation.view.list.state.item.PostItem
+import kr.cosine.groupfinder.presentation.view.list.state.item.extension.joinedPeopleCount
+import kr.cosine.groupfinder.presentation.view.list.state.item.extension.tageedNickname
+import kr.cosine.groupfinder.presentation.view.list.state.item.extension.totalPeopleCount
 import kr.cosine.groupfinder.util.TimeUtil
 
 class GroupAdpater(
     private val context: Context,
-    private val onItemClick: (PostEntity) -> Unit = {}
+    private val onItemClick: (PostItem) -> Unit = {}
 ) : RecyclerView.Adapter<GroupAdpater.GroupViewHolder>() {
 
     inner class GroupViewHolder(
@@ -34,9 +36,9 @@ class GroupAdpater(
             }
         }
 
-        fun bind(post: PostEntity) = with(binding) {
+        fun bind(post: PostItem) = with(binding) {
             groupTitleTextView.text = post.title
-            groupIdTextView.text = post.id
+            groupIdTextView.text = post.owner.tageedNickname
             val tags = post.tags
             val isMaxTag = tags.size >= MAX_TAG
             if (isMaxTag) {
@@ -50,8 +52,8 @@ class GroupAdpater(
                 addOnScrollListener(TagScrollListener(noticeMoreTagImageView, isMaxTag))
             }
             val laneMap = post.laneMap
-            val joinedPeopleCount = post.getJoinedPeopleCount()
-            val totalPeopleCount = post.getTotalPeopleCount()
+            val joinedPeopleCount = post.joinedPeopleCount
+            val totalPeopleCount = post.totalPeopleCount
             val isMaxGroup = joinedPeopleCount == totalPeopleCount
             groupLaneRecyclerView.adapter = GroupLaneAdapter(laneMap, isMaxGroup)
             groupPeopleTextView.text = context.getString(
@@ -65,13 +67,16 @@ class GroupAdpater(
             )
             root.background = AppCompatResources.getDrawable(
                 context,
-                if (isMaxGroup) R.drawable.group_full_background
-                else R.drawable.group_background
+                when {
+                    laneMap.values.contains(LocalAccountRegistry.uniqueId) -> R.drawable.group_join_background
+                    isMaxGroup -> R.drawable.group_full_background
+                    else -> R.drawable.group_background
+                }
             )
         }
     }
 
-    private val posts = mutableListOf<PostEntity>(
+    private val posts = mutableListOf<PostItem>(
         // PostModel(Mode.NORMAL, "5인큐 구함", "반갑습니다", "페이커#KR1", listOf("빡겜", "즐겜", "하이", "가나", "다라", "마바", "사아", "자차", "카타", "파하"), mapOf(Lane.TOP to null, Lane.SUPPORT to null, Lane.AD to "구마유시#KR1", Lane.JUNGLE to null, Lane.MID to null, Lane.MID to "페이커#KR1")),
         // PostModel(Mode.NORMAL, "바텀 듀오 할 사람", "ㅎㅇ", "구마유시#KR1", listOf("즐겜", "마이크X"), mapOf(Lane.AD to "구마유시#KR1", Lane.SUPPORT to null)),
         // PostModel(Mode.NORMAL, "정글 듀오 구함", "안녕하세요", "제우스#KR1", listOf("욕X"), mapOf(Lane.JUNGLE to null, Lane.TOP to "제우스#KR1")),
@@ -92,7 +97,7 @@ class GroupAdpater(
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setPosts(posts: List<PostEntity>) {
+    fun setPosts(posts: List<PostItem>) {
         this.posts.apply {
             clear()
             addAll(posts)

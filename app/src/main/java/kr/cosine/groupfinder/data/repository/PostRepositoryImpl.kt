@@ -16,11 +16,11 @@ class PostRepositoryImpl @Inject constructor(
         get() = firebaseDataSource.firestore.collection("posts")
 
     override suspend fun createPost(postResponse: PostResponse) {
-        reference.document(postResponse.uniqueId).set(postResponse).await()
+        reference.document(postResponse.postUniqueId).set(postResponse).await()
     }
 
     override suspend fun deletePost(postResponse: PostResponse) {
-        reference.document(postResponse.uniqueId).delete().await()
+        reference.document(postResponse.postUniqueId).delete().await()
     }
 
     override suspend fun updatePost(postResponse: PostResponse) {

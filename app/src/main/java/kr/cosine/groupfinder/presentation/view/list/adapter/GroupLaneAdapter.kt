@@ -5,9 +5,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kr.cosine.groupfinder.databinding.ItemGroupLaneBinding
 import kr.cosine.groupfinder.enums.Lane
+import java.util.UUID
 
 class GroupLaneAdapter(
-    private val laneMap: Map<Lane, String?>,
+    private val laneMap: Map<Lane, UUID?>,
     private val isMaxGroup: Boolean
 ) : RecyclerView.Adapter<GroupLaneAdapter.GroupLaneViewHolder>() {
 
@@ -15,7 +16,7 @@ class GroupLaneAdapter(
         private val binding: ItemGroupLaneBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(lane: Lane, owner: String?) {
+        fun bind(lane: Lane, owner: UUID?) {
             val drawableId = lane.getDrawableIdByOwner(!isMaxGroup && owner != null)
             binding.laneImageView.setImageResource(drawableId)
         }
