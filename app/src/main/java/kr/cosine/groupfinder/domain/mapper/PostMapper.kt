@@ -14,7 +14,9 @@ fun PostResponse.toEntity(): PostEntity {
         body = body,
         id = id,
         tags = tags,
-        laneMap = laneMap.mapKeys { Lane.valueOf(it.key) }.toSortedMap(compareBy { it.ordinal }),
+        laneMap = laneMap.entries.associate { (lane, uniqueId) ->
+            Lane.valueOf(lane) to uniqueId?.let { UUID.fromString(it) }
+        }.toSortedMap(compareBy { it.ordinal }),
         time = time
     )
 }

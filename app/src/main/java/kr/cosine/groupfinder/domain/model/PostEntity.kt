@@ -12,7 +12,7 @@ data class PostEntity(
     val body: String,
     val id: String,
     val tags: List<String>,
-    val laneMap: Map<Lane, String?>,
+    val laneMap: Map<Lane, UUID?>,
     val time: Timestamp
 ) {
 
@@ -22,7 +22,7 @@ data class PostEntity(
         body: String,
         id: String,
         tags: List<String>,
-        laneMap: Map<Lane, String?>
+        laneMap: Map<Lane, UUID?>
     ) : this(
         UUID.randomUUID(),
         mode,

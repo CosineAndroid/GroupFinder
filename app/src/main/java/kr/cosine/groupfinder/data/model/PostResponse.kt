@@ -21,7 +21,7 @@ data class PostResponse(
         "",
         "",
         listOf(),
-        mutableMapOf(),
+        mapOf(),
         Timestamp.now()
     )
 }

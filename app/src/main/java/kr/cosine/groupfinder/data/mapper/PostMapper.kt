@@ -11,7 +11,7 @@ fun PostEntity.toPostResponse(): PostResponse {
         body = body,
         id = id,
         tags = tags,
-        laneMap = laneMap.mapKeys { it.key.name },
+        laneMap = laneMap.entries.associate { it.key.name to it.value?.toString() },
         time = time
     )
 }
