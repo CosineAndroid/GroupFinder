@@ -10,6 +10,14 @@
     <string name="group_people_format">%d/%d</string>
     <string name="group_time_format">%s 전</string>
     <string name="tag_replacer">태그</string>
+    <string name="login">로그인</string>
+    <string name="register">회원가입</string>
+    <string name="login_id_hint">아이디</string>
+    <string name="login_password_hint">비밀번호</string>
+    <string name="register_id_hint">아이디 (5글자 이상)</string>
+    <string name="register_password_hint">비밀번호 (8글자 이상, 숫자/특수문자 포함)</string>
+    <string name="register_nickname_hint">닉네임</string>
+    <string name="register_tag_hint">태그</string>
     <string name="open_navigation">Open Navigation Drawer</string>
     <string name="close_navigation">Close Navigation Drawer</string>
 </resources>

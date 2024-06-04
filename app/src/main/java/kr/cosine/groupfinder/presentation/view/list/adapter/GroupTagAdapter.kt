@@ -5,9 +5,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kr.cosine.groupfinder.databinding.ItemTagBinding
 
-class GroupTagAdpater(
+class GroupTagAdapter(
     private val tags: List<String>
-) : RecyclerView.Adapter<GroupTagAdpater.GroupTagViewHolder>() {
+) : RecyclerView.Adapter<GroupTagAdapter.GroupTagViewHolder>() {
 
     inner class GroupTagViewHolder(
         private val binding: ItemTagBinding

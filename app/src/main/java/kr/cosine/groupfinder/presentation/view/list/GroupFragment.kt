@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 import kr.cosine.groupfinder.databinding.FragmentGroupBinding
 import kr.cosine.groupfinder.enums.Mode
 import kr.cosine.groupfinder.presentation.view.list.adapter.GroupAdpater
-import kr.cosine.groupfinder.presentation.view.list.adapter.SearchTagAdpater
+import kr.cosine.groupfinder.presentation.view.list.adapter.SearchTagAdapter
 import kr.cosine.groupfinder.presentation.view.list.adapter.decoration.impl.GroupTagItemDecoration
 import kr.cosine.groupfinder.presentation.view.list.event.TagEvent
 import kr.cosine.groupfinder.presentation.view.list.model.GroupViewModel
@@ -35,7 +35,7 @@ class GroupFragment(
     private val tagViewModel by activityViewModels<TagViewModel>()
 
     private lateinit var groupAdpater: GroupAdpater
-    private lateinit var searchTagAdpater: SearchTagAdpater
+    private lateinit var searchTagAdapter: SearchTagAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -80,8 +80,8 @@ class GroupFragment(
     }
 
     private fun registerTagRecyclerView() = with(binding.tagRecyclerView) {
-        adapter = SearchTagAdpater(tagViewModel::removeTag).apply {
-            searchTagAdpater = this
+        adapter = SearchTagAdapter(tagViewModel::removeTag).apply {
+            searchTagAdapter = this
         }
         addItemDecoration(GroupTagItemDecoration)
     }
@@ -138,9 +138,9 @@ class GroupFragment(
         viewLifecycleOwner.lifecycleScope.launch {
             tagViewModel.event.flowWithLifecycle(lifecycle).collectLatest { event ->
                 when (event) {
-                    is TagEvent.SetTag -> searchTagAdpater.setTags(event.tags)
-                    is TagEvent.AddTag -> searchTagAdpater.addTag(event.tag)
-                    is TagEvent.RemoveTag -> searchTagAdpater.removeTag(event.position)
+                    is TagEvent.SetTag -> searchTagAdapter.setTags(event.tags)
+                    is TagEvent.AddTag -> searchTagAdapter.addTag(event.tag)
+                    is TagEvent.RemoveTag -> searchTagAdapter.removeTag(event.position)
                 }
             }
         }
