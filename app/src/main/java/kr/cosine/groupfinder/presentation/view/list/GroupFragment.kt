@@ -23,6 +23,7 @@ import kr.cosine.groupfinder.presentation.view.list.event.TagEvent
 import kr.cosine.groupfinder.presentation.view.list.model.GroupViewModel
 import kr.cosine.groupfinder.presentation.view.list.model.TagViewModel
 import kr.cosine.groupfinder.presentation.view.list.state.GroupUiState
+import kr.cosine.groupfinder.presentation.view.test.model.PostViewModel
 import kr.cosine.groupfinder.presentation.view.write.WriteActivity
 
 @AndroidEntryPoint
@@ -35,6 +36,7 @@ class GroupFragment(
 
     private val groupViewModel by viewModels<GroupViewModel>()
     private val tagViewModel by activityViewModels<TagViewModel>()
+    private val postViewModel by viewModels<PostViewModel>()
 
     private lateinit var groupAdpater: GroupAdpater
     private lateinit var searchTagAdapter: SearchTagAdapter
@@ -106,8 +108,9 @@ class GroupFragment(
             return@with
         }
         setOnClickListener {
-            val intent = Intent(context, WriteActivity::class.java)
-            startActivity(intent)
+            postViewModel.createPost(listOf("태그1", "태그2"))
+            /*val intent = Intent(context, WriteActivity::class.java)
+            startActivity(intent)*/
         }
     }
 

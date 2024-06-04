@@ -4,10 +4,6 @@ import com.google.firebase.firestore.CollectionReference
 import kotlinx.coroutines.tasks.await
 import kr.cosine.groupfinder.data.model.AccountResponse
 import kr.cosine.groupfinder.data.remote.FirebaseDataSource
-import kr.cosine.groupfinder.domain.exception.IdAlreadyExistsException
-import kr.cosine.groupfinder.domain.exception.IdBlankException
-import kr.cosine.groupfinder.domain.exception.PasswordBlankException
-import kr.cosine.groupfinder.domain.exception.TaggedNicknameAlreadyExistsException
 import kr.cosine.groupfinder.domain.repository.AccountRepository
 import org.mindrot.jbcrypt.BCrypt
 import java.util.UUID

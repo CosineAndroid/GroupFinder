@@ -78,7 +78,14 @@ fun LoginScreen(
     LaunchedEffect(
         key1 = Unit
     ) {
-        onLoginEvent(activity, lifecycle, snackbarHostState, loginViewModel, loadingViewModel)
+        onLoginEvent(
+            localAccountManager,
+            activity,
+            lifecycle,
+            snackbarHostState,
+            loginViewModel,
+            loadingViewModel
+        )
     }
     Scaffold(
         snackbarHost = {
@@ -154,6 +161,7 @@ private fun HeightSpace() {
 }
 
 private suspend fun onLoginEvent(
+    localAccountManager: LocalAccountManager,
     activity: ComponentActivity,
     lifecycle: Lifecycle,
     snackbarHostState: SnackbarHostState,
@@ -163,7 +171,9 @@ private suspend fun onLoginEvent(
     loginViewModel.event.flowWithLifecycle(lifecycle).collectLatest { event ->
         when (event) {
             is LoginEvent.Success -> {
-                LocalAccountRegistry.uniqueId = event.accountEntity.uniqueId
+                val uniqueId = event.accountEntity.uniqueId
+                LocalAccountRegistry.uniqueId = uniqueId
+                localAccountManager.setUniqueId(uniqueId)
                 startMainActivity(activity)
                 loadingViewModel.hide()
             }
@@ -187,7 +197,8 @@ private fun getRegisterResultLanuncher(
         val intent = result.data ?: return@rememberLauncherForActivityResult
 
         val id = intent.getStringExtra(IntentKey.ID) ?: return@rememberLauncherForActivityResult
-        val password = intent.getStringExtra(IntentKey.PASSWORD) ?: return@rememberLauncherForActivityResult
+        val password =
+            intent.getStringExtra(IntentKey.PASSWORD) ?: return@rememberLauncherForActivityResult
 
         loginViewModel.setIdAndPassword(id, password)
     }
