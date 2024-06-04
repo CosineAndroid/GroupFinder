@@ -9,8 +9,8 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import com.google.android.material.navigation.NavigationView
 import androidx.fragment.app.ListFragment
+import com.google.android.material.navigation.NavigationView
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
@@ -19,6 +19,11 @@ import dagger.hilt.android.AndroidEntryPoint
 import kr.cosine.groupfinder.R
 import kr.cosine.groupfinder.data.model.PostResponse
 import kr.cosine.groupfinder.databinding.ActivityMainBinding
+import kr.cosine.groupfinder.presentation.view.list.FreeFragment
+import kr.cosine.groupfinder.presentation.view.list.GroupFragment
+import kr.cosine.groupfinder.presentation.view.list.NormalFragment
+import kr.cosine.groupfinder.presentation.view.list.SoloFragment
+import kr.cosine.groupfinder.presentation.view.list.WindFragment
 import kr.cosine.groupfinder.presentation.view.profile.ProfileFragment
 import kr.cosine.groupfinder.presentation.view.test.model.PostViewModel
 
@@ -85,7 +90,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, ListFragment()).commit()
+                .replace(R.id.fragment_container, GroupFragment()).commit()
             navigationView.setCheckedItem(R.id.navigation_All)
         }
     }
@@ -94,12 +99,24 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         when (item.itemId) {
             R.id.navigation_All -> {
                 supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, ListFragment()).commit()
+                    .replace(R.id.fragment_container, GroupFragment()).commit()
             }
-            R.id.navigation_Normal -> Toast.makeText(this, "일반", Toast.LENGTH_SHORT).show()
-            R.id.navigation_Wind -> Toast.makeText(this, "칼바람 나락", Toast.LENGTH_SHORT).show()
-            R.id.navigation_Solo -> Toast.makeText(this, "솔로/듀오 랭크", Toast.LENGTH_SHORT).show()
-            R.id.navigation_Free -> Toast.makeText(this, "자유랭크", Toast.LENGTH_SHORT).show()
+            R.id.navigation_Normal -> {
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, NormalFragment()).commit()
+            }
+            R.id.navigation_Wind -> {
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, WindFragment()).commit()
+            }
+            R.id.navigation_Solo -> {
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, SoloFragment()).commit()
+            }
+            R.id.navigation_Free -> {
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, FreeFragment()).commit()
+            }
             R.id.navigation_myProfile -> {
                 supportFragmentManager.beginTransaction()
                     .replace(R.id.fragment_container, ProfileFragment()).commit()
