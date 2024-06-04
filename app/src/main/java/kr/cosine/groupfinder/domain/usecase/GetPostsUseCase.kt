@@ -13,7 +13,7 @@ import kr.cosine.groupfinder.enums.Mode
 import javax.inject.Inject
 
 @ViewModelScoped
-class GetPostEntitiesUseCase @Inject constructor(
+class GetPostsUseCase @Inject constructor(
     private val postRepository: PostRepository
 ) {
 

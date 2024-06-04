@@ -8,7 +8,7 @@ import kr.cosine.groupfinder.presentation.view.list.state.item.PostItem
 import javax.inject.Inject
 
 @ViewModelScoped
-class GetPostItemsUseCase @Inject constructor(
+class GetPostsWithMappedOwnerUseCase @Inject constructor(
     private val accountRepository: AccountRepository
 ) {
 
