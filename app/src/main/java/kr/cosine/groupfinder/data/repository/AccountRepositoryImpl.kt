@@ -4,6 +4,10 @@ import com.google.firebase.firestore.CollectionReference
 import kotlinx.coroutines.tasks.await
 import kr.cosine.groupfinder.data.model.AccountResponse
 import kr.cosine.groupfinder.data.remote.FirebaseDataSource
+import kr.cosine.groupfinder.domain.exception.IdAlreadyExistsException
+import kr.cosine.groupfinder.domain.exception.IdBlankException
+import kr.cosine.groupfinder.domain.exception.PasswordBlankException
+import kr.cosine.groupfinder.domain.exception.TaggedNicknameAlreadyExistsException
 import kr.cosine.groupfinder.domain.repository.AccountRepository
 import org.mindrot.jbcrypt.BCrypt
 import java.util.UUID
@@ -18,15 +22,15 @@ class AccountRepositoryImpl @Inject constructor(
 
     override suspend fun isAccount(id: String): Boolean {
         return getDocumentSnapshots().any { documentSnapshot ->
-            val accountResponse = documentSnapshot.toObject(AccountResponse::class.java)
-            accountResponse != null && accountResponse.id.lowercase() == id.lowercase()
+            val accountResponse = documentSnapshot.toObject(AccountResponse::class.java) ?: return@any false
+            accountResponse.id.lowercase() == id.lowercase()
         }
     }
 
     override suspend fun isAccount(nickname: String, tag: String): Boolean {
         return getDocumentSnapshots().any { documentSnapshot ->
-            val accountResponse = documentSnapshot.toObject(AccountResponse::class.java)
-            accountResponse != null && accountResponse.nickname == nickname && accountResponse.tag == tag
+            val accountResponse = documentSnapshot.toObject(AccountResponse::class.java) ?: return@any false
+            accountResponse.nickname == nickname && accountResponse.tag == tag
         }
     }
 
@@ -43,21 +47,20 @@ class AccountRepositoryImpl @Inject constructor(
     }
 
     override suspend fun findAccountByUniqueId(uniqueId: UUID): AccountResponse? {
-        return runCatching {
-            val documentSnapshot = reference.document(uniqueId.toString()).get().await()
-            documentSnapshot.toObject(AccountResponse::class.java)
-        }.getOrNull()
+        val documentSnapshot = reference.document(uniqueId.toString()).get().await()
+        return documentSnapshot.toObject(AccountResponse::class.java)
     }
 
-    override suspend fun findAccountByIdAndPassword(id: String, password: String): AccountResponse? {
-        return runCatching {
-            getDocumentSnapshots().forEach { documentSnapshot ->
-                val accountResponse = documentSnapshot.toObject(AccountResponse::class.java)
-                if (accountResponse != null && accountResponse.id == id && BCrypt.checkpw(password, accountResponse.password)) {
-                    return accountResponse
-                }
+    override suspend fun findAccountByIdAndPassword(
+        id: String,
+        password: String
+    ): AccountResponse? {
+        getDocumentSnapshots().forEach { documentSnapshot ->
+            val accountResponse = documentSnapshot.toObject(AccountResponse::class.java) ?: return@forEach
+            if (accountResponse.id == id && BCrypt.checkpw(password, accountResponse.password)) {
+                return accountResponse
             }
-            return null
-        }.getOrNull()
+        }
+        return null
     }
 }

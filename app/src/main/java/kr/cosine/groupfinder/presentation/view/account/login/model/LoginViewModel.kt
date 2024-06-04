@@ -12,6 +12,8 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kr.cosine.groupfinder.domain.exception.IdBlankException
+import kr.cosine.groupfinder.domain.exception.PasswordBlankException
 import kr.cosine.groupfinder.domain.usecase.LoginUseCase
 import kr.cosine.groupfinder.presentation.view.account.login.event.LoginEvent
 import kr.cosine.groupfinder.presentation.view.account.login.state.LoginUiState
@@ -56,16 +58,30 @@ class LoginViewModel @Inject constructor(
 
     fun loginByInput() = viewModelScope.launch(Dispatchers.IO) {
         val (id, password) = uiState.value.let { it.id to it.password }
-        val event = loginUseCase.findAccountEntityByIdAndPassword(id, password)?.let { accountEntity ->
-            LoginEvent.Success(accountEntity)
-        } ?: LoginEvent.Fail
-        _event.emit(event)
+        loginUseCase.findAccountEntityByIdAndPassword(id, password).onSuccess { accountEntity ->
+            val event = accountEntity?.let {
+                LoginEvent.Success(it)
+            } ?: LoginEvent.InvalidIdAndPassword
+            _event.emit(event)
+        }.onFailure { throwable ->
+            val event = when (throwable) {
+                is IdBlankException -> LoginEvent.IdBlank
+                is PasswordBlankException -> LoginEvent.PasswordBlank
+                else -> LoginEvent.Unknown
+            }
+            _event.emit(event)
+        }
     }
 
     fun loginByUniqueId(uniqueId: UUID) = viewModelScope.launch(Dispatchers.IO) {
-        val event = loginUseCase.findAccountEntityByUniqueId(uniqueId)?.let { accountEntity ->
-            LoginEvent.Success(accountEntity)
-        } ?: LoginEvent.Fail
-        _event.emit(event)
+       loginUseCase.findAccountEntityByUniqueId(uniqueId).onSuccess { accountEntity ->
+           val event = accountEntity?.let {
+               LoginEvent.Success(it)
+           } ?: LoginEvent.InvalidAccount
+           _event.emit(event)
+        }.onFailure {
+            val event = LoginEvent.Unknown
+           _event.emit(event)
+       }
     }
 }

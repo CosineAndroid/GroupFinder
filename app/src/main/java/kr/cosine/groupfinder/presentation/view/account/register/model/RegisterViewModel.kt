@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -105,13 +104,16 @@ class RegisterViewModel @Inject constructor(
         val nickname = uiState.nickname.text
         val tag = uiState.tag.text
         registerUseCase(id, password, nickname, tag).onSuccess { accountEntity ->
-            val event = RegisterEvent.Success(accountEntity)
+            val newAccountEntity = accountEntity.copy(
+                password = password
+            )
+            val event = RegisterEvent.Success(newAccountEntity)
             _event.emit(event)
         }.onFailure { throwable ->
             val event = when (throwable) {
-                is IdAlreadyExistsException -> RegisterEvent.IdDuplicationFail
-                is TaggedNicknameAlreadyExistsException -> RegisterEvent.TaggedNicknameDuplicationFail
-                else -> RegisterEvent.UnknownFail
+                is IdAlreadyExistsException -> RegisterEvent.IdDuplication
+                is TaggedNicknameAlreadyExistsException -> RegisterEvent.TaggedNicknameDuplication
+                else -> RegisterEvent.Unknown
             }
             _event.emit(event)
         }

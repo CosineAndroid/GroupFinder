@@ -26,7 +26,9 @@ fun BaseButton(
     containerColor: Color = Color.White,
     onClick: () -> Unit,
 ) {
-    var cooldown by rememberSaveable { mutableLongStateOf(0) }
+    var cooldown by rememberSaveable {
+        mutableLongStateOf(System.currentTimeMillis() + CLICK_INTERVAL)
+    }
     Button(
         enabled = isEnabled,
         onClick = {

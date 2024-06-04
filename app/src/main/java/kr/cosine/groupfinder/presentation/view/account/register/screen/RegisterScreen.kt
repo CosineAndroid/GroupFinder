@@ -30,6 +30,7 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.flow.collectLatest
 import kr.cosine.groupfinder.R
+import kr.cosine.groupfinder.data.manager.LocalAccountManager
 import kr.cosine.groupfinder.presentation.view.account.component.BaseButton
 import kr.cosine.groupfinder.presentation.view.account.component.DefaultTextField
 import kr.cosine.groupfinder.presentation.view.account.component.LoadingScreen
@@ -38,7 +39,6 @@ import kr.cosine.groupfinder.presentation.view.account.login.LoginActivity
 import kr.cosine.groupfinder.presentation.view.account.model.LoadingViewModel
 import kr.cosine.groupfinder.presentation.view.account.register.screen.component.InfoTextField
 import kr.cosine.groupfinder.presentation.view.account.register.event.RegisterEvent
-import kr.cosine.groupfinder.presentation.view.account.message.Message
 import kr.cosine.groupfinder.presentation.view.account.register.model.RegisterViewModel
 import kr.cosine.groupfinder.presentation.view.account.register.state.RegisterErrorUiState
 import kr.cosine.groupfinder.presentation.view.account.ui.CustomColor
@@ -74,8 +74,8 @@ fun RegisterScreen(
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically)
         ) {
             val uiState by registerViewModel.uiState.collectAsStateWithLifecycle()
             DefaultTextField(
@@ -127,23 +127,26 @@ private suspend fun onRegisterEvent(
     loadingViewModel: LoadingViewModel
 ) {
     registerViewModel.event.flowWithLifecycle(lifecycle).collectLatest { event ->
-        loadingViewModel.hide()
         when (event) {
             is RegisterEvent.Success -> {
                 val accountEntity = event.accountEntity
+
+                val localAccountManager = LocalAccountManager(activity)
+                localAccountManager.setUniqueId(accountEntity.uniqueId)
+
                 val intent = Intent(activity, LoginActivity::class.java).apply {
                     putExtra(IntentKey.ID, accountEntity.id)
                     putExtra(IntentKey.PASSWORD, accountEntity.password)
                 }
                 activity.setResult(Activity.RESULT_OK, intent)
                 activity.finish()
+                loadingViewModel.hide()
             }
 
-            is RegisterEvent.IdDuplicationFail -> snackbarHostState.showSnackbar(Message.ID_DUPLICATION)
-
-            is RegisterEvent.TaggedNicknameDuplicationFail -> snackbarHostState.showSnackbar(Message.TAGGED_NICKNAME_DUPLICATION)
-
-            is RegisterEvent.UnknownFail -> snackbarHostState.showSnackbar(Message.UNKNOWN_ERROR)
+            is RegisterEvent.Notice -> {
+                loadingViewModel.hide()
+                snackbarHostState.showSnackbar(event.message)
+            }
         }
     }
 }
