@@ -49,6 +49,7 @@ class GroupFragment(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         registerNavigationButton()
+        registerSwipeRefreshLayout()
         registerGroupRecyclerView()
         registerTagRecyclerView()
         registerSearchBarButton()
@@ -61,6 +62,13 @@ class GroupFragment(
         /*binding.navigationImageButton.setOnClickListener {
 
         }*/
+    }
+
+    private fun registerSwipeRefreshLayout() = with(binding.swipeRefreshLayout) {
+        setOnRefreshListener {
+            isRefreshing = false
+            search()
+        }
     }
 
     private fun registerGroupRecyclerView() = with(binding.groupRecyclerView) {
@@ -86,9 +94,7 @@ class GroupFragment(
 
         }
         searchImageButton.setOnClickListener {
-            val tags = tagViewModel.tags
-            if (tags.isEmpty()) return@setOnClickListener
-            groupViewModel.onSearch(mode, tags)
+            search()
         }
     }
 
@@ -121,6 +127,7 @@ class GroupFragment(
                         }
                         searchResultNoticeTextView.text = uiState.message
                     }
+
                     else -> {}
                 }
             }
@@ -137,6 +144,10 @@ class GroupFragment(
                 }
             }
         }
+    }
+
+    private fun search() {
+        groupViewModel.onSearch(mode, tagViewModel.tags)
     }
 
     override fun onDestroyView() {
