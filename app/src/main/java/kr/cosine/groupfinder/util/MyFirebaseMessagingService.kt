@@ -36,7 +36,6 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
 
     override fun onNewToken(token: String) {
         super.onNewToken(token)
-        sendRegistrationToServer(token, uuID.toString())
     }
 
     private fun sendRegistrationToServer(token: String, uuid: String) {
