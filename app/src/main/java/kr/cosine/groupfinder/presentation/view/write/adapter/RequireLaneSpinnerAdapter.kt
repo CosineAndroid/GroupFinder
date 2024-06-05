@@ -24,12 +24,12 @@ class RequireLaneSpinnerAdapter (
     }
 
     private fun initView(position: Int, convertView: View?, parent: ViewGroup): View {
-        /*val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.item_requirelane_spinner, parent, false)
+        val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.item_requirelane_spinner, parent, false)
         val imageView = view.findViewById<ImageView>(R.id.requireLaneImageView)
         val textView = view.findViewById<TextView>(R.id.requireLaneTextview)
         val item = items[position]
         imageView.setImageResource(item.image)
-        textView.text = item.lane*/
-        return convertView!!
+        textView.text = item.lane
+        return view
     }
 }
