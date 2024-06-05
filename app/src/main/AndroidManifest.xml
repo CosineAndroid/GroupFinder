@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GroupFinder">
         <activity
-            android:name=".presentation.view.test.TestActivity"
+            android:name=".presentation.view.account.login.LoginActivity"
             android:exported="true"
             android:theme="@style/Theme.GroupFinder">
             <intent-filter>
