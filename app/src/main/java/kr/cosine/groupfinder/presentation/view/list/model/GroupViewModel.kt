@@ -24,7 +24,7 @@ class GroupViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<GroupUiState>(GroupUiState.ResultEmpty)
     val uiState: StateFlow<GroupUiState> get() = _uiState.asStateFlow()
 
-    fun onSearch(mode: Mode?, tags: List<String>) = viewModelScope.launch(Dispatchers.IO) {
+    fun onSearch(mode: Mode?, tags: Set<String>) = viewModelScope.launch(Dispatchers.IO) {
         setLoading()
         getPostsUseCase(mode, tags).onSuccess { postEntities ->
             val postItems = getPostsWithMappedOwnerUseCase(postEntities)

@@ -17,11 +17,17 @@ class GetPostsUseCase @Inject constructor(
     private val postRepository: PostRepository
 ) {
 
-    suspend operator fun invoke(mode: Mode?, tags: List<String>): Result<List<PostEntity>> {
+    suspend operator fun invoke(mode: Mode?, tags: Set<String>): Result<List<PostEntity>> {
         return runCatching {
             var posts = postRepository.getPosts(tags).map(PostResponse::toEntity)
-            if (mode != null) {
-                posts = posts.filter {
+            posts = if (mode == null) {
+                posts.map {
+                    it.copy(
+                        tags = listOf(it.mode.displayName) + it.tags
+                    )
+                }
+            } else {
+                posts.filter {
                     it.mode == mode
                 }
             }

@@ -1,4 +1,4 @@
-package kr.cosine.groupfinder.presentation.view.list.model
+package kr.cosine.groupfinder.presentation.view.common.model
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -14,13 +14,13 @@ class TagViewModel : ViewModel() {
     val event: SharedFlow<TagEvent> get() = _event.asSharedFlow()
 
     private val _tags = mutableSetOf<String>()
-    val tags: List<String> get() = _tags.toList()
+    val tags: Set<String> get() = _tags
 
     fun isTagged(tag: String): Boolean {
         return _tags.contains(tag)
     }
 
-    fun setTag(tags: List<String>) = viewModelScope.launch {
+    fun setTags(tags: List<String>) = viewModelScope.launch {
         _event.emit(TagEvent.SetTag(tags))
         this@TagViewModel._tags.apply {
             clear()
@@ -38,7 +38,7 @@ class TagViewModel : ViewModel() {
         _tags.remove(tag)
     }
 
-    fun clearTag() {
-        setTag(emptyList())
+    fun clearTags() {
+        setTags(emptyList())
     }
 }

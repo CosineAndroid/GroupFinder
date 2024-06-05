@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kr.cosine.groupfinder.R
 import kr.cosine.groupfinder.data.registry.LocalAccountRegistry
 import kr.cosine.groupfinder.databinding.ItemGroupBinding
-import kr.cosine.groupfinder.presentation.view.list.adapter.decoration.impl.GroupTagItemDecoration
+import kr.cosine.groupfinder.presentation.view.list.adapter.decoration.GroupTagItemDecoration
 import kr.cosine.groupfinder.presentation.view.list.adapter.listener.TagScrollListener
 import kr.cosine.groupfinder.presentation.view.list.state.item.PostItem
 import kr.cosine.groupfinder.presentation.view.list.state.item.extension.joinedPeopleCount
@@ -70,7 +70,7 @@ class GroupAdpater(
                 when {
                     laneMap.values.contains(LocalAccountRegistry.uniqueId) -> R.drawable.group_join_background
                     isMaxGroup -> R.drawable.group_full_background
-                    else -> R.drawable.group_background
+                    else -> R.drawable.group_default_background
                 }
             )
         }

@@ -5,8 +5,8 @@
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     android:background="@color/white"
+    android:fitsSystemWindows="true"
     tools:context="kr.cosine.groupfinder.presentation.MainActivity"
     tools:openDrawer="start">
 
@@ -19,13 +19,15 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:title=" "
-            app:navigationIcon="@drawable/ic_app_category"/>
+            android:background="@color/background"
+            app:navigationIcon="@drawable/ic_app_category"
+            app:title=" " />
 
         <FrameLayout
             android:id="@+id/fragment_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:background="@color/background" />
 
     </LinearLayout>
 
@@ -34,11 +36,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        app:headerLayout="@layout/navigation_header"
-        app:menu="@menu/navigation_menu"
         android:paddingLeft="8dp"
         android:paddingTop="30dp"
-        app:itemTextAppearance="@style/navigationItemTextAppearance">
+        app:headerLayout="@layout/navigation_header"
+        app:itemTextAppearance="@style/navigationItemTextAppearance"
+        app:menu="@menu/navigation_menu">
 
     </com.google.android.material.navigation.NavigationView>
 </androidx.drawerlayout.widget.DrawerLayout>

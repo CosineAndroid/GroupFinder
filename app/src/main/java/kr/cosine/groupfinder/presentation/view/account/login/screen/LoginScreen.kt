@@ -15,14 +15,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Checkbox
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -43,16 +40,16 @@ import kr.cosine.groupfinder.data.manager.LocalAccountManager
 import kr.cosine.groupfinder.data.registry.LocalAccountRegistry
 import kr.cosine.groupfinder.presentation.MainActivity
 import kr.cosine.groupfinder.presentation.view.account.component.BaseButton
+import kr.cosine.groupfinder.presentation.view.account.component.BaseScaffold
 import kr.cosine.groupfinder.presentation.view.account.component.BaseText
 import kr.cosine.groupfinder.presentation.view.account.component.BaseTextField
 import kr.cosine.groupfinder.presentation.view.account.component.LoadingScreen
 import kr.cosine.groupfinder.presentation.view.account.component.Space
-import kr.cosine.groupfinder.presentation.view.account.intent.IntentKey
+import kr.cosine.groupfinder.presentation.view.common.intent.IntentKey
 import kr.cosine.groupfinder.presentation.view.account.login.event.LoginEvent
 import kr.cosine.groupfinder.presentation.view.account.login.model.LoginViewModel
 import kr.cosine.groupfinder.presentation.view.account.model.LoadingViewModel
 import kr.cosine.groupfinder.presentation.view.account.register.RegisterActivity
-import kr.cosine.groupfinder.presentation.view.account.ui.CustomColor
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -74,24 +71,20 @@ fun LoginScreen(
         }
     }
     val lifecycle = LocalLifecycleOwner.current.lifecycle
-    val snackbarHostState = remember { SnackbarHostState() }
-    LaunchedEffect(
-        key1 = Unit
-    ) {
-        onLoginEvent(
-            localAccountManager,
-            activity,
-            lifecycle,
-            snackbarHostState,
-            loginViewModel,
-            loadingViewModel
-        )
-    }
-    Scaffold(
-        snackbarHost = {
-            SnackbarHost(
-                hostState = snackbarHostState
-            )
+    BaseScaffold(
+        prevBody = { snackbarHostState ->
+            LaunchedEffect(
+                key1 = Unit
+            ) {
+                onLoginEvent(
+                    localAccountManager,
+                    activity,
+                    lifecycle,
+                    snackbarHostState,
+                    loginViewModel,
+                    loadingViewModel
+                )
+            }
         }
     ) {
         Column(
@@ -135,7 +128,7 @@ fun LoginScreen(
                 )
             }
             BaseButton(
-                text = stringResource(R.string.login),
+                text = stringResource(R.string.login)
             ) {
                 loadingViewModel.show()
                 loginViewModel.loginByInput()
@@ -144,8 +137,7 @@ fun LoginScreen(
             val context = LocalContext.current
             val registerResultLauncher = getRegisterResultLanuncher()
             BaseButton(
-                text = stringResource(R.string.register),
-                containerColor = CustomColor.RegisterButtonBackground
+                text = stringResource(R.string.register)
             ) {
                 startRegisterActivity(context, registerResultLauncher)
             }
