@@ -5,13 +5,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kr.cosine.groupfinder.databinding.FragmentSearchBinding
 import kr.cosine.groupfinder.presentation.view.search.adapter.SearchAdapter
 
-class SearchFragment : Fragment() {
+class SearchFragment() : BottomSheetDialogFragment() {
 
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
