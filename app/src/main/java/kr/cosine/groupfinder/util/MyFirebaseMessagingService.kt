@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import kr.cosine.groupfinder.enums.TestGlobalUserData.uuID
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.MediaType.Companion.toMediaType
@@ -38,11 +37,13 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
         super.onNewToken(token)
     }
 
-    private fun sendRegistrationToServer(token: String, uuid: String) {
-        val url = "https://asia-northeast3-groupfinder-b2f8e.cloudfunctions.net/registerToken"
+    fun sendRegistrationToServer(token: String, uuid: UUID) {
+        val url = "https://updatetoken-wy3rih3y5a-du.a.run.app"
         val json = JSONObject().apply {
-            put("token", token)
-            put("uuid", uuid)
+            Log.d("FCM", "sendRegistrationToServer: $token, $uuid")
+            put("userToken", token)
+            put("UUID", uuid)
+
         }
 
         val requestBody = json.toString().toRequestBody("application/json; charset=utf-8".toMediaType())
@@ -55,12 +56,12 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
         val client = OkHttpClient()
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                Log.e("FCM", "Failed to send token: $e")
+                Log.e("FCM", "Failed to send token: 1$e")
             }
 
             override fun onResponse(call: Call, response: Response) {
                 if (!response.isSuccessful) {
-                    Log.d("FCM", "Failed to send token: ${response.message}")
+                    Log.d("FCM", "Failed to send token: 2${response.message}")
                 } else {
                     Log.d("FCM", "Token sent successfully")
                 }
