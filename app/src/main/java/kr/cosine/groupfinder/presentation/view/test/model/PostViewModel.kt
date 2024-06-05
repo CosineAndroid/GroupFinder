@@ -31,7 +31,7 @@ class PostViewModel @Inject constructor(
         postRepository.createPost(postResponse)
     }
 
-    fun getPosts(tags: List<String> = emptyList(), listScope: (List<PostResponse>) -> Unit) = viewModelScope.launch {
+    fun getPosts(tags: Set<String> = emptySet(), listScope: (List<PostResponse>) -> Unit) = viewModelScope.launch {
         listScope(postRepository.getPosts(tags))
     }
 }

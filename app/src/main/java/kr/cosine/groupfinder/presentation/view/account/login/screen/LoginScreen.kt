@@ -45,7 +45,7 @@ import kr.cosine.groupfinder.presentation.view.account.component.BaseText
 import kr.cosine.groupfinder.presentation.view.account.component.BaseTextField
 import kr.cosine.groupfinder.presentation.view.account.component.LoadingScreen
 import kr.cosine.groupfinder.presentation.view.account.component.Space
-import kr.cosine.groupfinder.presentation.view.account.intent.IntentKey
+import kr.cosine.groupfinder.presentation.view.common.intent.IntentKey
 import kr.cosine.groupfinder.presentation.view.account.login.event.LoginEvent
 import kr.cosine.groupfinder.presentation.view.account.login.model.LoginViewModel
 import kr.cosine.groupfinder.presentation.view.account.model.LoadingViewModel

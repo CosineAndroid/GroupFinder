@@ -1,4 +1,4 @@
-package kr.cosine.groupfinder.presentation.view.list.adapter
+package kr.cosine.groupfinder.presentation.view.common.adapter
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -6,9 +6,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kr.cosine.groupfinder.databinding.ItemTagBinding
 
-class SearchTagAdapter(
+class TagAdapter(
+    private val tags: MutableList<String> = mutableListOf(),
     private val onItemClick: (Int, String) -> Unit
-) : RecyclerView.Adapter<SearchTagAdapter.SearchTagViewHolder>() {
+) : RecyclerView.Adapter<TagAdapter.SearchTagViewHolder>() {
 
     inner class SearchTagViewHolder(
         private val binding: ItemTagBinding
@@ -26,8 +27,6 @@ class SearchTagAdapter(
             binding.tagTextView.text = tag
         }
     }
-
-    private val tags = mutableListOf<String>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchTagViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)

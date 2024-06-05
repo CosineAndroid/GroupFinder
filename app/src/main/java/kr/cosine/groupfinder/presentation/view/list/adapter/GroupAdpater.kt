@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kr.cosine.groupfinder.R
 import kr.cosine.groupfinder.data.registry.LocalAccountRegistry
 import kr.cosine.groupfinder.databinding.ItemGroupBinding
-import kr.cosine.groupfinder.presentation.view.list.adapter.decoration.impl.GroupTagItemDecoration
+import kr.cosine.groupfinder.presentation.view.list.adapter.decoration.GroupTagItemDecoration
 import kr.cosine.groupfinder.presentation.view.list.adapter.listener.TagScrollListener
 import kr.cosine.groupfinder.presentation.view.list.state.item.PostItem
 import kr.cosine.groupfinder.presentation.view.list.state.item.extension.joinedPeopleCount

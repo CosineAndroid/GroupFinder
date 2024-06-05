@@ -11,7 +11,7 @@ interface PostRepository : FirebaseRepository {
 
     suspend fun updatePost(postResponse: PostResponse)
 
-    suspend fun getPosts(tags: List<String> = emptyList()): List<PostResponse>
+    suspend fun getPosts(tags: Set<String> = emptySet()): List<PostResponse>
 
     suspend fun findPostByUniqueId(uniqueId: UUID): PostResponse?
 }

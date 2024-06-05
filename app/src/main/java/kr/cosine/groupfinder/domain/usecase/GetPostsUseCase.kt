@@ -17,7 +17,7 @@ class GetPostsUseCase @Inject constructor(
     private val postRepository: PostRepository
 ) {
 
-    suspend operator fun invoke(mode: Mode?, tags: List<String>): Result<List<PostEntity>> {
+    suspend operator fun invoke(mode: Mode?, tags: Set<String>): Result<List<PostEntity>> {
         return runCatching {
             var posts = postRepository.getPosts(tags).map(PostResponse::toEntity)
             posts = if (mode == null) {

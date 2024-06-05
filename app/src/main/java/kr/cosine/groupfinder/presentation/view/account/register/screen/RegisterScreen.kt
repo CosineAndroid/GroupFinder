@@ -33,7 +33,7 @@ import kr.cosine.groupfinder.presentation.view.account.component.BaseButton
 import kr.cosine.groupfinder.presentation.view.account.component.BaseScaffold
 import kr.cosine.groupfinder.presentation.view.account.component.DefaultTextField
 import kr.cosine.groupfinder.presentation.view.account.component.LoadingScreen
-import kr.cosine.groupfinder.presentation.view.account.intent.IntentKey
+import kr.cosine.groupfinder.presentation.view.common.intent.IntentKey
 import kr.cosine.groupfinder.presentation.view.account.login.LoginActivity
 import kr.cosine.groupfinder.presentation.view.account.model.LoadingViewModel
 import kr.cosine.groupfinder.presentation.view.account.register.screen.component.InfoTextField

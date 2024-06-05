@@ -1,4 +1,4 @@
-package kr.cosine.groupfinder.presentation.view.list.adapter.decoration
+package kr.cosine.groupfinder.presentation.view.common.decoration
 
 import android.graphics.Rect
 import android.view.View

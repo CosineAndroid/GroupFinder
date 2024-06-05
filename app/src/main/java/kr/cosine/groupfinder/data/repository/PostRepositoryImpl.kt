@@ -27,7 +27,7 @@ class PostRepositoryImpl @Inject constructor(
         createPost(postResponse)
     }
 
-    override suspend fun getPosts(tags: List<String>): List<PostResponse> {
+    override suspend fun getPosts(tags: Set<String>): List<PostResponse> {
         return getDocumentSnapshots().mapNotNull { documentSnapshot ->
             documentSnapshot.toObject(PostResponse::class.java)?.takeIf {
                 it.tags.containsAll(tags)
