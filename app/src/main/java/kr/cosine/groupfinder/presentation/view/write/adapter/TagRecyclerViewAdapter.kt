@@ -9,7 +9,7 @@ import kr.cosine.groupfinder.databinding.ActivityWriteBinding
 import kr.cosine.groupfinder.databinding.ItemTagBinding
 
 
-class TagRecyclerViewAdapter(private val tagList: List<String>) :
+class TagRecyclerViewAdapter(private val tagList: MutableList<String>) :
     RecyclerView.Adapter<TagRecyclerViewAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemTagBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -30,4 +30,5 @@ class TagRecyclerViewAdapter(private val tagList: List<String>) :
             binding.tagTextView.text = tag
         }
     }
+    //private fun setTags()
 }

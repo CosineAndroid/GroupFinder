@@ -1,13 +1,20 @@
 <resources>
+
     <style name="Theme.GroupFinder" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/white</item>
         <item name="colorOnPrimary">@color/black</item>
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
+        <item name="android:windowDisablePreview">true</item>
+        <item name="android:windowBackground">@color/background</item>
+        <item name="android:windowIsTranslucent">true</item>​
+        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
     </style>
 
     <style name="navigationItemTextAppearance">
         <item name="android:textColor">@color/black</item>
         <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
+        <item name="color">@android:color/white</item>
     </style>
 </resources>
