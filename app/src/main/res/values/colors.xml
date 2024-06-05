@@ -4,6 +4,13 @@
     <color name="white">#FFFFFF</color>
     <color name="profile_withdraw_button_background">#FF8078</color>
     <color name="background">#131517</color>
+    <color name="account_text_field_background">#EFEFEF</color>
+    <color name="account_text_field_hint">#8E8E8E</color>
+    <color name="account_enable_button_background">#2E3034</color>
+    <color name="account_disable_button_background">#1E1F20</color>
+    <color name="account_disable_button_text">#5A5A5A</color>
+    <color name="register_valid_border">#3FB15E</color>
+    <color name="register_invalid_border">#CA1854</color>
     <color name="group_default_background">#2E3034</color>
     <color name="group_join_background">#6E4BDC</color>
     <color name="group_full_background">#131517</color>

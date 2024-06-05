@@ -16,7 +16,7 @@ fun BaseText(
     fontSize: TextUnit,
     textAlign: TextAlign? = null,
     fontWeight: FontWeight = FontWeight.Normal,
-    color: Color = Color.Black
+    color: Color = Color.White
 ) {
     Text(
         text = text.toString(),

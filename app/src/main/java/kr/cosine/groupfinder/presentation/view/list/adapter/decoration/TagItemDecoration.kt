@@ -26,7 +26,5 @@ open class TagItemDecoration(
 
     companion object {
         private const val DISTANCE = 15
-
-        val defaultTagItemDecoration = TagItemDecoration(bottom = 0)
     }
 }

@@ -10,17 +10,15 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
@@ -32,6 +30,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kr.cosine.groupfinder.R
 import kr.cosine.groupfinder.data.manager.LocalAccountManager
 import kr.cosine.groupfinder.presentation.view.account.component.BaseButton
+import kr.cosine.groupfinder.presentation.view.account.component.BaseScaffold
 import kr.cosine.groupfinder.presentation.view.account.component.DefaultTextField
 import kr.cosine.groupfinder.presentation.view.account.component.LoadingScreen
 import kr.cosine.groupfinder.presentation.view.account.intent.IntentKey
@@ -41,13 +40,13 @@ import kr.cosine.groupfinder.presentation.view.account.register.screen.component
 import kr.cosine.groupfinder.presentation.view.account.register.event.RegisterEvent
 import kr.cosine.groupfinder.presentation.view.account.register.model.RegisterViewModel
 import kr.cosine.groupfinder.presentation.view.account.register.state.RegisterErrorUiState
-import kr.cosine.groupfinder.presentation.view.account.ui.CustomColor
 
 private val RegisterErrorUiState.color
+    @Composable
     get() = if (this is RegisterErrorUiState.Valid) {
-        CustomColor.RegisterValidBorder
+        colorResource(R.color.register_valid_border)
     } else {
-        CustomColor.RegisterInvalidBorder
+        colorResource(R.color.register_invalid_border)
     }
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -58,18 +57,14 @@ fun RegisterScreen(
 ) {
     val activity = LocalContext.current as ComponentActivity
     val lifecycle = LocalLifecycleOwner.current.lifecycle
-    val snackbarHostState = remember { SnackbarHostState() }
     LoadingScreen()
-    LaunchedEffect(
-        key1 = Unit
-    ) {
-        onRegisterEvent(activity, lifecycle, snackbarHostState, registerViewModel, loadingViewModel)
-    }
-    Scaffold(
-        snackbarHost = {
-            SnackbarHost(
-                hostState = snackbarHostState
-            )
+    BaseScaffold(
+        prevBody = { snackbarHostState ->
+            LaunchedEffect(
+                key1 = Unit
+            ) {
+                onRegisterEvent(activity, lifecycle, snackbarHostState, registerViewModel, loadingViewModel)
+            }
         }
     ) {
         Column(
@@ -109,8 +104,7 @@ fun RegisterScreen(
             registerViewModel.checkButtonEnable()
             BaseButton(
                 isEnabled = uiState.isButtonEnabled,
-                text = stringResource(R.string.register),
-                containerColor = CustomColor.RegisterButtonBackground
+                text = stringResource(R.string.register)
             ) {
                 loadingViewModel.show()
                 registerViewModel.register()
