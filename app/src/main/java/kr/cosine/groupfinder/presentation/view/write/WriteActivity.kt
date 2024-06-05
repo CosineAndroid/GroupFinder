@@ -105,11 +105,8 @@ class WriteActivity : AppCompatActivity() {
     }
 
     private fun setupTagRecyclerViewAdapter() = with(binding.writeTagRecyclerView) {
-        adapter = TagAdapter { position, tag ->
-            tagViewModel.removeTag(position, tag)
-        }.apply {
+        adapter = TagAdapter(tagViewModel.tags.toMutableList(), tagViewModel::removeTag).apply {
             tagRecyclerViewAdapter = this
-            setTags(tagViewModel.tags.toList())
         }
 
         val flexboxItemDecoration = FlexboxItemDecoration(this@WriteActivity).apply {
