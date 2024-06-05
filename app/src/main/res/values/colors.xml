@@ -3,7 +3,10 @@
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
     <color name="profile_withdraw_button_background">#FF8078</color>
-    <color name="group_join_background">#66CFB7</color>
-    <color name="group_full_background">#C7C7C7</color>
-    <color name="group_write_button_background">#EBEBEB</color>
+    <color name="background">#131517</color>
+    <color name="group_default_background">#2E3034</color>
+    <color name="group_join_background">#6E4BDC</color>
+    <color name="group_full_background">#131517</color>
+    <color name="group_write_button_background">#5534BE</color>
+    <color name="group_tagged_nickname">#C8CDDB</color>
 </resources>

@@ -70,7 +70,7 @@ class GroupAdpater(
                 when {
                     laneMap.values.contains(LocalAccountRegistry.uniqueId) -> R.drawable.group_join_background
                     isMaxGroup -> R.drawable.group_full_background
-                    else -> R.drawable.group_background
+                    else -> R.drawable.group_default_background
                 }
             )
         }

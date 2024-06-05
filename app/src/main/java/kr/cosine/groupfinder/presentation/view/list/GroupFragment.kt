@@ -52,7 +52,6 @@ class GroupFragment(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        registerNavigationButton()
         registerSwipeRefreshLayout()
         registerGroupRecyclerView()
         registerTagRecyclerView()
@@ -60,12 +59,6 @@ class GroupFragment(
         registerWriteButton()
         registerGroupViewModelEvent()
         registerTagViewModel()
-    }
-
-    private fun registerNavigationButton() {
-        /*binding.navigationImageButton.setOnClickListener {
-
-        }*/
     }
 
     private fun registerSwipeRefreshLayout() = with(binding.swipeRefreshLayout) {
