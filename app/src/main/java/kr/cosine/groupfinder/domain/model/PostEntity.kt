@@ -6,13 +6,13 @@ import kr.cosine.groupfinder.enums.Mode
 import java.util.UUID
 
 data class PostEntity(
-    val uniqueId: UUID,
+    val postUniqueId: UUID,
     val mode: Mode,
     val title: String,
     val body: String,
-    val id: String,
+    val ownerUniqueId: UUID,
     val tags: List<String>,
-    val laneMap: Map<Lane, String?>,
+    val laneMap: Map<Lane, UUID?>,
     val time: Timestamp
 ) {
 
@@ -20,9 +20,9 @@ data class PostEntity(
         mode: Mode,
         title: String,
         body: String,
-        id: String,
+        id: UUID,
         tags: List<String>,
-        laneMap: Map<Lane, String?>
+        laneMap: Map<Lane, UUID?>
     ) : this(
         UUID.randomUUID(),
         mode,

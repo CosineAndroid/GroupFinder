@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kr.cosine.groupfinder.R
 import kr.cosine.groupfinder.databinding.ActivityWriteBinding
-import kr.cosine.groupfinder.presentation.view.list.adapter.decoration.TagItemDecoration
+import kr.cosine.groupfinder.presentation.view.common.decoration.TagItemDecoration
 import kr.cosine.groupfinder.presentation.view.write.adapter.RequireLaneRecyclerViewAdapter
 import kr.cosine.groupfinder.presentation.view.write.adapter.SpinnerAdapter
 import kr.cosine.groupfinder.presentation.view.write.adapter.TagRecyclerViewAdapter

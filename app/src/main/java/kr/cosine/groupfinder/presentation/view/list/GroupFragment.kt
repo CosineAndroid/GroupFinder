@@ -1,5 +1,7 @@
 package kr.cosine.groupfinder.presentation.view.list
 
+import android.content.Intent
+import android.graphics.PorterDuff
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,15 +15,18 @@ import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import kr.cosine.groupfinder.R
 import kr.cosine.groupfinder.databinding.FragmentGroupBinding
 import kr.cosine.groupfinder.enums.Mode
 import kr.cosine.groupfinder.presentation.view.list.adapter.GroupAdpater
-import kr.cosine.groupfinder.presentation.view.list.adapter.SearchTagAdpater
-import kr.cosine.groupfinder.presentation.view.list.adapter.decoration.impl.GroupTagItemDecoration
+import kr.cosine.groupfinder.presentation.view.common.adapter.TagAdapter
+import kr.cosine.groupfinder.presentation.view.common.intent.IntentKey
+import kr.cosine.groupfinder.presentation.view.list.adapter.decoration.GroupTagItemDecoration
 import kr.cosine.groupfinder.presentation.view.list.event.TagEvent
 import kr.cosine.groupfinder.presentation.view.list.model.GroupViewModel
-import kr.cosine.groupfinder.presentation.view.list.model.TagViewModel
+import kr.cosine.groupfinder.presentation.view.common.model.TagViewModel
 import kr.cosine.groupfinder.presentation.view.list.state.GroupUiState
+import kr.cosine.groupfinder.presentation.view.write.WriteActivity
 
 @AndroidEntryPoint
 class GroupFragment(
@@ -35,7 +40,7 @@ class GroupFragment(
     private val tagViewModel by activityViewModels<TagViewModel>()
 
     private lateinit var groupAdpater: GroupAdpater
-    private lateinit var searchTagAdpater: SearchTagAdpater
+    private lateinit var tagAdapter: TagAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,7 +53,8 @@ class GroupFragment(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        registerNavigationButton()
+        registerProgressBar()
+        registerSwipeRefreshLayout()
         registerGroupRecyclerView()
         registerTagRecyclerView()
         registerSearchBarButton()
@@ -57,10 +63,19 @@ class GroupFragment(
         registerTagViewModel()
     }
 
-    private fun registerNavigationButton() {
-        /*binding.navigationImageButton.setOnClickListener {
+    private fun registerProgressBar() = with(binding.searchProgressBar) {
+        isIndeterminate = true
+        indeterminateDrawable.setColorFilter(
+            context.getColor(R.color.white),
+            PorterDuff.Mode.MULTIPLY
+        )
+    }
 
-        }*/
+    private fun registerSwipeRefreshLayout() = with(binding.swipeRefreshLayout) {
+        setOnRefreshListener {
+            isRefreshing = false
+            search()
+        }
     }
 
     private fun registerGroupRecyclerView() = with(binding.groupRecyclerView) {
@@ -72,34 +87,38 @@ class GroupFragment(
     }
 
     private fun registerTagRecyclerView() = with(binding.tagRecyclerView) {
-        adapter = SearchTagAdpater(tagViewModel::removeTag).apply {
-            searchTagAdpater = this
+        adapter = TagAdapter(tagViewModel.tags.toMutableList(), tagViewModel::removeTag).apply {
+            tagAdapter = this
         }
         addItemDecoration(GroupTagItemDecoration)
     }
 
     private fun registerSearchBarButton() = with(binding) {
         clearTagImageButton.setOnClickListener {
-            tagViewModel.clearTag()
+            tagViewModel.clearTags()
         }
         showAllTagImageButton.setOnClickListener {
 
         }
         searchImageButton.setOnClickListener {
-            val tags = tagViewModel.tags
-            if (tags.isEmpty()) return@setOnClickListener
-            groupViewModel.onSearch(mode, tags)
+            search()
         }
     }
 
-    private fun registerWriteButton() {
-        binding.writeImageButton.setOnClickListener {
-
+    private fun registerWriteButton() = with(binding.writeImageButton) {
+        if (mode == null) {
+            visibility = View.GONE
+            return@with
+        }
+        setOnClickListener {
+            val intent = Intent(context, WriteActivity::class.java)
+            intent.putExtra(IntentKey.MODE, mode)
+            startActivity(intent)
         }
     }
 
     private fun registerGroupViewModelEvent() = with(binding) {
-        groupViewModel.onSearch(mode, emptyList())
+        groupViewModel.onSearch(mode, emptySet())
         viewLifecycleOwner.lifecycleScope.launch {
             groupViewModel.uiState.flowWithLifecycle(lifecycle).collectLatest { uiState ->
                 val isLoading = uiState is GroupUiState.Loading
@@ -121,6 +140,7 @@ class GroupFragment(
                         }
                         searchResultNoticeTextView.text = uiState.message
                     }
+
                     else -> {}
                 }
             }
@@ -131,12 +151,16 @@ class GroupFragment(
         viewLifecycleOwner.lifecycleScope.launch {
             tagViewModel.event.flowWithLifecycle(lifecycle).collectLatest { event ->
                 when (event) {
-                    is TagEvent.SetTag -> searchTagAdpater.setTags(event.tags)
-                    is TagEvent.AddTag -> searchTagAdpater.addTag(event.tag)
-                    is TagEvent.RemoveTag -> searchTagAdpater.removeTag(event.position)
+                    is TagEvent.SetTag -> tagAdapter.setTags(event.tags)
+                    is TagEvent.AddTag -> tagAdapter.addTag(event.tag)
+                    is TagEvent.RemoveTag -> tagAdapter.removeTag(event.position)
                 }
             }
         }
+    }
+
+    private fun search() {
+        groupViewModel.onSearch(mode, tagViewModel.tags)
     }
 
     override fun onDestroyView() {
