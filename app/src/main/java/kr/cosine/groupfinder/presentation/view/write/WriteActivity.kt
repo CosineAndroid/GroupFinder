@@ -28,6 +28,7 @@ import kr.cosine.groupfinder.databinding.ActivityWriteBinding
 import kr.cosine.groupfinder.enums.Lane
 import kr.cosine.groupfinder.enums.Mode
 import kr.cosine.groupfinder.presentation.view.common.adapter.TagAdapter
+import kr.cosine.groupfinder.presentation.view.common.intent.IntentKey
 import kr.cosine.groupfinder.presentation.view.common.model.TagViewModel
 import kr.cosine.groupfinder.presentation.view.list.event.TagEvent
 import kr.cosine.groupfinder.presentation.view.search.SearchFragment
@@ -66,7 +67,7 @@ class WriteActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        mode = Mode.valueOf(intent.getStringExtra("mode")!!)
+        mode = intent.getSerializableExtra(IntentKey.MODE) as Mode
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.writeActivity)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
