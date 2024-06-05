@@ -8,11 +8,9 @@ import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.QuerySnapshot
 import kotlinx.coroutines.tasks.await
 
-abstract class FirebaseRepository(
-    protected val path: String
-) {
+interface FirebaseRepository {
 
-    protected abstract val reference: CollectionReference
+    val reference: CollectionReference
 
     fun addSnapshotListener(listener: EventListener<QuerySnapshot>): ListenerRegistration {
         return reference.addSnapshotListener(listener)

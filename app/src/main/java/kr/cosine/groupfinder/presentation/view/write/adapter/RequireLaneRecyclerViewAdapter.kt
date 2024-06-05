@@ -12,7 +12,6 @@ import kr.cosine.groupfinder.presentation.view.write.RequireLane
 
 class RequireLaneRecyclerViewAdapter(
     private val lanes: MutableList<RequireLane>
-    //생성자로 안하고
 ) : RecyclerView.Adapter<RequireLaneRecyclerViewAdapter.ViewHolder>() {
 //    private var newLanes = emptyList<RequireLane>()
 //    fun submitList(lanes:List<RequireLane>){

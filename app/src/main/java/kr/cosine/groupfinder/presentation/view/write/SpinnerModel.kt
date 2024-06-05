@@ -6,5 +6,5 @@ data class SpinnerModel(
 )
 
 data class RequireLane(
-    var lane: String?,
+    var lane: String,
 )
