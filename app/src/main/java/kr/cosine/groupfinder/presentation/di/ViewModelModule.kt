@@ -7,9 +7,11 @@ import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.scopes.ViewModelScoped
 import kr.cosine.groupfinder.data.repository.AccountRepositoryImpl
 import kr.cosine.groupfinder.data.repository.PostRepositoryImpl
+import kr.cosine.groupfinder.data.repository.RiotRepositoryImpl
 import kr.cosine.groupfinder.data.repository.TestRepositoryImpl
 import kr.cosine.groupfinder.domain.repository.AccountRepository
 import kr.cosine.groupfinder.domain.repository.PostRepository
+import kr.cosine.groupfinder.domain.repository.RiotRepository
 import kr.cosine.groupfinder.domain.repository.TestRepository
 
 @Module
@@ -33,4 +35,10 @@ abstract class ViewModelModule {
     abstract fun bindPostRepository(
         postRepositoryImpl: PostRepositoryImpl
     ): PostRepository
+
+    @Binds
+    @ViewModelScoped
+    abstract fun bindRiotRepository(
+        riotRepositoryImpl: RiotRepositoryImpl
+    ): RiotRepository
 }
