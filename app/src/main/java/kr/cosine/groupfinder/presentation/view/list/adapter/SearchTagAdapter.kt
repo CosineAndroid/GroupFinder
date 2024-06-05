@@ -6,9 +6,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kr.cosine.groupfinder.databinding.ItemTagBinding
 
-class SearchTagAdpater(
+class SearchTagAdapter(
     private val onItemClick: (Int, String) -> Unit
-) : RecyclerView.Adapter<SearchTagAdpater.SearchTagViewHolder>() {
+) : RecyclerView.Adapter<SearchTagAdapter.SearchTagViewHolder>() {
 
     inner class SearchTagViewHolder(
         private val binding: ItemTagBinding

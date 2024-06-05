@@ -28,20 +28,43 @@ import kr.cosine.groupfinder.presentation.view.account.ui.CustomColor
 import kr.cosine.groupfinder.presentation.view.account.ui.Font
 
 @Composable
-fun BaseTextField(
+fun DefaultTextField(
     modifier: Modifier = Modifier,
     hint: String = "",
     visualTransformation: VisualTransformation = VisualTransformation.None,
-    horizontalPadding: Dp = 30.dp,
+    backgroundHorizontalPadding: Dp = 30.dp,
     borderColor: Color? = null,
     onValueChange: (String) -> Unit = {}
 ) {
     var input by rememberSaveable { mutableStateOf("") }
+    BaseTextField(
+        modifier,
+        input,
+        hint,
+        visualTransformation,
+        backgroundHorizontalPadding,
+        borderColor
+    ) {
+        input = it
+        onValueChange(it)
+    }
+}
+
+@Composable
+fun BaseTextField(
+    modifier: Modifier = Modifier,
+    text: String = "",
+    hint: String = "",
+    visualTransformation: VisualTransformation = VisualTransformation.None,
+    backgroundHorizontalPadding: Dp = 30.dp,
+    borderColor: Color? = null,
+    onValueChange: (String) -> Unit = {}
+) {
     Box(
         modifier = modifier
             .fillMaxWidth()
             .height(50.dp)
-            .padding(horizontal = horizontalPadding)
+            .padding(horizontal = backgroundHorizontalPadding)
             .background(
                 color = CustomColor.BaseTextFieldBackground,
                 shape = RoundedCornerShape(8.dp)
@@ -59,7 +82,7 @@ fun BaseTextField(
             }
             .padding(horizontal = 15.dp)
     ) {
-        if (input.isEmpty()) {
+        if (text.isEmpty()) {
             BaseText(
                 text = hint,
                 fontSize = 16.sp,
@@ -68,9 +91,8 @@ fun BaseTextField(
             )
         }
         BasicTextField(
-            value = input,
+            value = text,
             onValueChange = {
-                input = it
                 onValueChange(it)
             },
             textStyle = TextStyle(

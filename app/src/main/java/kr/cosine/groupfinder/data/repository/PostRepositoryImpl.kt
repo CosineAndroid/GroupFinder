@@ -10,17 +10,17 @@ import javax.inject.Inject
 
 class PostRepositoryImpl @Inject constructor(
     private val firebaseDataSource: FirebaseDataSource
-) : PostRepository("posts") {
+) : PostRepository {
 
     override val reference: CollectionReference
-        get() = firebaseDataSource.firestore.collection(path)
+        get() = firebaseDataSource.firestore.collection("posts")
 
     override suspend fun createPost(postResponse: PostResponse) {
-        reference.document(postResponse.uniqueId).set(postResponse).await()
+        reference.document(postResponse.postUniqueId).set(postResponse).await()
     }
 
     override suspend fun deletePost(postResponse: PostResponse) {
-        reference.document(postResponse.uniqueId).delete().await()
+        reference.document(postResponse.postUniqueId).delete().await()
     }
 
     override suspend fun updatePost(postResponse: PostResponse) {
@@ -28,7 +28,7 @@ class PostRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getPosts(tags: List<String>): List<PostResponse> {
-        return reference.get().await().documents.mapNotNull { documentSnapshot ->
+        return getDocumentSnapshots().mapNotNull { documentSnapshot ->
             documentSnapshot.toObject(PostResponse::class.java)?.takeIf {
                 it.tags.containsAll(tags)
             }
