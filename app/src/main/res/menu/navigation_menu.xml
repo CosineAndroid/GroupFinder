@@ -17,7 +17,7 @@
 
         <item
             android:id="@+id/navigation_Solo"
-            android:title="솔로/듀오 랭크" />
+            android:title="듀오 랭크" />
 
         <item
             android:id="@+id/navigation_Free"
