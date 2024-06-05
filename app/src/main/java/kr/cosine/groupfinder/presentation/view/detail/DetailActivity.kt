@@ -37,13 +37,6 @@ class DetailActivity : AppCompatActivity() {
         observeData()
         detailViewModel.getTest()
         laneOnClick()
-        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
-            if (!task.isSuccessful) {
-                Log.w("FCM", "Fetching FCM registration token failed", task.exception )
-                return@OnCompleteListener
-            }
-            val token = task.result
-        })
     }
 
     private fun test() {
