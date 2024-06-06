@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GroupFinder">
         <activity
-            android:name=".presentation.view.account.login.LoginActivity"
+            android:name=".presentation.view.search.SearchTestActivity"
             android:exported="true"
             android:theme="@style/Theme.GroupFinder">
             <intent-filter>
@@ -31,5 +31,6 @@
         <activity
             android:name=".presentation.view.detail.DetailActivity"
             android:exported="true" />
+
     </application>
 </manifest>
