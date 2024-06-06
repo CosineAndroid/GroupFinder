@@ -3,6 +3,7 @@ package kr.cosine.groupfinder.presentation.view.write
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
@@ -82,6 +83,7 @@ class WriteActivity : AppCompatActivity() {
         setOnCreateRoomClickListener()
         registerTagViewModel()
         addTagsButton()
+        setGameModeText()
 
         onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
     }
@@ -98,6 +100,11 @@ class WriteActivity : AppCompatActivity() {
             }
         }
     }
+
+    private fun setGameModeText(){
+        binding.gameModeTextView.text = mode.displayName
+    }
+
 
     private fun registerTagFragment() {
         supportFragmentManager.beginTransaction()
@@ -157,6 +164,8 @@ class WriteActivity : AppCompatActivity() {
         val items = LaneSpinnerItem.laneItems
         val adapter = SpinnerAdapter(this, items)
         myLaneSpinner.adapter = adapter
+//        val spinnerBackground = myLaneSpinner.adapter as ArrayAdapter<*>
+//        spinnerBackground.dropDownViewTheme
 
         myLaneSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
@@ -192,7 +201,7 @@ class WriteActivity : AppCompatActivity() {
         binding.createRoomButton.setOnClickListener {
             val hasDuplicateLanes = checkDuplicateLanes()
             val hasDefaultLane = checkDefaultLane()
-            val title = binding.titleTextView.text.toString()
+            val title = binding.titleEditTextView.text.toString()
 
             if (title.isBlank()) {
                 Toast.makeText(this, "제목이 입력되지 않았습니다", Toast.LENGTH_SHORT).show()
@@ -208,7 +217,7 @@ class WriteActivity : AppCompatActivity() {
             }
             // 게시글 생성
             val requireLaneSelected = requireLaneRecyclerViewAdapter.getLanes().map { it.lane }
-            val body = binding.bodyTextTextView.text.toString()
+            val body = binding.bodyEditTextView.text.toString()
             val tags = tagViewModel.tags
             val ownerUniqueId = LocalAccountRegistry.uniqueId
             val selectedMyLaneText = selectedMyLane
