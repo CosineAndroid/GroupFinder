@@ -83,9 +83,10 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
         val url = "https://joinrequest-wy3rih3y5a-an.a.run.app"
         val json = JSONObject().apply {
             Log.d("FCM", "sendJoinRequest: $targetUUID, $senderUUID, $lane")
+            put("type", "join_request")
             put("targetUUID", targetUUID)
             put("senderUUID", senderUUID)
-            put("lane", lane.toString())
+            put("lane", lane.displayName)
         }
 
         val requestBody = json.toString().toRequestBody("application/json; charset=utf-8".toMediaType())

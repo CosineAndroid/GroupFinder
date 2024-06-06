@@ -7,6 +7,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
+import kr.cosine.groupfinder.data.registry.LocalAccountRegistry
 import kr.cosine.groupfinder.data.registry.LocalAccountRegistry.uniqueId
 import kr.cosine.groupfinder.databinding.ActivityDetailBinding
 import kr.cosine.groupfinder.domain.model.PostEntity
@@ -14,6 +15,7 @@ import kr.cosine.groupfinder.enums.Lane
 import kr.cosine.groupfinder.enums.TestGlobalUserData.HOST
 import kr.cosine.groupfinder.enums.TestGlobalUserData.PARTICIPANT
 import kr.cosine.groupfinder.enums.TestGlobalUserData.userID
+import kr.cosine.groupfinder.util.MyFirebaseMessagingService
 import java.util.UUID
 
 @AndroidEntryPoint
@@ -79,8 +81,18 @@ class DetailActivity : AppCompatActivity() {
     private fun laneOnClick() {
         laneAdapter.itemClick = object : DetailLaneAdapter.ItemClick {
             override fun onClick(view: View, lane: Lane) {
-                Log.d("test", "onClick: ${lane}, Empty") // 참가요청 보내는 로직
+                Log.d("test", "onClick: $lane, Empty") // 참가요청 보내는 로직
+                detailViewModel.postDetail.value?.ownerUniqueId?.let { ownerUniqueId ->
+                    MyFirebaseMessagingService().sendJoinRequest(
+                        targetUUID = ownerUniqueId,
+                        senderUUID = uniqueId,
+                        lane = lane
+                    )
+                } ?: run {
+                    Log.e("test", "ownerUniqueId is null, unable to send join request")
+                }
             }
+
 
             override fun onExitClick(view: View, lane: Lane, userName: UUID) {
                 val userRole = detailViewModel.groupRole.value
@@ -97,11 +109,4 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun sendJoinRequest(lane: Lane) {
-        val message = mapOf(
-            "type" to "join_request",
-            "lane" to lane.displayName,
-            "userId" to userID
-        )
-    }
 }
