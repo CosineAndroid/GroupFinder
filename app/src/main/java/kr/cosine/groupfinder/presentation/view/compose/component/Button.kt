@@ -1,4 +1,4 @@
-package kr.cosine.groupfinder.presentation.view.account.component
+package kr.cosine.groupfinder.presentation.view.compose.component
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height

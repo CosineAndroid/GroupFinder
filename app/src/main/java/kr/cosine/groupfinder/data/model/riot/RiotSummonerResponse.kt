@@ -1,6 +1,6 @@
 package kr.cosine.groupfinder.data.model.riot
 
-data class RiotSummonerDTO(
+data class RiotSummonerResponse(
     val id: String,
     val accountId: String,
     val puuid: String,

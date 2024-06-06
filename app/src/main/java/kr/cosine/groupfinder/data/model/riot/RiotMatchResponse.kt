@@ -2,18 +2,18 @@ package kr.cosine.groupfinder.data.model.riot
 
 import com.google.gson.annotations.SerializedName
 
-data class RiotMatchDTO(
-    val metadata: MetadataDTO?,
-    val info: InfoDTO?
+data class RiotMatchResponse(
+    val metadata: MetadataResponse?,
+    val info: InfoResponse?
 )
 
-data class MetadataDTO(
+data class MetadataResponse(
     val dataVersion: String?,
     val matchId: String?,
     val participants: List<String>?
 )
 
-data class InfoDTO(
+data class InfoResponse(
     val endOfGameResult: String?,
     val gameCreation: Long?,
     val gameDuration: Int?,
@@ -25,21 +25,21 @@ data class InfoDTO(
     val gameType: String?,
     val gameVersion: String?,
     val mapId: Int?,
-    val participants: List<ParticipantDTO>?,
+    val participants: List<ParticipantResponse>?,
     val platformId: String?,
     val queueId: Int?,
-    val teams: List<TeamDTO>?,
+    val teams: List<TeamResponse>?,
     val tournamentCode: String?
 )
 
-data class ParticipantDTO(
+data class ParticipantResponse(
     val allInPings: Int?,
     val assistMePings: Int?,
     val assists: Int?,
     val baronKills: Int?,
     val basicPings: Int?,
     val bountyLevel: Int?,
-    val challenges: ChallengesDTO?,
+    val challenges: ChallengesResponse?,
     val champExperience: Int?,
     val champLevel: Int?,
     val championId: Int?,
@@ -91,7 +91,7 @@ data class ParticipantDTO(
     val magicDamageDealt: Int?,
     val magicDamageDealtToChampions: Int?,
     val magicDamageTaken: Int?,
-    val missions: MissionsDTO?,
+    val missions: MissionsResponse?,
     val needVisionPings: Int?,
     val neutralMinionsKilled: Int?,
     val nexusKills: Int?,
@@ -102,7 +102,7 @@ data class ParticipantDTO(
     val onMyWayPings: Int?,
     val participantId: Int?,
     val pentaKills: Int?,
-    val perks: PerksDTO?,
+    val perks: PerksResponse?,
     val physicalDamageDealt: Int?,
     val physicalDamageDealtToChampions: Int?,
     val physicalDamageTaken: Int?,
@@ -165,7 +165,7 @@ data class ParticipantDTO(
     val win: Boolean?
 )
 
-data class ChallengesDTO(
+data class ChallengesResponse(
     @SerializedName("12AssistStreakCount")
     val assistStreakCount: Int?,
     @SerializedName("InfernalScalePickup")
@@ -298,7 +298,7 @@ data class ChallengesDTO(
     val wardsGuarded: Int?
 )
 
-data class MissionsDTO(
+data class MissionsResponse(
     val playerScore0: Int?,
     val playerScore1: Int?,
     val playerScore10: Int?,
@@ -313,53 +313,53 @@ data class MissionsDTO(
     val playerScore9: Int?
 )
 
-data class PerksDTO(
-    val statPerks: StatPerksDTO?,
-    val styles: List<StyleDTO>?
+data class PerksResponse(
+    val statPerks: StatPerksResponse?,
+    val styles: List<StyleResponse>?
 )
 
-data class StatPerksDTO(
+data class StatPerksResponse(
     val defense: Int?,
     val flex: Int?,
     val offense: Int?
 )
 
-data class StyleDTO(
+data class StyleResponse(
     val description: String?,
-    val selections: List<SelectionDTO>?,
+    val selections: List<SelectionResponse>?,
     val style: Int?
 )
 
-data class SelectionDTO(
+data class SelectionResponse(
     val perk: Int?,
     val var1: Int?,
     val var2: Int?,
     val var3: Int?
 )
 
-data class TeamDTO(
-    val bans: List<BanDTO>?,
-    val objectives: ObjectivesDTO?,
+data class TeamResponse(
+    val bans: List<BanResponse>?,
+    val objectives: ObjectivesResponse?,
     val teamId: Int?,
     val win: Boolean?
 )
 
-data class BanDTO(
+data class BanResponse(
     val championId: Int?,
     val pickTurn: Int?
 )
 
-data class ObjectivesDTO(
-    val baron: FirstObjectivesDTO,
-    val champion: FirstObjectivesDTO,
-    val dragon: FirstObjectivesDTO,
-    val horde: FirstObjectivesDTO,
-    val inhibitor: FirstObjectivesDTO,
-    val riftHerald: FirstObjectivesDTO,
-    val tower: FirstObjectivesDTO
+data class ObjectivesResponse(
+    val baron: FirstObjectivesResponse,
+    val champion: FirstObjectivesResponse,
+    val dragon: FirstObjectivesResponse,
+    val horde: FirstObjectivesResponse,
+    val inhibitor: FirstObjectivesResponse,
+    val riftHerald: FirstObjectivesResponse,
+    val tower: FirstObjectivesResponse
 )
 
-data class FirstObjectivesDTO(
+data class FirstObjectivesResponse(
     val first: Boolean?,
     val kills: Int?
 )

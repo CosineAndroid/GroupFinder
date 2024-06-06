@@ -1,24 +1,24 @@
 package kr.cosine.groupfinder.data.model.riot
 
-class RiotLeagueEntryDTO : ArrayList<LeagueDTO>()
+class RiotLeagueEntryResponse : ArrayList<LeagueResponse>()
 
-data class LeagueDTO(
+data class LeagueResponse(
     val leagueId: String?,
     val summonerId: String?,
-    val queueType: String?,
-    val tier: String?,
-    val rank: String?,
-    val leaguePoints: Int?,
-    val wins: Int?,
-    val losses: Int?,
+    val queueType: String,
+    val tier: String,
+    val rank: String,
+    val leaguePoints: Int,
+    val wins: Int,
+    val losses: Int,
     val hotStreak: Boolean?,
     val veteran: Boolean?,
     val freshBlood: Boolean?,
     val inactive: Boolean?,
-    val miniSeries: MiniSeriesDTO?
+    val miniSeries: MiniSeriesResponse?
 )
 
-data class MiniSeriesDTO(
+data class MiniSeriesResponse(
     val losses: Int?,
     val progress: String?,
     val target: Int?,

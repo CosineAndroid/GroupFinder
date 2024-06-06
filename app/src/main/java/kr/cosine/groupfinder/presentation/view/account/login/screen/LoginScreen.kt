@@ -39,16 +39,16 @@ import kr.cosine.groupfinder.R
 import kr.cosine.groupfinder.data.manager.LocalAccountManager
 import kr.cosine.groupfinder.data.registry.LocalAccountRegistry
 import kr.cosine.groupfinder.presentation.MainActivity
-import kr.cosine.groupfinder.presentation.view.account.component.BaseButton
-import kr.cosine.groupfinder.presentation.view.account.component.BaseScaffold
-import kr.cosine.groupfinder.presentation.view.account.component.BaseText
-import kr.cosine.groupfinder.presentation.view.account.component.BaseTextField
-import kr.cosine.groupfinder.presentation.view.account.component.LoadingScreen
-import kr.cosine.groupfinder.presentation.view.account.component.Space
+import kr.cosine.groupfinder.presentation.view.compose.component.BaseButton
+import kr.cosine.groupfinder.presentation.view.compose.component.BaseScaffold
+import kr.cosine.groupfinder.presentation.view.compose.component.BaseText
+import kr.cosine.groupfinder.presentation.view.compose.component.BaseTextField
+import kr.cosine.groupfinder.presentation.view.compose.component.LoadingScreen
+import kr.cosine.groupfinder.presentation.view.compose.component.Space
 import kr.cosine.groupfinder.presentation.view.common.intent.IntentKey
 import kr.cosine.groupfinder.presentation.view.account.login.event.LoginEvent
 import kr.cosine.groupfinder.presentation.view.account.login.model.LoginViewModel
-import kr.cosine.groupfinder.presentation.view.account.model.LoadingViewModel
+import kr.cosine.groupfinder.presentation.view.compose.model.LoadingViewModel
 import kr.cosine.groupfinder.presentation.view.account.register.RegisterActivity
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")

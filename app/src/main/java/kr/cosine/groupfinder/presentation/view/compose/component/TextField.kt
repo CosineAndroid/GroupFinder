@@ -1,4 +1,4 @@
-package kr.cosine.groupfinder.presentation.view.account.component
+package kr.cosine.groupfinder.presentation.view.compose.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kr.cosine.groupfinder.R
-import kr.cosine.groupfinder.presentation.view.account.ui.Font
+import kr.cosine.groupfinder.presentation.view.compose.ui.Font
 
 @Composable
 fun DefaultTextField(

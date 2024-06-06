@@ -7,4 +7,8 @@ object IntentKey {
     const val PASSWORD = "password"
 
     const val MODE = "mode"
+
+    const val NICKNAME = "nickname"
+
+    const val TAG = "tag"
 }
