@@ -38,24 +38,24 @@ class DetailViewModel @Inject constructor(private val repositry: PostRepository)
     private fun checkRole() {
         _groupRole.value = when {
             uuID == null -> NONE
-            postDetail.value?.uniqueId != uuID -> ANOTHER
-            uuID == postDetail.value?.uniqueId && userID == postDetail.value?.id -> HOST
+            postDetail.value?.postUniqueId != uuID -> ANOTHER
+            uuID == postDetail.value?.postUniqueId && userID == postDetail.value?.ownerUniqueId.toString() -> HOST
             else -> PARTICIPANT
         }
     }
 
     fun getTest() {
-        val uniqueId = UUID.fromString("f22b0151-5145-42ad-bbfb-4272b23fa57f")
+        val postUniqueId = UUID.fromString("f22b0151-5145-42ad-bbfb-4272b23fa57f")
         val mode = Mode.NORMAL
         val title = "Dummy Title"
         val body = "Dummy Body"
-        val id = "faker#KR1"
+        val ownerUniqueId = UUID.fromString("56ab6671-2fdd-4e89-9b0c-82ce2f004331")
         val tags = listOf("tag1", "tag2", "tag3")
-        val laneMap = mapOf(Lane.TOP to "player1", Lane.MID to "player2", Lane.SUPPORT to null)
+        val laneMap = mapOf(Lane.TOP to UUID.fromString("56ab6671-2fdd-4e89-9b0c-82ce2f004331"), Lane.SUPPORT to null)
         val time = Timestamp.now()
 
 
-        _postDetail.value = PostEntity(uniqueId, mode, title, body, id, tags, laneMap, time)
+        _postDetail.value = PostEntity(postUniqueId, mode, title, body, ownerUniqueId, tags, laneMap, time)
         checkRole()
     }
 
