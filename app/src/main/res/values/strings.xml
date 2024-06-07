@@ -1,9 +1,10 @@
 <resources>
     <string name="app_name">GroupFinder</string>
     <string name="profile_title">내 프로필</string>
-    <string name="profile_id_title">아이디</string>
-    <string name="profile_id_replacer">아이디#KR1</string>
+    <string name="profile_id_title">닉네임</string>
+    <string name="profile_id_replacer">닉네임#KR1</string>
     <string name="profile_group_title">참여중인 그룹</string>
+    <string name="profile_logout_title">로그아웃</string>
     <string name="profile_withdraw_title">탈퇴하기</string>
     <string name="group_title_format">%s</string>
     <string name="group_id_format">%s</string>
@@ -20,4 +21,6 @@
     <string name="register_tag_hint">태그</string>
     <string name="open_navigation">Open Navigation Drawer</string>
     <string name="close_navigation">Close Navigation Drawer</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

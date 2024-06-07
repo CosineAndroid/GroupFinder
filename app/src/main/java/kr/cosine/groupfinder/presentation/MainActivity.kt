@@ -13,6 +13,10 @@ import kr.cosine.groupfinder.R
 import kr.cosine.groupfinder.databinding.ActivityMainBinding
 import kr.cosine.groupfinder.enums.Mode
 import kr.cosine.groupfinder.presentation.view.list.GroupFragment
+import kr.cosine.groupfinder.presentation.view.list.FreeFragment
+import kr.cosine.groupfinder.presentation.view.list.NormalFragment
+import kr.cosine.groupfinder.presentation.view.list.SoloFragment
+import kr.cosine.groupfinder.presentation.view.list.WindFragment
 import kr.cosine.groupfinder.presentation.view.profile.ProfileFragment
 
 @AndroidEntryPoint
@@ -60,11 +64,22 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 supportFragmentManager.beginTransaction()
                     .replace(R.id.fragment_container, GroupFragment(Mode.NORMAL)).commit()
             }
-
-            R.id.navigation_Normal -> Toast.makeText(this, "일반", Toast.LENGTH_SHORT).show()
-            R.id.navigation_Wind -> Toast.makeText(this, "칼바람 나락", Toast.LENGTH_SHORT).show()
-            R.id.navigation_Solo -> Toast.makeText(this, "솔로/듀오 랭크", Toast.LENGTH_SHORT).show()
-            R.id.navigation_Free -> Toast.makeText(this, "자유랭크", Toast.LENGTH_SHORT).show()
+            R.id.navigation_Normal -> {
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, NormalFragment()).commit()
+            }
+            R.id.navigation_Wind -> {
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, WindFragment()).commit()
+            }
+            R.id.navigation_Solo -> {
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, SoloFragment()).commit()
+            }
+            R.id.navigation_Free -> {
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, FreeFragment()).commit()
+            }
             R.id.navigation_myProfile -> {
                 supportFragmentManager.beginTransaction()
                     .replace(R.id.fragment_container, ProfileFragment()).commit()

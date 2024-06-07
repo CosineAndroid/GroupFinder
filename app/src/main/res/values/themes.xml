@@ -5,13 +5,13 @@
         <item name="colorOnPrimary">@color/black</item>
         <item name="android:windowDisablePreview">true</item>
         <item name="android:windowBackground">@color/background</item>
-        <item name="android:windowIsTranslucent">true</item>​
+        <item name="android:windowIsTranslucent">true</item>
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
     </style>
 
     <style name="navigationItemTextAppearance">
-        <item name="android:textColor">@color/black</item>
-        <item name="android:textSize">40sp</item>
+        <item name="android:textColor">#C8CDDB</item>
+        <item name="android:textSize">16sp</item>
     </style>
 
     <style name="RoundCornerBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
