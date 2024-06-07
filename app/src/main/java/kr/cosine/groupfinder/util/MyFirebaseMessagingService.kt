@@ -1,16 +1,24 @@
 package kr.cosine.groupfinder.util
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
+import android.os.Build
+import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.view.ContextThemeWrapper
+import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import kr.cosine.groupfinder.GroupFinderApplication
 import kr.cosine.groupfinder.R
 import kr.cosine.groupfinder.enums.Lane
+import kr.cosine.groupfinder.presentation.MainActivity
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.MediaType.Companion.toMediaType
@@ -21,26 +29,23 @@ import okhttp3.Response
 import okio.IOException
 import org.json.JSONObject
 import java.util.UUID
+import kotlin.random.Random
 
-class MyFirebaseMessagingService: FirebaseMessagingService() {
+class MyFirebaseMessagingService : FirebaseMessagingService() {
 
 
     override fun onMessageReceived(message: RemoteMessage) {
         val myApp = applicationContext as GroupFinderApplication
-        Log.d("FCM", "onMessageReceived: Work, $message")
-        if (myApp.isForeground()) {
-            message.data.let { data ->
-                val messageType = data["type"]
-                when (messageType) {
-                    "join_request" -> showJoinRequestDialog(myApp.getCurrentActivity(),data)
-                    "join_denied" -> showJoinDeniedDialog(myApp.getCurrentActivity())
-                    "force_exit" -> showForceExitDialog(myApp.getCurrentActivity())
-                    // 다른 메시지 유형에 대한 처리 추가시 타입과 함수 추가.
-                }
+        message.data.let { data ->
+            val messageType = data["type"]
+            when (messageType) {
+                "join_request" -> showJoinRequestDialog(myApp.getCurrentActivity(), data)
+                "join_denied" -> showJoinDeniedDialog(myApp.getCurrentActivity())
+                "force_exit" -> showForceExitDialog(myApp.getCurrentActivity())
+                // 다른 메시지 유형에 대한 처리 추가시 타입과 함수 추가.
             }
-        } else {
-            super.onMessageReceived(message)
         }
+
     }
 
     override fun onNewToken(token: String) {
@@ -56,7 +61,8 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
 
         }
 
-        val requestBody = json.toString().toRequestBody("application/json; charset=utf-8".toMediaType())
+        val requestBody =
+            json.toString().toRequestBody("application/json; charset=utf-8".toMediaType())
 
         val request = Request.Builder()
             .url(url)
@@ -90,7 +96,8 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
             put("postUUID", postUUID)
         }
 
-        val requestBody = json.toString().toRequestBody("application/json; charset=utf-8".toMediaType())
+        val requestBody =
+            json.toString().toRequestBody("application/json; charset=utf-8".toMediaType())
 
         val request = Request.Builder()
             .url(url)
@@ -116,11 +123,14 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
     }
 
 
-    private fun showJoinRequestDialog(context: Context, data: Map<String, String>) {
+    fun showJoinRequestDialog(context: Context, data: Map<String, String>) {
         Handler(Looper.getMainLooper()).post {
             val participantName = data["name"]
             val participantLane = data["lane"]
-            val contextWrapper = ContextThemeWrapper(context, R.style.Theme_GroupFinder) // AppTheme을 사용하거나 알맞은 테마로 변경
+            val contextWrapper = ContextThemeWrapper(
+                context,
+                R.style.Theme_GroupFinder
+            ) // AppTheme을 사용하거나 알맞은 테마로 변경
             val dialogBuilder = AlertDialog.Builder(contextWrapper)
             dialogBuilder.setTitle("참가 요청")
             dialogBuilder.setMessage("${participantName}님이 ${participantLane}에 참가를 요청 합니다.")
@@ -135,28 +145,40 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
         }
     }
 
-    private fun showJoinDeniedDialog(context: Context) {
-        val contextWrapper = ContextThemeWrapper(context, R.style.Theme_GroupFinder) // AppTheme을 사용하거나 알맞은 테마로 변경
-        val dialogBuilder = AlertDialog.Builder(contextWrapper)
-        dialogBuilder.setTitle("요청 거부")
-        dialogBuilder.setMessage("죄송합니다, 방 참가 요청이 거부되었습니다.")
-        dialogBuilder.setPositiveButton("확인")  { dialog, which ->
-            dialog.dismiss()
+    fun showJoinDeniedDialog(context: Context) {
+        Handler(Looper.getMainLooper()).post{
+            val contextWrapper = ContextThemeWrapper(
+                context,
+                R.style.Theme_GroupFinder
+            )
+            val dialogBuilder = AlertDialog.Builder(contextWrapper)
+            dialogBuilder.setTitle("참가 거절")
+            dialogBuilder.setMessage("참가 요청이 거절되었습니다.")
+            dialogBuilder.setPositiveButton("확인") { dialog, _ ->
+                dialog.dismiss()
+            }
+            val dialog = dialogBuilder.create()
+            dialog.show()
         }
-        val dialog = dialogBuilder.create()
-        dialog.show()
     }
 
-    private fun showForceExitDialog(context: Context) {
-        val contextWrapper = ContextThemeWrapper(context, R.style.Theme_GroupFinder) // AppTheme을 사용하거나 알맞은 테마로 변경
-        val dialogBuilder = AlertDialog.Builder(contextWrapper)
-        dialogBuilder.setTitle("강제 퇴장")
-        dialogBuilder.setMessage("죄송합니다, 강퇴되었습니다.")
-        dialogBuilder.setPositiveButton("확인")  { dialog, which ->
-            dialog.dismiss()
+
+
+    fun showForceExitDialog(context: Context) {
+        Handler(Looper.getMainLooper()).post{
+            val contextWrapper = ContextThemeWrapper(
+                context,
+                R.style.Theme_GroupFinder
+            )
+            val dialogBuilder = AlertDialog.Builder(contextWrapper)
+            dialogBuilder.setTitle("강제 퇴장")
+            dialogBuilder.setMessage("강제 퇴장되었습니다.")
+            dialogBuilder.setPositiveButton("확인") { dialog, _ ->
+                dialog.dismiss()
+            }
+            val dialog = dialogBuilder.create()
+            dialog.show()
         }
-        val dialog = dialogBuilder.create()
-        dialog.show()
     }
 
 
