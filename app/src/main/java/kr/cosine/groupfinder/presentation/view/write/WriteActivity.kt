@@ -28,6 +28,7 @@ import kr.cosine.groupfinder.databinding.ActivityWriteBinding
 import kr.cosine.groupfinder.enums.Lane
 import kr.cosine.groupfinder.enums.Mode
 import kr.cosine.groupfinder.presentation.view.common.adapter.TagAdapter
+import kr.cosine.groupfinder.presentation.view.common.code.Code
 import kr.cosine.groupfinder.presentation.view.common.intent.IntentKey
 import kr.cosine.groupfinder.presentation.view.common.model.TagViewModel
 import kr.cosine.groupfinder.presentation.view.list.event.TagEvent
@@ -227,7 +228,7 @@ class WriteActivity : AppCompatActivity() {
             lanes[selectedMyLane] = ownerUniqueId
             writeViewModel.createPost(mode, title, body, ownerUniqueId, tags, lanes)
             Toast.makeText(this, "생성이 완료되었습니다", Toast.LENGTH_SHORT).show()
-            setResult(RESULT_OK)
+            setResult(Code.SUCCESS_CREATE_POST)
             finish()
         }
     }
