@@ -2,7 +2,9 @@ package kr.cosine.groupfinder.data.repository
 
 import com.google.firebase.firestore.CollectionReference
 import kotlinx.coroutines.tasks.await
+import kr.cosine.groupfinder.data.extension.isJoinedPeople
 import kr.cosine.groupfinder.data.model.PostResponse
+import kr.cosine.groupfinder.data.registry.LocalAccountRegistry
 import kr.cosine.groupfinder.data.remote.FirebaseDataSource
 import kr.cosine.groupfinder.domain.repository.PostRepository
 import java.util.UUID
@@ -30,7 +32,7 @@ class PostRepositoryImpl @Inject constructor(
     override suspend fun getPosts(tags: Set<String>): List<PostResponse> {
         return getDocumentSnapshots().mapNotNull { documentSnapshot ->
             documentSnapshot.toObject(PostResponse::class.java)?.takeIf {
-                it.tags.containsAll(tags)
+                it.isJoinedPeople(LocalAccountRegistry.uniqueId) || it.tags.containsAll(tags)
             }
         }
     }

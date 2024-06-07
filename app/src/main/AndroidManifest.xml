@@ -35,5 +35,6 @@
         <activity
             android:name=".presentation.view.detail.DetailActivity"
             android:exported="true" />
+
     </application>
 </manifest>

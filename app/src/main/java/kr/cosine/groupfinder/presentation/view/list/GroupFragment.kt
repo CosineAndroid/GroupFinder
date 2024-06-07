@@ -6,7 +6,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -20,12 +23,14 @@ import kr.cosine.groupfinder.databinding.FragmentGroupBinding
 import kr.cosine.groupfinder.enums.Mode
 import kr.cosine.groupfinder.presentation.view.list.adapter.GroupAdpater
 import kr.cosine.groupfinder.presentation.view.common.adapter.TagAdapter
+import kr.cosine.groupfinder.presentation.view.common.code.Code
 import kr.cosine.groupfinder.presentation.view.common.intent.IntentKey
 import kr.cosine.groupfinder.presentation.view.list.adapter.decoration.GroupTagItemDecoration
 import kr.cosine.groupfinder.presentation.view.list.event.TagEvent
 import kr.cosine.groupfinder.presentation.view.list.model.GroupViewModel
 import kr.cosine.groupfinder.presentation.view.common.model.TagViewModel
 import kr.cosine.groupfinder.presentation.view.list.state.GroupUiState
+import kr.cosine.groupfinder.presentation.view.search.SearchFragment
 import kr.cosine.groupfinder.presentation.view.write.WriteActivity
 
 @AndroidEntryPoint
@@ -42,6 +47,8 @@ class GroupFragment(
     private lateinit var groupAdpater: GroupAdpater
     private lateinit var tagAdapter: TagAdapter
 
+    private lateinit var writeActivityResultLauncher: ActivityResultLauncher<Intent>
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -54,6 +61,7 @@ class GroupFragment(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         registerProgressBar()
+        registerWriteActivityResultLauncher()
         registerSwipeRefreshLayout()
         registerGroupRecyclerView()
         registerTagRecyclerView()
@@ -69,6 +77,15 @@ class GroupFragment(
             context.getColor(R.color.white),
             PorterDuff.Mode.MULTIPLY
         )
+    }
+
+    private fun registerWriteActivityResultLauncher() {
+        writeActivityResultLauncher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+            if (result.resultCode != Code.SUCCESS_CREATE_POST) return@registerForActivityResult
+            search()
+        }
     }
 
     private fun registerSwipeRefreshLayout() = with(binding.swipeRefreshLayout) {
@@ -98,7 +115,7 @@ class GroupFragment(
             tagViewModel.clearTags()
         }
         showAllTagImageButton.setOnClickListener {
-
+            openBottomSheet()
         }
         searchImageButton.setOnClickListener {
             search()
@@ -113,8 +130,14 @@ class GroupFragment(
         setOnClickListener {
             val intent = Intent(context, WriteActivity::class.java)
             intent.putExtra(IntentKey.MODE, mode)
-            startActivity(intent)
+            writeActivityResultLauncher.launch(intent)
         }
+    }
+
+    private fun openBottomSheet() {
+        val searchFragment = SearchFragment()
+        searchFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerBottomSheetDialogTheme)
+        searchFragment.show(childFragmentManager, "searchFragment")
     }
 
     private fun registerGroupViewModelEvent() = with(binding) {
