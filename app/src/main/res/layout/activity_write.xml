@@ -2,9 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+    android:id="@+id/writeActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
     android:clickable="true"
     tools:context=".presentation.view.write.WriteActivity">
 
@@ -23,53 +24,116 @@
             android:layout_height="0dp">
 
             <TextView
-                android:id="@+id/gameModeTextView"
-                android:layout_width="wrap_content"
+                android:id="@+id/titleTextView1"
+                android:layout_width="40dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:text="일반"
-                android:textColor="@color/black"
-                android:textSize="20sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <EditText
-                android:id="@+id/titleTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:background="@android:color/transparent"
-                android:hint="제목을 입력하세요"
-                android:maxLines="2"
-                android:textColor="@color/black"
-                android:textSize="23sp"
+                android:text="제목"
+                android:textColor="#C8CDDB"
+                android:textSize="14sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="@+id/gameModeTextView"
                 app:layout_constraintTop_toBottomOf="@+id/gameModeTextView" />
 
+            <TextView
+                android:id="@+id/gameModeTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="36dp"
+                android:text="일반 모드"
+                android:textColor="@color/white"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/createRoomButton"
+                android:layout_width="60dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/buttoncustom_write"
+                android:text="생성"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
-                android:id="@+id/bodyTextTextView"
-                android:layout_width="300dp"
+                android:id="@+id/titleEditTextView"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="5dp"
+                android:inputType="text"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/edittext_box"
+                android:gravity="start"
+
+                android:hint="제목을 입력하세요"
+                android:maxWidth="300dp"
+                android:maxLength="25"
+                android:singleLine="true"
+                android:maxLines="1"
+                android:paddingStart="10dp"
+                android:paddingTop="5dp"
+                android:textColor="#E1E1E1"
+                android:textColorHint="#B6B6B6"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/gameModeTextView"
+                app:layout_constraintTop_toBottomOf="@+id/titleTextView1" />
+
+            <TextView
+                android:id="@+id/bodyTextView"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="내용"
+                android:layout_marginTop="10dp"
+                android:textColor="#C8CDDB"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/titleEditTextView"
+                app:layout_constraintTop_toBottomOf="@+id/titleEditTextView" />
+
+
+            <EditText
+                android:id="@+id/bodyEditTextView"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/edittext_box"
+                android:ellipsize="end"
+                android:gravity="start"
+                android:paddingEnd="10dp"
                 android:hint="내용을 입력하세요"
+                android:layout_marginEnd="16dp"
+                android:maxLength="50"
                 android:maxLines="3"
-                android:textSize="15sp"
-                app:layout_constraintStart_toStartOf="@+id/titleTextView"
-                app:layout_constraintTop_toBottomOf="@+id/titleTextView" />
+                android:paddingStart="10dp"
+                android:paddingTop="5dp"
+                android:textColor="#E1E1E1"
+                android:textColorHint="#B6B6B6"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/bodyTextView"
+                app:layout_constraintTop_toBottomOf="@+id/bodyTextView" />
 
             <TextView
                 android:id="@+id/tagTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
-                android:text="태그"
-                android:textColor="@color/black"
+                android:text="태그 설정"
+                android:textColor="#C8CDDB"
                 android:textSize="17sp"
                 android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="@+id/bodyTextTextView"
-                app:layout_constraintTop_toBottomOf="@+id/bodyTextTextView" />
+                app:layout_constraintStart_toStartOf="@+id/bodyEditTextView"
+                app:layout_constraintTop_toBottomOf="@+id/bodyEditTextView" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/tagbackgroundCardView"
@@ -96,36 +160,44 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/writeTagRecyclerView"
-                android:layout_width="wrap_content"
-                android:layout_height="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:clipToPadding="false"
+                android:paddingEnd="5dp"
+                android:paddingBottom="1dp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/tagTextView"
                 app:layout_constraintTop_toBottomOf="@+id/tagTextView"
-                tools:itemCount="2"
+                tools:itemCount="1"
                 tools:listitem="@layout/item_tag_with_remove" />
 
             <TextView
                 android:id="@+id/myLaneTextview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="46dp"
+                android:layout_marginTop="16dp"
                 android:text="내 라인"
-                android:textColor="@color/black"
+                android:textColor="#C8CDDB"
                 android:textSize="17sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="@+id/tagTextView"
-                app:layout_constraintTop_toBottomOf="@+id/tagTextView" />
+                app:layout_constraintTop_toBottomOf="@+id/writeTagRecyclerView" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardView2"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="50dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="200dp"
-                app:cardCornerRadius="10dp"
+                android:layout_marginEnd="16dp"
+                app:cardBackgroundColor="#232323"
+                app:cardCornerRadius="5dp"
                 app:cardElevation="1dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -137,8 +209,10 @@
 
                     <Spinner
                         android:id="@+id/selectMyLaneSpinner"
-                        android:layout_width="200dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:popupBackground="@color/group_default_background"
+                        android:layout_marginStart="10dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -152,21 +226,20 @@
                 android:id="@+id/needLaneTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="60dp"
+                android:layout_marginTop="10dp"
                 android:text="필요한 라인"
-                android:textColor="@color/black"
+                android:textColor="#C8CDDB"
                 android:textSize="17sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="@+id/myLaneTextview"
-                app:layout_constraintTop_toBottomOf="@+id/myLaneTextview" />
+                app:layout_constraintTop_toBottomOf="@+id/cardView2" />
 
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/requireLanesRecyclerView"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:layout_marginEnd="75dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/needLaneTextView"
@@ -195,24 +268,28 @@
                         android:id="@+id/plusLaneImageView"
                         android:layout_width="15dp"
                         android:layout_height="15dp"
-                        android:src="@drawable/ic_app_plus" />
+                        android:src="@drawable/ic_app_plus"
+                        app:tint="@color/white" />
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
+            <FrameLayout
+                android:id="@+id/writeInSearchLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:translationZ="1dp"
+                android:visibility="invisible"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/writeTagRecyclerView">
+
+            </FrameLayout>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     </ScrollView>
 
-    <Button
-        android:id="@+id/createRoomButton"
-        android:layout_width="110dp"
-        android:layout_height="40dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/buttoncustom_write"
-        android:text="생성하기"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

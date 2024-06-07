@@ -16,4 +16,15 @@ enum class Lane(
     fun getDrawableIdByOwner(hasOwner: Boolean): Int {
         return if (hasOwner) drawableId else emptyDrawableId
     }
+
+    companion object {
+        val values = entries
+        fun findLaneByDisplayName(displayName: String): Lane? {
+            return values.find { it.displayName == displayName }
+        }
+
+        fun getLaneByDisplayName(displayName: String): Lane {
+            return findLaneByDisplayName(displayName) ?: throw IllegalArgumentException()
+        }
+    }
 }

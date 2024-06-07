@@ -5,13 +5,13 @@ import kr.cosine.groupfinder.domain.model.PostEntity
 
 fun PostEntity.toPostResponse(): PostResponse {
     return PostResponse(
-        uniqueId = uniqueId.toString(),
+        postUniqueId = postUniqueId.toString(),
         mode = mode.name,
         title = title,
         body = body,
-        id = id,
+        ownerUniqueId = ownerUniqueId.toString(),
         tags = tags,
-        laneMap = laneMap.mapKeys { it.key.name },
+        laneMap = laneMap.entries.associate { it.key.name to it.value?.toString() },
         time = time
     )
 }

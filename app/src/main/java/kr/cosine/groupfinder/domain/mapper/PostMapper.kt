@@ -8,13 +8,15 @@ import java.util.UUID
 
 fun PostResponse.toEntity(): PostEntity {
     return PostEntity(
-        uniqueId = UUID.fromString(uniqueId),
+        postUniqueId = UUID.fromString(postUniqueId),
         mode = Mode.valueOf(mode),
         title = title,
         body = body,
-        id = id,
+        ownerUniqueId = UUID.fromString(ownerUniqueId),
         tags = tags,
-        laneMap = laneMap.mapKeys { Lane.valueOf(it.key) }.toSortedMap(compareBy { it.ordinal }),
+        laneMap = laneMap.entries.associate { (lane, uniqueId) ->
+            Lane.valueOf(lane) to uniqueId?.let { UUID.fromString(it) }
+        }.toSortedMap(compareBy { it.ordinal }),
         time = time
     )
 }

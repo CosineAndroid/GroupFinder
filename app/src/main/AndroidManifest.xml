@@ -24,9 +24,13 @@
         </activity>
         <activity
             android:name=".presentation.view.account.register.RegisterActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".presentation.view.write.WriteActivity"
+            android:exported="true" />
+        <activity
+            android:name=".presentation.MainActivity"
             android:exported="true" />
         <activity
             android:name=".presentation.view.detail.DetailActivity"
