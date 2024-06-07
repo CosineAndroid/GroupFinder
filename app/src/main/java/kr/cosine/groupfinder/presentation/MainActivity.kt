@@ -2,7 +2,6 @@ package kr.cosine.groupfinder.presentation
 
 import android.os.Bundle
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -13,10 +12,10 @@ import kr.cosine.groupfinder.R
 import kr.cosine.groupfinder.databinding.ActivityMainBinding
 import kr.cosine.groupfinder.enums.Mode
 import kr.cosine.groupfinder.presentation.view.list.GroupFragment
-import kr.cosine.groupfinder.presentation.view.list.FreeFragment
+import kr.cosine.groupfinder.presentation.view.list.FlexFragment
 import kr.cosine.groupfinder.presentation.view.list.NormalFragment
-import kr.cosine.groupfinder.presentation.view.list.SoloFragment
-import kr.cosine.groupfinder.presentation.view.list.WindFragment
+import kr.cosine.groupfinder.presentation.view.list.DuoFragment
+import kr.cosine.groupfinder.presentation.view.list.AramFragment
 import kr.cosine.groupfinder.presentation.view.profile.ProfileFragment
 
 @AndroidEntryPoint
@@ -70,15 +69,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             R.id.navigation_Wind -> {
                 supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, WindFragment()).commit()
+                    .replace(R.id.fragment_container, AramFragment()).commit()
             }
             R.id.navigation_Solo -> {
                 supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, SoloFragment()).commit()
+                    .replace(R.id.fragment_container, DuoFragment()).commit()
             }
             R.id.navigation_Free -> {
                 supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, FreeFragment()).commit()
+                    .replace(R.id.fragment_container, FlexFragment()).commit()
             }
             R.id.navigation_myProfile -> {
                 supportFragmentManager.beginTransaction()
