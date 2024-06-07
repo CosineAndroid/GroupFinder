@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -29,6 +30,7 @@ import kr.cosine.groupfinder.presentation.view.list.event.TagEvent
 import kr.cosine.groupfinder.presentation.view.list.model.GroupViewModel
 import kr.cosine.groupfinder.presentation.view.common.model.TagViewModel
 import kr.cosine.groupfinder.presentation.view.list.state.GroupUiState
+import kr.cosine.groupfinder.presentation.view.search.SearchFragment
 import kr.cosine.groupfinder.presentation.view.write.WriteActivity
 
 @AndroidEntryPoint
@@ -113,7 +115,7 @@ class GroupFragment(
             tagViewModel.clearTags()
         }
         showAllTagImageButton.setOnClickListener {
-
+            openBottomSheet()
         }
         searchImageButton.setOnClickListener {
             search()
@@ -130,6 +132,12 @@ class GroupFragment(
             intent.putExtra(IntentKey.MODE, mode)
             writeActivityResultLauncher.launch(intent)
         }
+    }
+
+    private fun openBottomSheet() {
+        val searchFragment = SearchFragment()
+        searchFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerBottomSheetDialogTheme)
+        searchFragment.show(childFragmentManager, "searchFragment")
     }
 
     private fun registerGroupViewModelEvent() = with(binding) {
