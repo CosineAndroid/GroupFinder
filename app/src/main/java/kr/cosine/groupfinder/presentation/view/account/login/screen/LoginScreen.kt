@@ -45,11 +45,12 @@ import kr.cosine.groupfinder.presentation.view.compose.component.BaseText
 import kr.cosine.groupfinder.presentation.view.compose.component.BaseTextField
 import kr.cosine.groupfinder.presentation.view.compose.component.LoadingScreen
 import kr.cosine.groupfinder.presentation.view.compose.component.Space
-import kr.cosine.groupfinder.presentation.view.common.intent.IntentKey
 import kr.cosine.groupfinder.presentation.view.account.login.event.LoginEvent
 import kr.cosine.groupfinder.presentation.view.account.login.model.LoginViewModel
 import kr.cosine.groupfinder.presentation.view.compose.model.LoadingViewModel
 import kr.cosine.groupfinder.presentation.view.account.register.RegisterActivity
+import kr.cosine.groupfinder.presentation.view.common.data.Code
+import kr.cosine.groupfinder.presentation.view.common.data.IntentKey
 import kr.cosine.groupfinder.presentation.view.common.util.ActivityUtil
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -189,7 +190,7 @@ private fun getRegisterResultLanuncher(
     return rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult()
     ) { result ->
-        if (result.resultCode != Activity.RESULT_OK) return@rememberLauncherForActivityResult
+        if (result.resultCode != Code.SUCCESS_REGISTER_ACCOUNT) return@rememberLauncherForActivityResult
         val intent = result.data ?: return@rememberLauncherForActivityResult
 
         val id = intent.getStringExtra(IntentKey.ID) ?: return@rememberLauncherForActivityResult

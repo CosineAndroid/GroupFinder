@@ -33,13 +33,14 @@ import kr.cosine.groupfinder.presentation.view.compose.component.BaseButton
 import kr.cosine.groupfinder.presentation.view.compose.component.BaseScaffold
 import kr.cosine.groupfinder.presentation.view.compose.component.DefaultTextField
 import kr.cosine.groupfinder.presentation.view.compose.component.LoadingScreen
-import kr.cosine.groupfinder.presentation.view.common.intent.IntentKey
 import kr.cosine.groupfinder.presentation.view.account.login.LoginActivity
 import kr.cosine.groupfinder.presentation.view.compose.model.LoadingViewModel
 import kr.cosine.groupfinder.presentation.view.account.register.screen.component.InfoTextField
 import kr.cosine.groupfinder.presentation.view.account.register.event.RegisterEvent
 import kr.cosine.groupfinder.presentation.view.account.register.model.RegisterViewModel
 import kr.cosine.groupfinder.presentation.view.account.register.state.RegisterErrorUiState
+import kr.cosine.groupfinder.presentation.view.common.data.Code
+import kr.cosine.groupfinder.presentation.view.common.data.IntentKey
 
 private val RegisterErrorUiState.color
     @Composable
@@ -132,7 +133,7 @@ private suspend fun onRegisterEvent(
                     putExtra(IntentKey.ID, accountEntity.id)
                     putExtra(IntentKey.PASSWORD, accountEntity.password)
                 }
-                activity.setResult(Activity.RESULT_OK, intent)
+                activity.setResult(Code.SUCCESS_REGISTER_ACCOUNT, intent)
                 activity.finish()
                 loadingViewModel.hide()
             }
