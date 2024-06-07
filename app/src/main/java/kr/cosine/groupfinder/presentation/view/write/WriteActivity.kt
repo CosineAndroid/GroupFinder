@@ -3,7 +3,6 @@ package kr.cosine.groupfinder.presentation.view.write
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
@@ -164,9 +163,6 @@ class WriteActivity : AppCompatActivity() {
         val items = LaneSpinnerItem.laneItems
         val adapter = SpinnerAdapter(this, items)
         myLaneSpinner.adapter = adapter
-//        val spinnerBackground = myLaneSpinner.adapter as ArrayAdapter<*>
-//        spinnerBackground.dropDownViewTheme
-
         myLaneSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>?,
@@ -231,6 +227,7 @@ class WriteActivity : AppCompatActivity() {
             lanes[selectedMyLane] = ownerUniqueId
             writeViewModel.createPost(mode, title, body, ownerUniqueId, tags, lanes)
             Toast.makeText(this, "생성이 완료되었습니다", Toast.LENGTH_SHORT).show()
+            setResult(RESULT_OK)
             finish()
         }
     }
