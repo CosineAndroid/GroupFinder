@@ -79,14 +79,15 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
         })
     }
 
-    fun sendJoinRequest(targetUUID: UUID, senderUUID: UUID, lane: Lane) {
+    fun sendJoinRequest(targetUUID: UUID, senderUUID: UUID, lane: Lane, postUUID: UUID) {
         val url = "https://joinrequest-wy3rih3y5a-an.a.run.app"
         val json = JSONObject().apply {
             Log.d("FCM", "sendJoinRequest: $targetUUID, $senderUUID, $lane")
             put("type", "join_request")
             put("targetUUID", targetUUID)
             put("senderUUID", senderUUID)
-            put("lane", lane.displayName)
+            put("lane", lane)
+            put("postUUID", postUUID)
         }
 
         val requestBody = json.toString().toRequestBody("application/json; charset=utf-8".toMediaType())

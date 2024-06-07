@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.Timestamp
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import kr.cosine.groupfinder.data.registry.LocalAccountRegistry.uniqueId
 import kr.cosine.groupfinder.domain.mapper.toEntity
 import kr.cosine.groupfinder.domain.model.PostEntity
 import kr.cosine.groupfinder.domain.repository.PostRepository
@@ -16,7 +17,6 @@ import kr.cosine.groupfinder.enums.TestGlobalUserData.ANOTHER
 import kr.cosine.groupfinder.enums.TestGlobalUserData.HOST
 import kr.cosine.groupfinder.enums.TestGlobalUserData.NONE
 import kr.cosine.groupfinder.enums.TestGlobalUserData.PARTICIPANT
-import kr.cosine.groupfinder.enums.TestGlobalUserData.userID
 import kr.cosine.groupfinder.enums.TestGlobalUserData.uuID
 import java.util.UUID
 import javax.inject.Inject
@@ -39,7 +39,7 @@ class DetailViewModel @Inject constructor(private val repositry: PostRepository)
         _groupRole.value = when {
             uuID == null -> NONE
             postDetail.value?.postUniqueId != uuID -> ANOTHER
-            uuID == postDetail.value?.postUniqueId && userID == postDetail.value?.ownerUniqueId.toString() -> HOST
+            uuID == postDetail.value?.postUniqueId && uniqueId == postDetail.value?.ownerUniqueId -> HOST
             else -> PARTICIPANT
         }
     }
