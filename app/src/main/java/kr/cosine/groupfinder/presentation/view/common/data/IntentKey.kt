@@ -1,4 +1,4 @@
-package kr.cosine.groupfinder.presentation.view.common.intent
+package kr.cosine.groupfinder.presentation.view.common.data
 
 object IntentKey {
 

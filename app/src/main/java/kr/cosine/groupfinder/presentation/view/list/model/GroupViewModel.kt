@@ -32,12 +32,12 @@ class GroupViewModel @Inject constructor(
                 if (postItems.isEmpty()) {
                     GroupUiState.ResultEmpty
                 } else {
-                    GroupUiState.Result(postItems)
+                    GroupUiState.Success(postItems)
                 }
             }
         }.onFailure {
             _uiState.update {
-                GroupUiState.Unknown
+                GroupUiState.UnknownFail
             }
         }
     }
