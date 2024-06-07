@@ -1,6 +1,5 @@
 package kr.cosine.groupfinder.presentation.view.write.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -46,7 +45,7 @@ class RequireLaneRecyclerViewAdapter(
             val adapter = RequireLaneSpinnerAdapter(binding.root.context, LaneSpinnerItem.laneItems)
             spinner.adapter = adapter
 
-            binding.tagbackgroundCardView.visibility = if (requireLanePosition > 0) View.VISIBLE else View.INVISIBLE
+            binding.tagBackgroundCardView.visibility = if (requireLanePosition > 0) View.VISIBLE else View.INVISIBLE
 
             spinner.setSelection(LaneSpinnerItem.laneItems.indexOfFirst { it.lane == lane.lane })
             spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {

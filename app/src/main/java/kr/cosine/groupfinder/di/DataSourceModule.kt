@@ -6,11 +6,9 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import kr.cosine.groupfinder.data.model.TestResponse
 import kr.cosine.groupfinder.data.remote.RiotAsiaDataSource
 import kr.cosine.groupfinder.data.remote.FirebaseDataSource
 import kr.cosine.groupfinder.data.remote.RiotKoreaDataSource
-import kr.cosine.groupfinder.data.remote.TestDataSource
 import kr.cosine.groupfinder.di.annotation.RiotAsiaRetrofit
 import kr.cosine.groupfinder.di.annotation.RiotKoreaRetrofit
 import okhttp3.OkHttpClient
@@ -21,15 +19,6 @@ import java.util.concurrent.TimeUnit
 @Module
 @InstallIn(SingletonComponent::class)
 class DataSourceModule {
-
-    @Provides
-    fun provideTestDataSource(): TestDataSource {
-        return object : TestDataSource {
-            override fun onTest(): TestResponse {
-                return TestResponse("테스트")
-            }
-        }
-    }
 
     @Provides
     fun provideFirebaseDataSource(): FirebaseDataSource {

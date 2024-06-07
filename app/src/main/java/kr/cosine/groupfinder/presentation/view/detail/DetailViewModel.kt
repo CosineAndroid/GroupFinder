@@ -38,8 +38,8 @@ class DetailViewModel @Inject constructor(private val repositry: PostRepository)
     private fun checkRole() {
         _groupRole.value = when {
             uuID == null -> NONE
-            postDetail.value?.uniqueId != uuID -> ANOTHER
-            uuID == postDetail.value?.uniqueId && userID == postDetail.value?.id -> HOST
+            //postDetail.value?.uniqueId != uuID -> ANOTHER
+            //uuID == postDetail.value?.uniqueId && userID == postDetail.value?.id -> HOST
             else -> PARTICIPANT
         }
     }
@@ -55,7 +55,7 @@ class DetailViewModel @Inject constructor(private val repositry: PostRepository)
         val time = Timestamp.now()
 
 
-        _postDetail.value = PostEntity(uniqueId, mode, title, body, id, tags, laneMap, time)
+        //_postDetail.value = PostEntity(uniqueId, mode, title, body, id, tags, laneMap, time)
         checkRole()
     }
 

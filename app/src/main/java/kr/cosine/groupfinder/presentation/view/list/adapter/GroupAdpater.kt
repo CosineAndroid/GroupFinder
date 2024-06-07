@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 import kr.cosine.groupfinder.R
 import kr.cosine.groupfinder.data.registry.LocalAccountRegistry
 import kr.cosine.groupfinder.databinding.ItemGroupBinding
+import kr.cosine.groupfinder.presentation.view.common.extension.setOnClickListenerWithCooldown
+import kr.cosine.groupfinder.presentation.view.common.data.Interval
 import kr.cosine.groupfinder.presentation.view.list.adapter.decoration.GroupTagItemDecoration
 import kr.cosine.groupfinder.presentation.view.list.adapter.listener.TagScrollListener
 import kr.cosine.groupfinder.presentation.view.list.state.item.PostItem
@@ -27,10 +29,8 @@ class GroupAdpater(
         private val binding: ItemGroupBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        private val root = binding.root
-
         init {
-            root.setOnClickListener {
+            binding.root.setOnClickListenerWithCooldown(Interval.OPEN_SCREEN) {
                 val post = posts[bindingAdapterPosition]
                 onItemClick(post)
             }
@@ -76,13 +76,7 @@ class GroupAdpater(
         }
     }
 
-    private val posts = mutableListOf<PostItem>(
-        // PostModel(Mode.NORMAL, "5인큐 구함", "반갑습니다", "페이커#KR1", listOf("빡겜", "즐겜", "하이", "가나", "다라", "마바", "사아", "자차", "카타", "파하"), mapOf(Lane.TOP to null, Lane.SUPPORT to null, Lane.AD to "구마유시#KR1", Lane.JUNGLE to null, Lane.MID to null, Lane.MID to "페이커#KR1")),
-        // PostModel(Mode.NORMAL, "바텀 듀오 할 사람", "ㅎㅇ", "구마유시#KR1", listOf("즐겜", "마이크X"), mapOf(Lane.AD to "구마유시#KR1", Lane.SUPPORT to null)),
-        // PostModel(Mode.NORMAL, "정글 듀오 구함", "안녕하세요", "제우스#KR1", listOf("욕X"), mapOf(Lane.JUNGLE to null, Lane.TOP to "제우스#KR1")),
-        // PostModel(Mode.NORMAL, "3인큐 구함", "안녕하세요", "케리아#KR1", listOf("욕X"), mapOf(Lane.SUPPORT to "테스트#KR1", Lane.JUNGLE to null, Lane.TOP to "제우스#KR1")),
-        // PostModel(Mode.NORMAL, "3인큐 구함!!", "안녕하세요", "오너#KR1", listOf("욕X"), mapOf(Lane.MID to "페이커#KR1", Lane.JUNGLE to "오너#KR1", Lane.SUPPORT to "케리아#KR1"))
-    )
+    private val posts = mutableListOf<PostItem>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GroupViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -103,6 +97,10 @@ class GroupAdpater(
             addAll(posts)
         }
         notifyDataSetChanged()
+    }
+
+    fun setPost(post: PostItem) {
+        setPosts(listOf(post))
     }
 
     fun clearPosts() {

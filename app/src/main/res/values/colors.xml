@@ -2,6 +2,7 @@
 <resources>
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
+    <color name="profile_logout_button_background">#D4D4D4</color>
     <color name="profile_withdraw_button_background">#FF8078</color>
     <color name="background">#131517</color>
     <color name="account_text_field_background">#EFEFEF</color>
@@ -14,6 +15,7 @@
     <color name="group_default_background">#2E3034</color>
     <color name="group_join_background">#6E4BDC</color>
     <color name="group_full_background">#131517</color>
+    <color name="navigation">#131517</color>
     <color name="group_write_button_background">#5534BE</color>
     <color name="group_tagged_nickname">#C8CDDB</color>
 </resources>

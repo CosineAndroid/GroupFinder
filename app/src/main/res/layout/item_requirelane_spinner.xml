@@ -17,8 +17,9 @@
         android:id="@+id/requireLaneTextview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp"
         android:textSize="15sp"
+        android:layout_marginStart="10dp"
+        android:textColor="#C8CDDB"
         app:layout_constraintBottom_toBottomOf="@+id/requireLaneImageView"
         app:layout_constraintStart_toEndOf="@+id/requireLaneImageView"
         app:layout_constraintTop_toTopOf="@+id/requireLaneImageView" />

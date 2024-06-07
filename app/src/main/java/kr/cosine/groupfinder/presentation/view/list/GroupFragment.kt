@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -19,13 +21,18 @@ import kr.cosine.groupfinder.R
 import kr.cosine.groupfinder.databinding.FragmentGroupBinding
 import kr.cosine.groupfinder.enums.Mode
 import kr.cosine.groupfinder.presentation.view.list.adapter.GroupAdpater
-import kr.cosine.groupfinder.presentation.view.common.adapter.TagAdapter
-import kr.cosine.groupfinder.presentation.view.common.intent.IntentKey
+import kr.cosine.groupfinder.presentation.view.tag.adapter.TagAdapter
+import kr.cosine.groupfinder.presentation.view.common.data.Code
+import kr.cosine.groupfinder.presentation.view.common.extension.setOnClickListenerWithCooldown
+import kr.cosine.groupfinder.presentation.view.common.data.IntentKey
 import kr.cosine.groupfinder.presentation.view.list.adapter.decoration.GroupTagItemDecoration
-import kr.cosine.groupfinder.presentation.view.list.event.TagEvent
+import kr.cosine.groupfinder.presentation.view.tag.event.TagEvent
 import kr.cosine.groupfinder.presentation.view.list.model.GroupViewModel
-import kr.cosine.groupfinder.presentation.view.common.model.TagViewModel
+import kr.cosine.groupfinder.presentation.view.tag.model.TagViewModel
+import kr.cosine.groupfinder.presentation.view.common.data.Interval
+import kr.cosine.groupfinder.presentation.view.common.extension.applyWhite
 import kr.cosine.groupfinder.presentation.view.list.state.GroupUiState
+import kr.cosine.groupfinder.presentation.view.tag.sheet.TagBottomSheetFragment
 import kr.cosine.groupfinder.presentation.view.write.WriteActivity
 
 @AndroidEntryPoint
@@ -42,6 +49,8 @@ class GroupFragment(
     private lateinit var groupAdpater: GroupAdpater
     private lateinit var tagAdapter: TagAdapter
 
+    private lateinit var writeActivityResultLauncher: ActivityResultLauncher<Intent>
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -54,6 +63,7 @@ class GroupFragment(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         registerProgressBar()
+        registerWriteActivityResultLauncher()
         registerSwipeRefreshLayout()
         registerGroupRecyclerView()
         registerTagRecyclerView()
@@ -63,12 +73,17 @@ class GroupFragment(
         registerTagViewModel()
     }
 
-    private fun registerProgressBar() = with(binding.searchProgressBar) {
-        isIndeterminate = true
-        indeterminateDrawable.setColorFilter(
-            context.getColor(R.color.white),
-            PorterDuff.Mode.MULTIPLY
-        )
+    private fun registerProgressBar() {
+        binding.progressBar.applyWhite()
+    }
+
+    private fun registerWriteActivityResultLauncher() {
+        writeActivityResultLauncher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+            if (result.resultCode != Code.SUCCESS_CREATE_POST) return@registerForActivityResult
+            search()
+        }
     }
 
     private fun registerSwipeRefreshLayout() = with(binding.swipeRefreshLayout) {
@@ -97,8 +112,8 @@ class GroupFragment(
         clearTagImageButton.setOnClickListener {
             tagViewModel.clearTags()
         }
-        showAllTagImageButton.setOnClickListener {
-
+        showAllTagImageButton.setOnClickListenerWithCooldown(Interval.OPEN_SCREEN) {
+            TagBottomSheetFragment.show(childFragmentManager)
         }
         searchImageButton.setOnClickListener {
             search()
@@ -113,7 +128,7 @@ class GroupFragment(
         setOnClickListener {
             val intent = Intent(context, WriteActivity::class.java)
             intent.putExtra(IntentKey.MODE, mode)
-            startActivity(intent)
+            writeActivityResultLauncher.launch(intent)
         }
     }
 
@@ -124,7 +139,7 @@ class GroupFragment(
                 val isLoading = uiState is GroupUiState.Loading
                 val isNotice = uiState is GroupUiState.Notice
 
-                searchProgressBar.isVisible = isLoading
+                progressBar.isVisible = isLoading
                 searchResultNoticeTextView.isVisible = isNotice
                 groupRecyclerView.isVisible = !isLoading
 
@@ -133,7 +148,8 @@ class GroupFragment(
                 showAllTagImageButton.isEnabled = !isLoading
 
                 when (uiState) {
-                    is GroupUiState.Result -> groupAdpater.setPosts(uiState.posts)
+                    is GroupUiState.Success -> groupAdpater.setPosts(uiState.posts)
+
                     is GroupUiState.Notice -> {
                         if (uiState is GroupUiState.ResultEmpty) {
                             groupAdpater.clearPosts()
@@ -153,7 +169,7 @@ class GroupFragment(
                 when (event) {
                     is TagEvent.SetTag -> tagAdapter.setTags(event.tags)
                     is TagEvent.AddTag -> tagAdapter.addTag(event.tag)
-                    is TagEvent.RemoveTag -> tagAdapter.removeTag(event.position)
+                    is TagEvent.RemoveTag -> tagAdapter.removeTag(event.tag)
                 }
             }
         }

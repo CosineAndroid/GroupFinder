@@ -50,6 +50,7 @@ import kr.cosine.groupfinder.presentation.view.account.login.event.LoginEvent
 import kr.cosine.groupfinder.presentation.view.account.login.model.LoginViewModel
 import kr.cosine.groupfinder.presentation.view.compose.model.LoadingViewModel
 import kr.cosine.groupfinder.presentation.view.account.register.RegisterActivity
+import kr.cosine.groupfinder.presentation.view.common.util.ActivityUtil
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -61,7 +62,7 @@ fun LoginScreen(
     val localAccountManager = LocalAccountManager(activity)
     LoadingScreen()
     val uniqueId = localAccountManager.findUniqueId()
-    if (localAccountManager.isAutoLogin() && uniqueId != null) {
+    if (!LocalAccountRegistry.isLogout && localAccountManager.isAutoLogin() && uniqueId != null) {
         loadingViewModel.show()
         LaunchedEffect(
             key1 = Unit
@@ -163,10 +164,13 @@ private suspend fun onLoginEvent(
     loginViewModel.event.flowWithLifecycle(lifecycle).collectLatest { event ->
         when (event) {
             is LoginEvent.Success -> {
+                LocalAccountRegistry.isLogout = false
+
                 val uniqueId = event.accountEntity.uniqueId
-                LocalAccountRegistry.uniqueId = uniqueId
+                LocalAccountRegistry.setUniqueId(uniqueId)
                 localAccountManager.setUniqueId(uniqueId)
-                startMainActivity(activity)
+
+                ActivityUtil.startNewActivity(activity, MainActivity::class)
                 loadingViewModel.hide()
             }
 
@@ -189,21 +193,10 @@ private fun getRegisterResultLanuncher(
         val intent = result.data ?: return@rememberLauncherForActivityResult
 
         val id = intent.getStringExtra(IntentKey.ID) ?: return@rememberLauncherForActivityResult
-        val password =
-            intent.getStringExtra(IntentKey.PASSWORD) ?: return@rememberLauncherForActivityResult
+        val password = intent.getStringExtra(IntentKey.PASSWORD) ?: return@rememberLauncherForActivityResult
 
         loginViewModel.setIdAndPassword(id, password)
     }
-}
-
-private fun startMainActivity(
-    context: Context
-) {
-    val intent = Intent(context, MainActivity::class.java).apply {
-        addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-    }
-    context.startActivity(intent)
 }
 
 private fun startRegisterActivity(
