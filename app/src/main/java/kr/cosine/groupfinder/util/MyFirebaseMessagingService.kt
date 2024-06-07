@@ -33,8 +33,8 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
                 val messageType = data["type"]
                 when (messageType) {
                     "join_request" -> showJoinRequestDialog(myApp.getCurrentActivity(),data)
-                    "join_denied" -> showJoinDeniedDialog()
-                    "force_exit" -> showForceExitDialog()
+                    "join_denied" -> showJoinDeniedDialog(myApp.getCurrentActivity())
+                    "force_exit" -> showForceExitDialog(myApp.getCurrentActivity())
                     // 다른 메시지 유형에 대한 처리 추가시 타입과 함수 추가.
                 }
             }
@@ -135,12 +135,9 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
         }
     }
 
-
-
-
-
-    private fun showJoinDeniedDialog() {
-        val dialogBuilder = AlertDialog.Builder(this)
+    private fun showJoinDeniedDialog(context: Context) {
+        val contextWrapper = ContextThemeWrapper(context, R.style.Theme_GroupFinder) // AppTheme을 사용하거나 알맞은 테마로 변경
+        val dialogBuilder = AlertDialog.Builder(contextWrapper)
         dialogBuilder.setTitle("요청 거부")
         dialogBuilder.setMessage("죄송합니다, 방 참가 요청이 거부되었습니다.")
         dialogBuilder.setPositiveButton("확인")  { dialog, which ->
@@ -149,8 +146,10 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
         val dialog = dialogBuilder.create()
         dialog.show()
     }
-    private fun showForceExitDialog() {
-        val dialogBuilder = AlertDialog.Builder(this)
+
+    private fun showForceExitDialog(context: Context) {
+        val contextWrapper = ContextThemeWrapper(context, R.style.Theme_GroupFinder) // AppTheme을 사용하거나 알맞은 테마로 변경
+        val dialogBuilder = AlertDialog.Builder(contextWrapper)
         dialogBuilder.setTitle("강제 퇴장")
         dialogBuilder.setMessage("죄송합니다, 강퇴되었습니다.")
         dialogBuilder.setPositiveButton("확인")  { dialog, which ->
@@ -159,5 +158,6 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
         val dialog = dialogBuilder.create()
         dialog.show()
     }
+
 
 }
