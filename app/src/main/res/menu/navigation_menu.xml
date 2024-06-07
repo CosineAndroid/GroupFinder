@@ -12,15 +12,15 @@
             android:title="일반" />
 
         <item
-            android:id="@+id/navigation_Wind"
+            android:id="@+id/navigation_Aram"
             android:title="칼바람 나락" />
 
         <item
-            android:id="@+id/navigation_Solo"
+            android:id="@+id/navigation_Duo"
             android:title="듀오랭크" />
 
         <item
-            android:id="@+id/navigation_Free"
+            android:id="@+id/navigation_Flex"
             android:title="자유랭크" />
 
         <item
