@@ -6,19 +6,22 @@ import androidx.recyclerview.widget.RecyclerView
 import kr.cosine.groupfinder.databinding.ItemTagWithRemoveBinding
 
 class SearchAdapter(
-    private val items: List<String>
+    private val items: List<String>,
+    private val onItemClick: (position: Int, tag: String) -> Unit
 ) : RecyclerView.Adapter<SearchAdapter.SearchViewHolder>() {
-
-    interface ItemClick {
-        fun onItemClick(id: String)
-    }
-
-    var itemClick: ItemClick? = null
 
     inner class SearchViewHolder(binding: ItemTagWithRemoveBinding) :
         RecyclerView.ViewHolder(binding.root) {
         val tag = binding.tagTextView
-        val removeButton = binding.tagRemoveImageButton
+//        val removeButton = binding.tagRemoveImageButton
+
+        init {
+            binding.tagTextView.apply {
+                setOnClickListener {
+                    onItemClick(bindingAdapterPosition, text.toString())
+                }
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder {
@@ -33,9 +36,6 @@ class SearchAdapter(
 
     override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
         holder.tag.text = items[position]
-        holder.itemView.setOnClickListener {
-            itemClick?.onItemClick(holder.tag.text as String)
-        }
     }
 }
 

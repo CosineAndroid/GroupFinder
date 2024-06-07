@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -13,6 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import kr.cosine.groupfinder.R
 import kr.cosine.groupfinder.databinding.FragmentGroupBinding
 import kr.cosine.groupfinder.enums.Mode
 import kr.cosine.groupfinder.presentation.view.list.adapter.GroupAdpater
@@ -22,6 +24,7 @@ import kr.cosine.groupfinder.presentation.view.list.event.TagEvent
 import kr.cosine.groupfinder.presentation.view.list.model.GroupViewModel
 import kr.cosine.groupfinder.presentation.view.list.model.TagViewModel
 import kr.cosine.groupfinder.presentation.view.list.state.GroupUiState
+import kr.cosine.groupfinder.presentation.view.search.SearchFragment
 
 @AndroidEntryPoint
 class GroupFragment(
@@ -83,7 +86,7 @@ class GroupFragment(
             tagViewModel.clearTag()
         }
         showAllTagImageButton.setOnClickListener {
-
+            setupBottomSheet()
         }
         searchImageButton.setOnClickListener {
             val tags = tagViewModel.tags
@@ -94,8 +97,13 @@ class GroupFragment(
 
     private fun registerWriteButton() {
         binding.writeImageButton.setOnClickListener {
-
         }
+    }
+
+    private fun setupBottomSheet() {
+        val searchFragment = SearchFragment()
+        searchFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerBottomSheetDialogTheme)
+        searchFragment.show(childFragmentManager, "searchFragment")
     }
 
     private fun registerGroupViewModelEvent() = with(binding) {
