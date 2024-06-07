@@ -136,7 +136,7 @@ class WriteActivity : AppCompatActivity() {
                 when (event) {
                     is TagEvent.SetTag -> tagRecyclerViewAdapter.setTags(event.tags)
                     is TagEvent.AddTag -> tagRecyclerViewAdapter.addTag(event.tag)
-                    is TagEvent.RemoveTag -> tagRecyclerViewAdapter.removeTag(event.position)
+                    is TagEvent.RemoveTag -> tagRecyclerViewAdapter.removeTag(event.tag)
                 }
             }
         }

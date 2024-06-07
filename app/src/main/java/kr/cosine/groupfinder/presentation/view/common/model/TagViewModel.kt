@@ -33,8 +33,8 @@ class TagViewModel : ViewModel() {
         _tags.add(tag)
     }
 
-    fun removeTag(position: Int, tag: String) = viewModelScope.launch {
-        _event.emit(TagEvent.RemoveTag(position, tag))
+    fun removeTag(tag: String) = viewModelScope.launch {
+        _event.emit(TagEvent.RemoveTag(tag))
         _tags.remove(tag)
     }
 

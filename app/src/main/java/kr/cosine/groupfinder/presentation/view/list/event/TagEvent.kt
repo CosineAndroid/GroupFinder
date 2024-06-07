@@ -11,7 +11,6 @@ sealed interface TagEvent {
     ) : TagEvent
 
     data class RemoveTag(
-        val position: Int,
         val tag: String
     ) : TagEvent
 }
