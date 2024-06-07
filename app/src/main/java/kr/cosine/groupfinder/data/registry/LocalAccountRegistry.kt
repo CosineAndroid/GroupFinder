@@ -4,5 +4,16 @@ import java.util.UUID
 
 object LocalAccountRegistry {
 
-    lateinit var uniqueId: UUID
+    var isLogout: Boolean = false
+
+    private var _uniqueId: UUID? = null
+    val uniqueId get() = _uniqueId!!
+
+    fun setUniqueId(uniqueId: UUID?) {
+        _uniqueId = uniqueId
+    }
+
+    fun resetUniqueId() {
+        setUniqueId(null)
+    }
 }

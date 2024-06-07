@@ -24,13 +24,13 @@
         android:textSize="15sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/userNicknameTextView"
+        app:layout_constraintEnd_toStartOf="@+id/taggedNicknameTextView"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/userNicknameTextView"
+        android:id="@+id/taggedNicknameTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -51,6 +51,6 @@
         android:layout_marginTop="60dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/userNicknameTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/taggedNicknameTextView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -25,7 +25,8 @@ import kr.cosine.groupfinder.presentation.view.common.extension.setOnClickListen
 import kr.cosine.groupfinder.presentation.view.common.data.IntentKey
 import kr.cosine.groupfinder.presentation.view.tag.model.TagViewModel
 import kr.cosine.groupfinder.presentation.view.common.data.Interval
-import kr.cosine.groupfinder.presentation.view.list.event.TagEvent
+import kr.cosine.groupfinder.presentation.view.common.extension.showToast
+import kr.cosine.groupfinder.presentation.view.tag.event.TagEvent
 import kr.cosine.groupfinder.presentation.view.tag.sheet.TagBottomSheetFragment
 import kr.cosine.groupfinder.presentation.view.write.adapter.RequireLaneRecyclerViewAdapter
 import kr.cosine.groupfinder.presentation.view.write.adapter.SpinnerAdapter
@@ -217,9 +218,5 @@ class WriteActivity : AppCompatActivity() {
                 }
             }
         }
-    }
-
-    private fun showToast(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 }

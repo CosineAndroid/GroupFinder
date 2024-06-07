@@ -2,7 +2,7 @@
     <string name="app_name">GroupFinder</string>
     <string name="profile_title">내 프로필</string>
     <string name="profile_id_title">닉네임</string>
-    <string name="profile_id_replacer">닉네임#KR1</string>
+    <string name="profile_tagged_nickname_format">%s#%s</string>
     <string name="profile_group_title">참여중인 그룹</string>
     <string name="profile_logout_title">로그아웃</string>
     <string name="profile_withdraw_title">탈퇴하기</string>
@@ -19,8 +19,16 @@
     <string name="register_password_hint">비밀번호 (8글자 이상, 숫자/특수문자 포함)</string>
     <string name="register_nickname_hint">닉네임</string>
     <string name="register_tag_hint">태그</string>
-    <string name="open_navigation">Open Navigation Drawer</string>
-    <string name="close_navigation">Close Navigation Drawer</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="dialog_cancel">취소</string>
+    <string name="dialog_confirm">확인</string>
+    <string name="profile_logout_message">로그아웃 하시겠습니까?</string>
+    <string name="profile_withdraw_message">탈퇴 하시겠습니까?</string>
+    <string name="open_navigation">메뉴 열기</string>
+    <string name="close_navigation">메뉴 닫기</string>
+    <string name="navigation_all">전체</string>
+    <string name="navigation_normal">일반</string>
+    <string name="navigation_aram">칼바람 나락</string>
+    <string name="navigation_duo_rank">듀오 랭크</string>
+    <string name="navigation_flex_rank">자유 랭크</string>
+    <string name="navigation_profile">내 프로필</string>
 </resources>
