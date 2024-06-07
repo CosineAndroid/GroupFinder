@@ -12,9 +12,9 @@ sealed interface GroupUiState {
 
     data object ResultEmpty : Notice("검색 결과 없음")
 
-    data object Unknown : Notice("알 수 없는 오류")
+    data object UnknownFail : Notice("알 수 없는 오류")
 
-    data class Result(
+    data class Success(
         val posts: List<PostItem> = emptyList()
     ) : GroupUiState
 }

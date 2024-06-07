@@ -1,4 +1,4 @@
-package kr.cosine.groupfinder.presentation.view.common.model
+package kr.cosine.groupfinder.presentation.view.tag.model
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

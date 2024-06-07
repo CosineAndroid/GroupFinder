@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -22,15 +21,17 @@ import kr.cosine.groupfinder.R
 import kr.cosine.groupfinder.databinding.FragmentGroupBinding
 import kr.cosine.groupfinder.enums.Mode
 import kr.cosine.groupfinder.presentation.view.list.adapter.GroupAdpater
-import kr.cosine.groupfinder.presentation.view.common.adapter.TagAdapter
-import kr.cosine.groupfinder.presentation.view.common.code.Code
-import kr.cosine.groupfinder.presentation.view.common.intent.IntentKey
+import kr.cosine.groupfinder.presentation.view.tag.adapter.TagAdapter
+import kr.cosine.groupfinder.presentation.view.common.data.Code
+import kr.cosine.groupfinder.presentation.view.common.extension.setOnClickListenerWithCooldown
+import kr.cosine.groupfinder.presentation.view.common.data.IntentKey
 import kr.cosine.groupfinder.presentation.view.list.adapter.decoration.GroupTagItemDecoration
 import kr.cosine.groupfinder.presentation.view.list.event.TagEvent
 import kr.cosine.groupfinder.presentation.view.list.model.GroupViewModel
-import kr.cosine.groupfinder.presentation.view.common.model.TagViewModel
+import kr.cosine.groupfinder.presentation.view.tag.model.TagViewModel
+import kr.cosine.groupfinder.presentation.view.common.data.Interval
 import kr.cosine.groupfinder.presentation.view.list.state.GroupUiState
-import kr.cosine.groupfinder.presentation.view.search.SearchFragment
+import kr.cosine.groupfinder.presentation.view.tag.sheet.TagBottomSheetFragment
 import kr.cosine.groupfinder.presentation.view.write.WriteActivity
 
 @AndroidEntryPoint
@@ -114,8 +115,8 @@ class GroupFragment(
         clearTagImageButton.setOnClickListener {
             tagViewModel.clearTags()
         }
-        showAllTagImageButton.setOnClickListener {
-            openBottomSheet()
+        showAllTagImageButton.setOnClickListenerWithCooldown(Interval.OPEN_SCREEN) {
+            TagBottomSheetFragment.show(childFragmentManager)
         }
         searchImageButton.setOnClickListener {
             search()
@@ -134,12 +135,6 @@ class GroupFragment(
         }
     }
 
-    private fun openBottomSheet() {
-        val searchFragment = SearchFragment()
-        searchFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerBottomSheetDialogTheme)
-        searchFragment.show(childFragmentManager, "searchFragment")
-    }
-
     private fun registerGroupViewModelEvent() = with(binding) {
         groupViewModel.onSearch(mode, emptySet())
         viewLifecycleOwner.lifecycleScope.launch {
@@ -156,7 +151,8 @@ class GroupFragment(
                 showAllTagImageButton.isEnabled = !isLoading
 
                 when (uiState) {
-                    is GroupUiState.Result -> groupAdpater.setPosts(uiState.posts)
+                    is GroupUiState.Success -> groupAdpater.setPosts(uiState.posts)
+
                     is GroupUiState.Notice -> {
                         if (uiState is GroupUiState.ResultEmpty) {
                             groupAdpater.clearPosts()
