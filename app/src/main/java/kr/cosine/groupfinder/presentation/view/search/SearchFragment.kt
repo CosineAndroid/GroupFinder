@@ -9,8 +9,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kr.cosine.groupfinder.databinding.FragmentSearchBinding
-import kr.cosine.groupfinder.presentation.view.list.adapter.decoration.impl.GroupTagItemDecoration
-import kr.cosine.groupfinder.presentation.view.list.model.TagViewModel
+import kr.cosine.groupfinder.presentation.view.common.model.TagViewModel
+import kr.cosine.groupfinder.presentation.view.list.adapter.decoration.GroupTagItemDecoration
 import kr.cosine.groupfinder.presentation.view.search.adapter.SearchAdapter
 
 class SearchFragment() : BottomSheetDialogFragment() {
@@ -43,11 +43,11 @@ class SearchFragment() : BottomSheetDialogFragment() {
     private fun setupMicRecyclerView() {
         micAdapter = SearchAdapter(
             micTags,
-            onItemClick = { position, tag ->
+            onItemClick = { _, tag ->
                 if (!tagViewModel.isTagged(tag)) {
                     tagViewModel.addTag(tag)
                 } else {
-                    tagViewModel.removeTag(position, tag)
+                    tagViewModel.removeTag(tag)
                 }
             }
         )
@@ -62,11 +62,11 @@ class SearchFragment() : BottomSheetDialogFragment() {
     private fun setupStyleRecyclerView() {
         styleAdapter = SearchAdapter(
             styleTags,
-            onItemClick = { position, tag ->
+            onItemClick = { _, tag ->
                 if (!tagViewModel.isTagged(tag)) {
                     tagViewModel.addTag(tag)
                 } else {
-                    tagViewModel.removeTag(position, tag)
+                    tagViewModel.removeTag(tag)
                 }
             }
         )

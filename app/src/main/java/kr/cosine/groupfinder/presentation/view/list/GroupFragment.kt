@@ -176,7 +176,7 @@ class GroupFragment(
                 when (event) {
                     is TagEvent.SetTag -> tagAdapter.setTags(event.tags)
                     is TagEvent.AddTag -> tagAdapter.addTag(event.tag)
-                    is TagEvent.RemoveTag -> tagAdapter.removeTag(event.position)
+                    is TagEvent.RemoveTag -> tagAdapter.removeTag(event.tag)
                 }
             }
         }

@@ -8,7 +8,7 @@ import kr.cosine.groupfinder.databinding.ItemTagBinding
 
 class TagAdapter(
     private val tags: MutableList<String> = mutableListOf(),
-    private val onItemClick: (Int, String) -> Unit
+    private val onItemClick: (String) -> Unit
 ) : RecyclerView.Adapter<TagAdapter.SearchTagViewHolder>() {
 
     inner class SearchTagViewHolder(
@@ -18,7 +18,7 @@ class TagAdapter(
         init {
             binding.tagTextView.apply {
                 setOnClickListener {
-                    onItemClick(bindingAdapterPosition, text.toString())
+                    onItemClick(text.toString())
                 }
             }
         }
@@ -54,8 +54,9 @@ class TagAdapter(
         notifyItemChanged(tags.size)
     }
 
-    fun removeTag(position: Int) {
-        tags.removeAt(position)
-        notifyItemRemoved(position)
+    fun removeTag(tag: String) {
+        val index = tags.indexOf(tag)
+        tags.remove(tag)
+        notifyItemRemoved(index)
     }
 }
