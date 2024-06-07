@@ -4,7 +4,7 @@ import kr.cosine.groupfinder.R
 
 object LaneSpinnerItem {
     val laneItems = mutableListOf(
-        SpinnerModel(0, "라인선택"),
+        SpinnerModel(0, "라인을 선택해주세요"),
         SpinnerModel(R.drawable.ic_lane_top, "탑"),
         SpinnerModel(R.drawable.ic_lane_jungle, "정글"),
         SpinnerModel(R.drawable.ic_lane_mid, "미드"),

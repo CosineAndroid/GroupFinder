@@ -11,6 +11,7 @@ import com.google.android.material.navigation.NavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import kr.cosine.groupfinder.R
 import kr.cosine.groupfinder.databinding.ActivityMainBinding
+import kr.cosine.groupfinder.enums.Mode
 import kr.cosine.groupfinder.presentation.view.list.GroupFragment
 import kr.cosine.groupfinder.presentation.view.profile.ProfileFragment
 
@@ -48,7 +49,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, GroupFragment()).commit()
+                .replace(R.id.fragment_container, GroupFragment(Mode.NORMAL)).commit()
             navigationView.setCheckedItem(R.id.navigation_All)
         }
     }
@@ -57,7 +58,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         when (item.itemId) {
             R.id.navigation_All -> {
                 supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, GroupFragment()).commit()
+                    .replace(R.id.fragment_container, GroupFragment(Mode.NORMAL)).commit()
             }
 
             R.id.navigation_Normal -> Toast.makeText(this, "일반", Toast.LENGTH_SHORT).show()

@@ -13,7 +13,6 @@ import kr.cosine.groupfinder.enums.Lane
 import kr.cosine.groupfinder.enums.TestGlobalUserData.HOST
 import kr.cosine.groupfinder.enums.TestGlobalUserData.PARTICIPANT
 import kr.cosine.groupfinder.enums.TestGlobalUserData.userID
-import kr.cosine.groupfinder.presentation.view.list.adapter.decoration.TagItemDecoration
 import java.util.UUID
 
 @AndroidEntryPoint
@@ -46,7 +45,7 @@ class DetailActivity : AppCompatActivity() {
             if (post != null) {
                 bindDetailInformation(post)
                 bindCategoriesFromData(post.tags)
-                bindLanesFromData(post.laneMap)
+                //bindLanesFromData(post.laneMap)
             } else {
                 Log.d("Error", "onCreate: 비 정상적인 로딩")
                 // 잘못된 게시글 로드시 에러처리 오류창 디자인 요청.
@@ -60,7 +59,7 @@ class DetailActivity : AppCompatActivity() {
     private fun bindDetailInformation(postEntity: PostEntity) {
         with(binding) {
             titleTextView.text = postEntity.title
-            idTextView.text = postEntity.id
+            // idTextView.text = postEntity.id
             memoTextView.text = postEntity.body
         }
     }
@@ -69,7 +68,7 @@ class DetailActivity : AppCompatActivity() {
         with(binding.tags) {
             adapter = categoryAdapter
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            addItemDecoration(TagItemDecoration(right = 5, bottom = 0))
+            //addItemDecoration(TagItemDecoration(right = 5, bottom = 0))
         }
         categoryAdapter.categoriesUpdate(tags)
     }
