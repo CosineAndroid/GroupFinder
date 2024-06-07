@@ -28,6 +28,7 @@ import kr.cosine.groupfinder.databinding.ActivityWriteBinding
 import kr.cosine.groupfinder.enums.Lane
 import kr.cosine.groupfinder.enums.Mode
 import kr.cosine.groupfinder.presentation.view.common.adapter.TagAdapter
+import kr.cosine.groupfinder.presentation.view.common.code.Code
 import kr.cosine.groupfinder.presentation.view.common.intent.IntentKey
 import kr.cosine.groupfinder.presentation.view.common.model.TagViewModel
 import kr.cosine.groupfinder.presentation.view.list.event.TagEvent
@@ -82,6 +83,7 @@ class WriteActivity : AppCompatActivity() {
         setOnCreateRoomClickListener()
         registerTagViewModel()
         addTagsButton()
+        setGameModeText()
 
         onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
     }
@@ -98,6 +100,11 @@ class WriteActivity : AppCompatActivity() {
             }
         }
     }
+
+    private fun setGameModeText(){
+        binding.gameModeTextView.text = mode.displayName
+    }
+
 
     private fun registerTagFragment() {
         supportFragmentManager.beginTransaction()
@@ -129,7 +136,7 @@ class WriteActivity : AppCompatActivity() {
                 when (event) {
                     is TagEvent.SetTag -> tagRecyclerViewAdapter.setTags(event.tags)
                     is TagEvent.AddTag -> tagRecyclerViewAdapter.addTag(event.tag)
-                    is TagEvent.RemoveTag -> tagRecyclerViewAdapter.removeTag(event.position)
+                    is TagEvent.RemoveTag -> tagRecyclerViewAdapter.removeTag(event.tag)
                 }
             }
         }
@@ -157,7 +164,6 @@ class WriteActivity : AppCompatActivity() {
         val items = LaneSpinnerItem.laneItems
         val adapter = SpinnerAdapter(this, items)
         myLaneSpinner.adapter = adapter
-
         myLaneSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>?,
@@ -192,7 +198,7 @@ class WriteActivity : AppCompatActivity() {
         binding.createRoomButton.setOnClickListener {
             val hasDuplicateLanes = checkDuplicateLanes()
             val hasDefaultLane = checkDefaultLane()
-            val title = binding.titleTextView.text.toString()
+            val title = binding.titleEditTextView.text.toString()
 
             if (title.isBlank()) {
                 Toast.makeText(this, "제목이 입력되지 않았습니다", Toast.LENGTH_SHORT).show()
@@ -208,7 +214,7 @@ class WriteActivity : AppCompatActivity() {
             }
             // 게시글 생성
             val requireLaneSelected = requireLaneRecyclerViewAdapter.getLanes().map { it.lane }
-            val body = binding.bodyTextTextView.text.toString()
+            val body = binding.bodyEditTextView.text.toString()
             val tags = tagViewModel.tags
             val ownerUniqueId = LocalAccountRegistry.uniqueId
             val selectedMyLaneText = selectedMyLane
@@ -222,6 +228,7 @@ class WriteActivity : AppCompatActivity() {
             lanes[selectedMyLane] = ownerUniqueId
             writeViewModel.createPost(mode, title, body, ownerUniqueId, tags, lanes)
             Toast.makeText(this, "생성이 완료되었습니다", Toast.LENGTH_SHORT).show()
+            setResult(Code.SUCCESS_CREATE_POST)
             finish()
         }
     }
