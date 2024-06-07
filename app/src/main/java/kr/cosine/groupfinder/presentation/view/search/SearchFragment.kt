@@ -5,14 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kr.cosine.groupfinder.databinding.FragmentSearchBinding
-import kr.cosine.groupfinder.presentation.view.list.adapter.SearchTagAdpater
-import kr.cosine.groupfinder.presentation.view.list.model.GroupViewModel
+import kr.cosine.groupfinder.presentation.view.list.adapter.decoration.impl.GroupTagItemDecoration
 import kr.cosine.groupfinder.presentation.view.list.model.TagViewModel
 import kr.cosine.groupfinder.presentation.view.search.adapter.SearchAdapter
-
 
 class SearchFragment() : BottomSheetDialogFragment() {
 
@@ -23,10 +22,8 @@ class SearchFragment() : BottomSheetDialogFragment() {
     //RecyclerViewAdapter
     private lateinit var micAdapter: SearchAdapter
     private lateinit var styleAdapter: SearchAdapter
-    private lateinit var searchTagAdpater: SearchTagAdpater
 
     //ViewModel
-    private val groupViewModel by viewModels<GroupViewModel>()
     private val tagViewModel by activityViewModels<TagViewModel>()
 
     override fun onCreateView(
@@ -39,37 +36,47 @@ class SearchFragment() : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-//        micAdapter = SearchAdapter(micTags)
-//        styleAdapter = SearchAdapter(styleTags)
-//
-//        binding.apply {
-//            tagMicRecyClerView.layoutManager =
-//                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-//            tagStyleRecyClerView.layoutManager =
-//                StaggeredGridLayoutManager(7, StaggeredGridLayoutManager.VERTICAL)
-//
-//            tagMicRecyClerView.adapter = micAdapter
-//            tagStyleRecyClerView.adapter = styleAdapter
-//        }
-
-//        micAdapter.itemClick = object : SearchAdapter.ItemClick {
-//            override fun onItemClick(id: String) {
-//                if (!Tags.selectedTagList.contains(id)) {
-//                    Tags.addTag("id")
-//                    Log.d("tag", "${Tags.selectedTagList}")
-//                }
-//
-//            }
-//        }
+        setupMicRecyclerView()
+        setupStyleRecyclerView()
     }
 
-    private fun registerMicTagRecyclerView() = with(binding.tagMicRecyClerView) {
-        adapter = SearchAdapter(micTags, tagViewModel::addTag).apply {
-            micAdapter = this
+    private fun setupMicRecyclerView() {
+        micAdapter = SearchAdapter(
+            micTags,
+            onItemClick = { position, tag ->
+                if (!tagViewModel.isTagged(tag)) {
+                    tagViewModel.addTag(tag)
+                } else {
+                    tagViewModel.removeTag(position, tag)
+                }
+            }
+        )
+        binding.tagMicRecyClerView.apply {
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            adapter = micAdapter
+            addItemDecoration(GroupTagItemDecoration)
         }
     }
 
+    private fun setupStyleRecyclerView() {
+        styleAdapter = SearchAdapter(
+            styleTags,
+            onItemClick = { position, tag ->
+                if (!tagViewModel.isTagged(tag)) {
+                    tagViewModel.addTag(tag)
+                } else {
+                    tagViewModel.removeTag(position, tag)
+                }
+            }
+        )
+
+        binding.tagStyleRecyClerView.apply {
+            layoutManager = StaggeredGridLayoutManager(7, StaggeredGridLayoutManager.VERTICAL)
+            adapter = styleAdapter
+            addItemDecoration(GroupTagItemDecoration)
+        }
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()

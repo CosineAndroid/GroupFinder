@@ -58,12 +58,6 @@ class GroupFragment(
         registerWriteButton()
         registerGroupViewModelEvent()
         registerTagViewModel()
-
-//        binding.searchImageButton.setOnClickListener{
-//            val bottomSheet = SearchFragment()
-//            bottomSheet.show(childFragmentManager, bottomSheet.tag)
-//            bottomSheetWithRoundCorner()
-//        }
     }
 
     private fun registerNavigationButton() {
@@ -92,9 +86,7 @@ class GroupFragment(
             tagViewModel.clearTag()
         }
         showAllTagImageButton.setOnClickListener {
-            val bottomSheet = SearchFragment()
-            bottomSheet.show(childFragmentManager, bottomSheet.tag)
-            bottomSheetWithRoundCorner()
+            setupBottomSheet()
         }
         searchImageButton.setOnClickListener {
             val tags = tagViewModel.tags
@@ -105,13 +97,10 @@ class GroupFragment(
 
     private fun registerWriteButton() {
         binding.writeImageButton.setOnClickListener {
-
         }
     }
 
-
-    // BottomSheet 모서리 둥글게 만들어 주는 함수
-    private fun bottomSheetWithRoundCorner() {
+    private fun setupBottomSheet() {
         val searchFragment = SearchFragment()
         searchFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerBottomSheetDialogTheme)
         searchFragment.show(childFragmentManager, "searchFragment")
