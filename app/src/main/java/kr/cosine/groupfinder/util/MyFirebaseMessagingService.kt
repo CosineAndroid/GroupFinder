@@ -1,24 +1,16 @@
 package kr.cosine.groupfinder.util
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
 import android.content.Context
-import android.content.Intent
-import android.os.Build
-import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.view.ContextThemeWrapper
-import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import kr.cosine.groupfinder.GroupFinderApplication
 import kr.cosine.groupfinder.R
 import kr.cosine.groupfinder.enums.Lane
-import kr.cosine.groupfinder.presentation.MainActivity
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.MediaType.Companion.toMediaType
@@ -29,7 +21,6 @@ import okhttp3.Response
 import okio.IOException
 import org.json.JSONObject
 import java.util.UUID
-import kotlin.random.Random
 
 class MyFirebaseMessagingService : FirebaseMessagingService() {
 
@@ -92,7 +83,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             put("type", "join_request")
             put("targetUUID", targetUUID)
             put("senderUUID", senderUUID)
-            put("lane", lane)
+            put("lane", lane.displayName)
             put("postUUID", postUUID)
         }
 
@@ -123,10 +114,13 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     }
 
 
-    fun showJoinRequestDialog(context: Context, data: Map<String, String>) {
+    private fun showJoinRequestDialog(context: Context, data: Map<String, String>) {
         Handler(Looper.getMainLooper()).post {
             val participantName = data["name"]
             val participantLane = data["lane"]
+            val senderUUID = data["senderUUID"]?: "error"
+            val postUUID = data["postUUID"]?: "error"
+            Log.d("FCM", "showJoinRequestDialog: $senderUUID,$postUUID")
             val contextWrapper = ContextThemeWrapper(
                 context,
                 R.style.Theme_GroupFinder
@@ -135,7 +129,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             dialogBuilder.setTitle("참가 요청")
             dialogBuilder.setMessage("${participantName}님이 ${participantLane}에 참가를 요청 합니다.")
             dialogBuilder.setPositiveButton("수락") { dialog, which ->
-                // 수락 시 허가 메세지 전송
             }
             dialogBuilder.setNegativeButton("거부") { dialog, which ->
                 // 거부 시 거부 메세지 전송
@@ -145,7 +138,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         }
     }
 
-    fun showJoinDeniedDialog(context: Context) {
+    private fun showJoinDeniedDialog(context: Context) {
         Handler(Looper.getMainLooper()).post{
             val contextWrapper = ContextThemeWrapper(
                 context,
@@ -164,7 +157,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
 
 
-    fun showForceExitDialog(context: Context) {
+    private fun showForceExitDialog(context: Context) {
         Handler(Looper.getMainLooper()).post{
             val contextWrapper = ContextThemeWrapper(
                 context,
@@ -180,6 +173,5 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             dialog.show()
         }
     }
-
 
 }
