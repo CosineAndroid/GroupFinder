@@ -18,14 +18,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import kr.cosine.groupfinder.R
+import kr.cosine.groupfinder.presentation.view.compose.ui.BaseColor
 import kr.cosine.groupfinder.presentation.view.compose.ui.Font
 
 @Composable
@@ -69,7 +68,7 @@ fun BaseTextField(
                 horizontal = backgroundHorizontalPadding
             )
             .background(
-                color = colorResource(R.color.account_text_field_background),
+                color = BaseColor.AccountTextFieldBackground,
                 shape = RoundedCornerShape(8.dp)
             )
             .run {
@@ -89,7 +88,7 @@ fun BaseTextField(
             BaseText(
                 text = hint,
                 fontSize = 16.sp,
-                color = colorResource(R.color.account_text_field_hint),
+                color = BaseColor.AccountTextFieldHint,
                 modifier = Modifier.align(Alignment.CenterStart)
             )
         }

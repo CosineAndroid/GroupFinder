@@ -10,13 +10,12 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
-import kr.cosine.groupfinder.R
+import kr.cosine.groupfinder.presentation.view.compose.ui.BaseColor
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun BaseScaffold(
-    prevBody: @Composable (SnackbarHostState) -> Unit,
+    prevBody: @Composable (SnackbarHostState) -> Unit = {},
     mainBody: @Composable () -> Unit
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
@@ -31,7 +30,7 @@ fun BaseScaffold(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(colorResource(R.color.background))
+                .background(BaseColor.Background)
         )
         mainBody()
     }

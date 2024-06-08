@@ -1,17 +1,27 @@
 package kr.cosine.groupfinder.presentation.view.record.screen
 
 import androidx.activity.ComponentActivity
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CutCornerShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -20,10 +30,12 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import kr.cosine.groupfinder.presentation.view.common.data.IntentKey
+import kr.cosine.groupfinder.presentation.view.compose.component.BaseScaffold
 import kr.cosine.groupfinder.presentation.view.compose.component.BaseText
 import kr.cosine.groupfinder.presentation.view.compose.component.LoadingScreen
 import kr.cosine.groupfinder.presentation.view.compose.component.Space
 import kr.cosine.groupfinder.presentation.view.compose.model.LoadingViewModel
+import kr.cosine.groupfinder.presentation.view.compose.ui.BaseColor
 import kr.cosine.groupfinder.presentation.view.record.model.RecordViewModel
 import kr.cosine.groupfinder.presentation.view.record.state.RecordUiState
 import kr.cosine.groupfinder.presentation.view.record.state.item.RecordItem
@@ -71,47 +83,97 @@ private fun RecordFailScreen() {
 
 @Composable
 private fun RecordResultScreen(recordItem: RecordItem) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        AsyncImage(
-            model = recordItem.profileImageUrl,
-            contentDescription = "테스트"
-        )
-        BaseText(
-            text = "${recordItem.level}레벨",
-            fontSize = 14.sp
-        )
+    BaseScaffold {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Profile(recordItem)
+            /*AsyncImage(
+                model = recordItem.profileImageUrl,
+                contentDescription = "테스트"
+            )
+            BaseText(
+                text = "${recordItem.level}레벨",
+                fontSize = 14.sp
+            )
+            BaseText(
+                text = "${recordItem.nickname}#${recordItem.tag}",
+                fontSize = 18.sp
+            )*/
+            Space(
+                height = 30.dp
+            )
+            recordItem.rankMap.forEach { (rank, rankItem) ->
+                Row(
+                    horizontalArrangement = Arrangement.SpaceAround,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    BaseText(
+                        text = rank.koreanName,
+                        fontSize = 20.sp
+                    )
+                    Image(
+                        painter = painterResource(rankItem.tier.drawableId),
+                        contentDescription = "",
+                        modifier = Modifier.size(150.dp)
+                    )
+                    BaseText(
+                        text = "${rankItem.tier.koreanName} ${rankItem.step}",
+                        fontSize = 20.sp
+                    )
+                }
+                Space(
+                    height = 20.dp
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun Profile(recordItem: RecordItem) {
+    Row {
+        Box(
+            modifier = Modifier
+                .height(100.dp)
+        ) {
+            Surface(
+                shape = RoundedCornerShape(16.dp),
+                border = BorderStroke(
+                    width = 1.dp,
+                    color = BaseColor.RecordProfileBorder,
+                ),
+                modifier = Modifier
+                    .align(Alignment.TopCenter)
+                    .size(90.dp)
+            ) {
+                AsyncImage(
+                    model = recordItem.profileImageUrl,
+                    contentDescription = "테스트"
+                )
+            }
+            Surface(
+                shape = CutCornerShape(16.dp),
+                color = BaseColor.RecordLevelBackground,
+                border = BorderStroke(
+                    width = 1.dp,
+                    color = BaseColor.RecordProfileBorder,
+                ),
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+            ) {
+                BaseText(
+                    text = recordItem.level,
+                    fontSize = 14.sp,
+                    color = Color.White,
+                    modifier = Modifier.padding(horizontal = 10.dp)
+                )
+            }
+        }
         BaseText(
             text = "${recordItem.nickname}#${recordItem.tag}",
             fontSize = 18.sp
         )
-        Space(
-            height = 30.dp
-        )
-        recordItem.rankMap.forEach { (rank, rankItem) ->
-            Row(
-                horizontalArrangement = Arrangement.SpaceAround,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                BaseText(
-                    text = rank.koreanName,
-                    fontSize = 20.sp
-                )
-                Image(
-                    painter = painterResource(rankItem.tier.drawableId),
-                    contentDescription = "",
-                    modifier = Modifier.size(150.dp)
-                )
-                BaseText(
-                    text = "${rankItem.tier.koreanName} ${rankItem.step}",
-                    fontSize = 20.sp
-                )
-            }
-            Space(
-                height = 20.dp
-            )
-        }
     }
 }

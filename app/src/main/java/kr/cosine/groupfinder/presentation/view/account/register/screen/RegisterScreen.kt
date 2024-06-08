@@ -1,7 +1,6 @@
 package kr.cosine.groupfinder.presentation.view.account.register.screen
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Intent
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.layout.Arrangement
@@ -18,7 +17,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
@@ -41,13 +39,13 @@ import kr.cosine.groupfinder.presentation.view.account.register.model.RegisterVi
 import kr.cosine.groupfinder.presentation.view.account.register.state.RegisterErrorUiState
 import kr.cosine.groupfinder.presentation.view.common.data.Code
 import kr.cosine.groupfinder.presentation.view.common.data.IntentKey
+import kr.cosine.groupfinder.presentation.view.compose.ui.BaseColor
 
 private val RegisterErrorUiState.color
-    @Composable
     get() = if (this is RegisterErrorUiState.Valid) {
-        colorResource(R.color.register_valid_border)
+        BaseColor.RegisterValidBorder
     } else {
-        colorResource(R.color.register_invalid_border)
+        BaseColor.RegisterInvalidBorder
     }
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
