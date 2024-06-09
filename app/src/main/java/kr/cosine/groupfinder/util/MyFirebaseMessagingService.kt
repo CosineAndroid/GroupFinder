@@ -35,6 +35,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 "join_request" -> showJoinRequestDialog(myApp.getCurrentActivity(), data)
                 "join_denied" -> showJoinDeniedDialog(myApp.getCurrentActivity())
                 "force_exit" -> showForceExitDialog(myApp.getCurrentActivity())
+                "already_cancel_request" -> showCanceledRequest(myApp.getCurrentActivity())
                 // 다른 메시지 유형에 대한 처리 추가시 타입과 함수 추가.
             }
         }
@@ -78,7 +79,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         })
     }
 
-    fun acceptJoinRequest(senderUUID: String, postUUID: String, lane: Lane) {
+    private fun acceptJoinRequest(senderUUID: String, postUUID: String, lane: Lane) {
         val url = "https://acceptjoinrequest-wy3rih3y5a-dt.a.run.app"
         val json = JSONObject().apply {
             put("ownerUUID", uniqueId)
@@ -178,33 +179,28 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         }
     }
 
+    private fun showCanceledRequest(context: Context) {
+        showDialog(context, "만료된 요청", "이미 만료된 요청입니다.")
+    }
+
     private fun showJoinDeniedDialog(context: Context) {
-        Handler(Looper.getMainLooper()).post {
-            val contextWrapper = ContextThemeWrapper(
-                context,
-                R.style.Theme_GroupFinder
-            )
-            val dialogBuilder = AlertDialog.Builder(contextWrapper)
-            dialogBuilder.setTitle("참가 거절")
-            dialogBuilder.setMessage("참가 요청이 거절되었습니다.")
-            dialogBuilder.setPositiveButton("확인") { dialog, _ ->
-                dialog.dismiss()
-            }
-            val dialog = dialogBuilder.create()
-            dialog.show()
-        }
+        showDialog(context, "참가 거절", "참가 요청이 거절되었습니다.")
     }
 
 
     private fun showForceExitDialog(context: Context) {
+        showDialog(context,"강제 퇴장", "강제 퇴장되었습니다.")
+    }
+
+    private fun showDialog(context: Context, title: String, message: String) {
         Handler(Looper.getMainLooper()).post {
             val contextWrapper = ContextThemeWrapper(
                 context,
                 R.style.Theme_GroupFinder
             )
             val dialogBuilder = AlertDialog.Builder(contextWrapper)
-            dialogBuilder.setTitle("강제 퇴장")
-            dialogBuilder.setMessage("강제 퇴장되었습니다.")
+            dialogBuilder.setTitle(title)
+            dialogBuilder.setMessage(message)
             dialogBuilder.setPositiveButton("확인") { dialog, _ ->
                 dialog.dismiss()
             }
