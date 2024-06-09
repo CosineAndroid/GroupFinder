@@ -35,11 +35,10 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 "join_request" -> showJoinRequestDialog(myApp.getCurrentActivity(), data)
                 "join_denied" -> showJoinDeniedDialog(myApp.getCurrentActivity())
                 "force_exit" -> showForceExitDialog(myApp.getCurrentActivity())
-                "already_cancel_request" -> showCanceledRequest(myApp.getCurrentActivity())
+                "already_cancel_request" -> showCanceledRequestDialog(myApp.getCurrentActivity())
                 // 다른 메시지 유형에 대한 처리 추가시 타입과 함수 추가.
             }
         }
-
     }
 
     override fun onNewToken(token: String) {
@@ -112,6 +111,37 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         })
     }
 
+    private fun deniedJoinRequest(senderUUID: String) {
+        val url = "https://deniedjoinrequest-wy3rih3y5a-dt.a.run.app"
+        val json = JSONObject().apply {
+            put("ownerUUID", uniqueId)
+            put("senderUUID", senderUUID)
+        }
+
+        val requestBody =
+            json.toString().toRequestBody("application/json; charset=utf-8".toMediaType())
+
+        val request = Request.Builder()
+            .url(url)
+            .post(requestBody)
+            .build()
+
+        val client = OkHttpClient()
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                Log.e("FCM", "Failed to denied: 1$e")
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                if (!response.isSuccessful) {
+                    Log.d("FCM", "Failed to denied: 2${response.message}, ${response.code}")
+                } else {
+                    Log.d("FCM", "accept Success")
+                }
+            }
+        })
+    }
+
     fun sendJoinRequest(targetUUID: UUID, senderUUID: UUID, lane: Lane, postUUID: UUID) {
         val url = "https://joinrequest-wy3rih3y5a-an.a.run.app"
         val json = JSONObject().apply {
@@ -160,7 +190,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             val contextWrapper = ContextThemeWrapper(
                 context,
                 R.style.Theme_GroupFinder
-            ) // AppTheme을 사용하거나 알맞은 테마로 변경
+            )
             val dialogBuilder = AlertDialog.Builder(contextWrapper)
             dialogBuilder.setTitle("참가 요청")
             dialogBuilder.setMessage("${participantName}님이 ${participantLane}에 참가를 요청 합니다.")
@@ -172,14 +202,16 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 )
             }
             dialogBuilder.setNegativeButton("거부") { dialog, which ->
-                // 거부 시 거부 메세지 전송
+                deniedJoinRequest(
+                    senderUUID = senderUUID
+                )
             }
             val dialog = dialogBuilder.create()
             dialog.show()
         }
     }
 
-    private fun showCanceledRequest(context: Context) {
+    private fun showCanceledRequestDialog(context: Context) {
         showDialog(context, "만료된 요청", "이미 만료된 요청입니다.")
     }
 
