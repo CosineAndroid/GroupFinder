@@ -10,6 +10,7 @@ import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import kr.cosine.groupfinder.GroupFinderApplication
 import kr.cosine.groupfinder.R
+import kr.cosine.groupfinder.data.registry.LocalAccountRegistry.uniqueId
 import kr.cosine.groupfinder.enums.Lane
 import okhttp3.Call
 import okhttp3.Callback
@@ -27,6 +28,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     override fun onMessageReceived(message: RemoteMessage) {
         val myApp = applicationContext as GroupFinderApplication
+        Log.d("FCM", "onMessageReceived: ")
         message.data.let { data ->
             val messageType = data["type"]
             when (messageType) {
@@ -68,9 +70,42 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
             override fun onResponse(call: Call, response: Response) {
                 if (!response.isSuccessful) {
-                    Log.d("FCM", "Failed to send token: 2${response.message}")
+                    Log.e("FCM", "Failed to send token: 2${response.message}")
                 } else {
                     Log.d("FCM", "Token sent successfully")
+                }
+            }
+        })
+    }
+
+    fun acceptJoinRequest(senderUUID: String, postUUID: String, lane: Lane) {
+        val url = "https://acceptjoinrequest-wy3rih3y5a-dt.a.run.app"
+        val json = JSONObject().apply {
+            put("ownerUUID", uniqueId)
+            put("senderUUID", senderUUID)
+            put("lane", lane)
+            put("postUUID", postUUID)
+        }
+
+        val requestBody =
+            json.toString().toRequestBody("application/json; charset=utf-8".toMediaType())
+
+        val request = Request.Builder()
+            .url(url)
+            .post(requestBody)
+            .build()
+
+        val client = OkHttpClient()
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                Log.e("FCM", "Failed to accept: 1$e")
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                if (!response.isSuccessful) {
+                    Log.d("FCM", "Failed to accept: 2${response.message}, ${response.code}")
+                } else {
+                    Log.d("FCM", "accept Success")
                 }
             }
         })
@@ -118,8 +153,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         Handler(Looper.getMainLooper()).post {
             val participantName = data["name"]
             val participantLane = data["lane"]
-            val senderUUID = data["senderUUID"]?: "error"
-            val postUUID = data["postUUID"]?: "error"
+            val senderUUID = data["senderUUID"] ?: "error"
+            val postUUID = data["postUUID"] ?: "error"
             Log.d("FCM", "showJoinRequestDialog: $senderUUID,$postUUID")
             val contextWrapper = ContextThemeWrapper(
                 context,
@@ -129,6 +164,11 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             dialogBuilder.setTitle("참가 요청")
             dialogBuilder.setMessage("${participantName}님이 ${participantLane}에 참가를 요청 합니다.")
             dialogBuilder.setPositiveButton("수락") { dialog, which ->
+                acceptJoinRequest(
+                    senderUUID = senderUUID,
+                    postUUID = postUUID,
+                    lane = Lane.getLaneByDisplayName(participantLane!!)
+                )
             }
             dialogBuilder.setNegativeButton("거부") { dialog, which ->
                 // 거부 시 거부 메세지 전송
@@ -139,7 +179,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     private fun showJoinDeniedDialog(context: Context) {
-        Handler(Looper.getMainLooper()).post{
+        Handler(Looper.getMainLooper()).post {
             val contextWrapper = ContextThemeWrapper(
                 context,
                 R.style.Theme_GroupFinder
@@ -156,9 +196,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     }
 
 
-
     private fun showForceExitDialog(context: Context) {
-        Handler(Looper.getMainLooper()).post{
+        Handler(Looper.getMainLooper()).post {
             val contextWrapper = ContextThemeWrapper(
                 context,
                 R.style.Theme_GroupFinder
