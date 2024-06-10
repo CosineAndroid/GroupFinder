@@ -3,6 +3,7 @@ package kr.cosine.groupfinder.presentation.view.write
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -32,6 +33,7 @@ import kr.cosine.groupfinder.presentation.view.write.adapter.RequireLaneRecycler
 import kr.cosine.groupfinder.presentation.view.write.adapter.SpinnerAdapter
 import kr.cosine.groupfinder.presentation.view.common.flexbox.decoration.FlexboxItemDecoration
 import kr.cosine.groupfinder.presentation.view.common.flexbox.manager.FlexboxLayoutManager
+import kr.cosine.groupfinder.presentation.view.write.adapter.GameModeSpinnerAdapter
 import kr.cosine.groupfinder.presentation.view.write.event.WriteEvent
 import kr.cosine.groupfinder.presentation.view.write.model.WriteViewModel
 import java.util.UUID
@@ -74,13 +76,29 @@ class WriteActivity : AppCompatActivity() {
         setOnCreateRoomClickListener()
         registerTagViewModel()
         addTagsButton()
-        setGameModeText()
+       // setGameModeText()
         registerViewModelEvent()
+        setGameModeSpinner()
     }
 
-    private fun setGameModeText(){
-        binding.gameModeTextView.text = mode.displayName
+
+    private fun setGameModeSpinner() {
+        val gameModeSpinner = binding.gameModeSpinner
+        val gameModeSpinnerAdapter = GameModeSpinnerAdapter(this, Mode.entries.toTypedArray())
+        gameModeSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        gameModeSpinner.adapter = gameModeSpinnerAdapter
+
+        gameModeSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                mode = Mode.entries.toTypedArray()[position]
+            }
+            override fun onNothingSelected(parent: AdapterView<*>) {}
+        }
     }
+
+//    private fun setGameModeText() {
+//        binding.gameModeTextView.text = mode.displayName
+//    }
 
     private fun setupTagRecyclerViewAdapter() = with(binding.writeTagRecyclerView) {
         adapter = TagAdapter(tagViewModel.tags.toMutableList(), tagViewModel::removeTag).apply {
@@ -214,6 +232,7 @@ class WriteActivity : AppCompatActivity() {
                         setResult(Code.SUCCESS_CREATE_POST)
                         finish()
                     }
+
                     is WriteEvent.Notice -> showToast(writeEvent.message)
                 }
             }
