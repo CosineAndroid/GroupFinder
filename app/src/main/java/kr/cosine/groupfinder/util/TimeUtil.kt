@@ -1,15 +1,12 @@
 package kr.cosine.groupfinder.util
 
-import com.google.firebase.Timestamp
 import java.util.concurrent.TimeUnit
-
 
 object TimeUtil {
 
-    fun getFormattedTime(time: Timestamp): String {
+    fun getFormattedTime(time: Long): String {
         val currentTime = System.currentTimeMillis()
-        val postTime = time.toInstant().toEpochMilli()
-        val differenceValue = currentTime - postTime
+        val differenceValue = currentTime - time
         val timeUnit = TimeUnit.MILLISECONDS
         return when {
             differenceValue < 60000 -> "방금" // 59초 보다 적다면

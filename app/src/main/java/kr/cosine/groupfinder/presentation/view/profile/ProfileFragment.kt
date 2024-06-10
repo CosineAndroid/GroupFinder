@@ -116,7 +116,7 @@ class ProfileFragment : Fragment() {
                         uiState.nickname,
                         uiState.tag
                     )
-                    val postItem = uiState.postItem
+                    val postItem = uiState.groupItem
                     if (postItem != null) {
                         groupAdpater.setPost(postItem)
                     }
