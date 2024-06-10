@@ -4,20 +4,17 @@
     <color name="white">#FFFFFF</color>
     <color name="profile_logout_button_background">#D4D4D4</color>
     <color name="profile_withdraw_button_background">#FF8078</color>
-    <color name="profile_switch">#4E40DB</color>
     <color name="background">#131517</color>
-    <color name="account_text_field_background">#EFEFEF</color>
-    <color name="account_text_field_hint">#8E8E8E</color>
-    <color name="account_enable_button_background">#2E3034</color>
-    <color name="account_disable_button_background">#1E1F20</color>
-    <color name="account_disable_button_text">#5A5A5A</color>
-    <color name="register_valid_border">#3FB15E</color>
-    <color name="register_invalid_border">#CA1854</color>
     <color name="group_default_background">#2E3034</color>
     <color name="group_join_background">#6E4BDC</color>
     <color name="group_full_background">#131517</color>
-    <color name="navigation">#131517</color>
     <color name="group_write_button_background">#5534BE</color>
+    <color name="group_default_tagged_nickname">#C8CDDB</color>
+    <color name="group_default_people_text">#C8CDDB</color>
+    <color name="group_default_time_text">#E5EAF7</color>
+    <color name="group_full_title_text">#565960</color>
+    <color name="group_full_text">#474A50</color>
+    <color name="navigation">#131517</color>
     <color name="group_tagged_nickname">#C8CDDB</color>
     <color name="setting">#FFFFFF</color>
 </resources>

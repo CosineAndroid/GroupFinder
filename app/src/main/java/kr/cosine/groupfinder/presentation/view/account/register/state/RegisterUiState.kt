@@ -11,10 +11,10 @@ data class RegisterUiState(
     companion object {
         fun newInstance(): RegisterUiState {
             return RegisterUiState(
-                id = RegisterErrorUiState.Init,
-                password = RegisterErrorUiState.Init,
-                nickname = RegisterErrorUiState.Init,
-                tag = RegisterErrorUiState.Init,
+                id = RegisterErrorUiState.Blank,
+                password = RegisterErrorUiState.Blank,
+                nickname = RegisterErrorUiState.Blank,
+                tag = RegisterErrorUiState.Blank,
                 isButtonEnabled = false
             )
         }

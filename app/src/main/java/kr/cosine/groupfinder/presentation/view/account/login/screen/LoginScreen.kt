@@ -28,6 +28,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
@@ -41,18 +42,20 @@ import kr.cosine.groupfinder.R
 import kr.cosine.groupfinder.data.manager.LocalAccountManager
 import kr.cosine.groupfinder.data.registry.LocalAccountRegistry
 import kr.cosine.groupfinder.presentation.MainActivity
-import kr.cosine.groupfinder.presentation.view.account.component.BaseButton
-import kr.cosine.groupfinder.presentation.view.account.component.BaseScaffold
-import kr.cosine.groupfinder.presentation.view.account.component.BaseText
-import kr.cosine.groupfinder.presentation.view.account.component.BaseTextField
-import kr.cosine.groupfinder.presentation.view.account.component.LoadingScreen
-import kr.cosine.groupfinder.presentation.view.account.component.Space
-import kr.cosine.groupfinder.presentation.view.common.data.IntentKey
+import kr.cosine.groupfinder.presentation.view.compose.component.BaseButton
+import kr.cosine.groupfinder.presentation.view.compose.component.BaseScaffold
+import kr.cosine.groupfinder.presentation.view.compose.component.BaseText
+import kr.cosine.groupfinder.presentation.view.compose.component.BaseTextField
+import kr.cosine.groupfinder.presentation.view.compose.component.LoadingScreen
+import kr.cosine.groupfinder.presentation.view.compose.component.Space
 import kr.cosine.groupfinder.presentation.view.account.login.event.LoginEvent
 import kr.cosine.groupfinder.presentation.view.account.login.model.LoginViewModel
-import kr.cosine.groupfinder.presentation.view.account.model.LoadingViewModel
+import kr.cosine.groupfinder.presentation.view.compose.model.LoadingViewModel
 import kr.cosine.groupfinder.presentation.view.account.register.RegisterActivity
+import kr.cosine.groupfinder.presentation.view.common.data.Code
+import kr.cosine.groupfinder.presentation.view.common.data.IntentKey
 import kr.cosine.groupfinder.presentation.view.common.util.ActivityUtil
+import kr.cosine.groupfinder.presentation.view.compose.ui.BaseColor
 import kr.cosine.groupfinder.util.MyFirebaseMessagingService
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -131,8 +134,10 @@ fun LoginScreen(
                     fontSize = 15.sp
                 )
             }
+            HeightSpace(20.dp)
             BaseButton(
-                text = stringResource(R.string.login)
+                text = stringResource(R.string.login),
+                containerColor = BaseColor.AccountLoginButtonBackground
             ) {
                 loadingViewModel.show()
                 loginViewModel.loginByInput()
@@ -141,7 +146,9 @@ fun LoginScreen(
             val context = LocalContext.current
             val registerResultLauncher = getRegisterResultLanuncher()
             BaseButton(
-                text = stringResource(R.string.register)
+                text = stringResource(R.string.register),
+                containerColor = BaseColor.Background,
+                elevation = 0.dp
             ) {
                 startRegisterActivity(context, registerResultLauncher)
             }
@@ -150,9 +157,9 @@ fun LoginScreen(
 }
 
 @Composable
-private fun HeightSpace() {
+private fun HeightSpace(height: Dp = 10.dp) {
     Space(
-        height = 10.dp
+        height = height
     )
 }
 
@@ -197,7 +204,7 @@ private fun getRegisterResultLanuncher(
     return rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult()
     ) { result ->
-        if (result.resultCode != Activity.RESULT_OK) return@rememberLauncherForActivityResult
+        if (result.resultCode != Code.SUCCESS_REGISTER_ACCOUNT) return@rememberLauncherForActivityResult
         val intent = result.data ?: return@rememberLauncherForActivityResult
 
         val id = intent.getStringExtra(IntentKey.ID) ?: return@rememberLauncherForActivityResult
