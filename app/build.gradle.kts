@@ -25,6 +25,7 @@ android {
         versionCode = 1
         versionName = "1.0.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField("String", "LOL_API_KEY", properties["LOL_API_KEY"].toString())
     }
 
     buildTypes {
@@ -52,6 +53,7 @@ android {
 
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 
     composeOptions {
@@ -90,6 +92,7 @@ dependencies {
     kapt("com.google.dagger:hilt-compiler:2.50")
 
     implementation("de.svenkubiak:jBCrypt:0.4.1")
+    implementation("io.coil-kt:coil-compose:2.4.0")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
