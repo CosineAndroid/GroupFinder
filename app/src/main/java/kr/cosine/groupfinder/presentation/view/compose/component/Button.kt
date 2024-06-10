@@ -13,6 +13,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kr.cosine.groupfinder.presentation.view.compose.ui.BaseColor
@@ -24,6 +25,8 @@ fun BaseButton(
     modifier: Modifier = Modifier,
     isEnabled: Boolean = true,
     text: String,
+    containerColor: Color = BaseColor.AccountEnableButtonBackground,
+    elevation: Dp = 2.dp,
     onClick: () -> Unit,
 ) {
     var cooldown by rememberSaveable {
@@ -39,15 +42,15 @@ fun BaseButton(
         },
         shape = RoundedCornerShape(8.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = BaseColor.AccountEnableButtonBackground,
+            containerColor = containerColor,
             disabledContainerColor = BaseColor.AccountDisableButtonBackground
         ),
         elevation = ButtonDefaults.elevatedButtonElevation(
-            defaultElevation = 2.dp
+            defaultElevation = elevation
         ),
         modifier = modifier
             .fillMaxWidth()
-            .height(40.dp)
+            .height(50.dp)
             .padding(
                 horizontal = 30.dp
             )

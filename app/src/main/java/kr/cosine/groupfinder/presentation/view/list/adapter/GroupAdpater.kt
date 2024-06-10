@@ -16,6 +16,7 @@ import kr.cosine.groupfinder.presentation.view.common.data.Interval
 import kr.cosine.groupfinder.presentation.view.list.adapter.decoration.GroupTagItemDecoration
 import kr.cosine.groupfinder.presentation.view.list.adapter.listener.TagScrollListener
 import kr.cosine.groupfinder.presentation.view.list.state.item.GroupItem
+import kr.cosine.groupfinder.presentation.view.list.state.item.extension.isJoinedPeople
 import kr.cosine.groupfinder.presentation.view.list.state.item.extension.joinedPeopleCount
 import kr.cosine.groupfinder.presentation.view.list.state.item.extension.tageedNickname
 import kr.cosine.groupfinder.presentation.view.list.state.item.extension.totalPeopleCount
@@ -40,7 +41,9 @@ class GroupAdpater(
         fun bind(post: GroupItem) = with(binding) {
             val joinedPeopleCount = post.joinedPeopleCount
             val totalPeopleCount = post.totalPeopleCount
-            val isMaxGroup = joinedPeopleCount == totalPeopleCount
+
+            val isMaxGroup = !post.isJoinedPeople(LocalAccountRegistry.uniqueId) &&
+                    joinedPeopleCount == totalPeopleCount
 
             fun TextView.applyColor(color: Int = R.color.group_full_text): TextView {
                 if (isMaxGroup) {
