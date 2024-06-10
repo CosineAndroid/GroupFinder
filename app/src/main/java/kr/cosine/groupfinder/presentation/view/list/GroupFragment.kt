@@ -119,10 +119,6 @@ class GroupFragment(
     }
 
     private fun registerWriteButton() = with(binding.writeImageButton) {
-        if (mode == null) {
-            visibility = View.GONE
-            return@with
-        }
         setOnClickListener {
             val intent = Intent(context, WriteActivity::class.java)
             intent.putExtra(IntentKey.MODE, mode)
