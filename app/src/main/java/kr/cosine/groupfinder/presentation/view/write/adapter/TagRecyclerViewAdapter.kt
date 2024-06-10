@@ -1,13 +1,9 @@
 package kr.cosine.groupfinder.presentation.view.write.adapter
 
-
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import kr.cosine.groupfinder.databinding.ActivityWriteBinding
 import kr.cosine.groupfinder.databinding.ItemTagBinding
-
 
 class TagRecyclerViewAdapter(private val tagList: MutableList<String>) :
     RecyclerView.Adapter<TagRecyclerViewAdapter.ViewHolder>() {
@@ -30,5 +26,4 @@ class TagRecyclerViewAdapter(private val tagList: MutableList<String>) :
             binding.tagTextView.text = tag
         }
     }
-    //private fun setTags()
 }

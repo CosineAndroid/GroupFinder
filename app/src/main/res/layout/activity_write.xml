@@ -124,7 +124,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/bodyTextView" />
 
             <TextView
-                android:id="@+id/tagTextView"
+                android:id="@+id/tagSettingTitleTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
@@ -136,14 +136,14 @@
                 app:layout_constraintTop_toBottomOf="@+id/bodyEditTextView" />
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/tagbackgroundCardView"
+                android:id="@+id/tag_background_card_view"
                 android:layout_width="15dp"
                 android:layout_height="15dp"
                 android:layout_marginStart="5dp"
                 app:cardCornerRadius="32dp"
-                app:layout_constraintBottom_toBottomOf="@+id/tagTextView"
-                app:layout_constraintStart_toEndOf="@+id/tagTextView"
-                app:layout_constraintTop_toTopOf="@+id/tagTextView">
+                app:layout_constraintBottom_toBottomOf="@+id/tagSettingTitleTextView"
+                app:layout_constraintStart_toEndOf="@+id/tagSettingTitleTextView"
+                app:layout_constraintTop_toTopOf="@+id/tagSettingTitleTextView">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -172,10 +172,10 @@
                 android:paddingEnd="5dp"
                 android:paddingBottom="1dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/tagTextView"
-                app:layout_constraintTop_toBottomOf="@+id/tagTextView"
+                app:layout_constraintStart_toStartOf="@+id/tagSettingTitleTextView"
+                app:layout_constraintTop_toBottomOf="@+id/tagSettingTitleTextView"
                 tools:itemCount="1"
-                tools:listitem="@layout/item_tag_with_remove" />
+                tools:listitem="@layout/item_tag" />
 
             <TextView
                 android:id="@+id/myLaneTextview"
@@ -186,7 +186,7 @@
                 android:textColor="#C8CDDB"
                 android:textSize="17sp"
                 android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="@+id/tagTextView"
+                app:layout_constraintStart_toStartOf="@+id/tagSettingTitleTextView"
                 app:layout_constraintTop_toBottomOf="@+id/writeTagRecyclerView" />
 
             <androidx.cardview.widget.CardView
@@ -270,26 +270,8 @@
                         android:layout_height="15dp"
                         android:src="@drawable/ic_app_plus"
                         app:tint="@color/white" />
-
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
-
-            <FrameLayout
-                android:id="@+id/writeInSearchLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:translationZ="1dp"
-                android:visibility="invisible"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/writeTagRecyclerView">
-
-            </FrameLayout>
-
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-
     </ScrollView>
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

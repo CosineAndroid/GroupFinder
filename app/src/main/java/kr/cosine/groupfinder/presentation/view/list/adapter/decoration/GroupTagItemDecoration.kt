@@ -1,5 +1,5 @@
 package kr.cosine.groupfinder.presentation.view.list.adapter.decoration
 
-import kr.cosine.groupfinder.presentation.view.common.decoration.TagItemDecoration
+import kr.cosine.groupfinder.presentation.view.tag.decoration.TagItemDecoration
 
-object GroupTagItemDecoration : TagItemDecoration(bottom = 0)
+object GroupTagItemDecoration : TagItemDecoration()

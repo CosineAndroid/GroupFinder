@@ -1,24 +1,26 @@
-package kr.cosine.groupfinder.presentation.view.common.adapter
+package kr.cosine.groupfinder.presentation.view.tag.adapter
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kr.cosine.groupfinder.databinding.ItemTagBinding
+import kr.cosine.groupfinder.presentation.view.common.extension.setOnClickListenerWithCooldown
+import kr.cosine.groupfinder.presentation.view.common.data.Interval
 
 class TagAdapter(
     private val tags: MutableList<String> = mutableListOf(),
     private val onItemClick: (String) -> Unit
-) : RecyclerView.Adapter<TagAdapter.SearchTagViewHolder>() {
+) : RecyclerView.Adapter<TagAdapter.TagViewHolder>() {
 
-    inner class SearchTagViewHolder(
+    inner class TagViewHolder(
         private val binding: ItemTagBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
         init {
-            binding.tagTextView.apply {
-                setOnClickListener {
-                    onItemClick(text.toString())
+            binding.apply {
+                root.setOnClickListenerWithCooldown(Interval.CLICK_TAG) {
+                    onItemClick(tagTextView.text.toString())
                 }
             }
         }
@@ -28,15 +30,15 @@ class TagAdapter(
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchTagViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TagViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = ItemTagBinding.inflate(layoutInflater, parent, false)
-        return SearchTagViewHolder(binding)
+        return TagViewHolder(binding)
     }
 
     override fun getItemCount(): Int = tags.size
 
-    override fun onBindViewHolder(holder: SearchTagViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: TagViewHolder, position: Int) {
         holder.bind(tags[position])
     }
 
