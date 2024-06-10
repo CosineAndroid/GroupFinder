@@ -121,7 +121,7 @@ class GroupFragment(
     private fun registerWriteButton() = with(binding.writeImageButton) {
         setOnClickListener {
             val intent = Intent(context, WriteActivity::class.java)
-            intent.putExtra(IntentKey.MODE, mode)
+            intent.putExtra(IntentKey.MODE, mode ?: Mode.NORMAL)
             writeActivityResultLauncher.launch(intent)
         }
     }

@@ -15,7 +15,7 @@ import kr.cosine.groupfinder.presentation.view.common.extension.setOnClickListen
 import kr.cosine.groupfinder.presentation.view.common.data.Interval
 import kr.cosine.groupfinder.presentation.view.list.adapter.decoration.GroupTagItemDecoration
 import kr.cosine.groupfinder.presentation.view.list.adapter.listener.TagScrollListener
-import kr.cosine.groupfinder.presentation.view.list.state.item.PostItem
+import kr.cosine.groupfinder.presentation.view.list.state.item.GroupItem
 import kr.cosine.groupfinder.presentation.view.list.state.item.extension.joinedPeopleCount
 import kr.cosine.groupfinder.presentation.view.list.state.item.extension.tageedNickname
 import kr.cosine.groupfinder.presentation.view.list.state.item.extension.totalPeopleCount
@@ -23,7 +23,7 @@ import kr.cosine.groupfinder.util.TimeUtil
 
 class GroupAdpater(
     private val context: Context,
-    private val onItemClick: (PostItem) -> Unit = {}
+    private val onItemClick: (GroupItem) -> Unit = {}
 ) : RecyclerView.Adapter<GroupAdpater.GroupViewHolder>() {
 
     inner class GroupViewHolder(
@@ -37,7 +37,7 @@ class GroupAdpater(
             }
         }
 
-        fun bind(post: PostItem) = with(binding) {
+        fun bind(post: GroupItem) = with(binding) {
             val joinedPeopleCount = post.joinedPeopleCount
             val totalPeopleCount = post.totalPeopleCount
             val isMaxGroup = joinedPeopleCount == totalPeopleCount
@@ -86,7 +86,7 @@ class GroupAdpater(
         }
     }
 
-    private val posts = mutableListOf<PostItem>()
+    private val posts = mutableListOf<GroupItem>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GroupViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -101,7 +101,7 @@ class GroupAdpater(
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setPosts(posts: List<PostItem>) {
+    fun setPosts(posts: List<GroupItem>) {
         this.posts.apply {
             clear()
             addAll(posts)
@@ -109,7 +109,7 @@ class GroupAdpater(
         notifyDataSetChanged()
     }
 
-    fun setPost(post: PostItem) {
+    fun setPost(post: GroupItem) {
         setPosts(listOf(post))
     }
 
