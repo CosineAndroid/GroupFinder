@@ -28,6 +28,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
@@ -54,6 +55,7 @@ import kr.cosine.groupfinder.presentation.view.account.register.RegisterActivity
 import kr.cosine.groupfinder.presentation.view.common.data.Code
 import kr.cosine.groupfinder.presentation.view.common.data.IntentKey
 import kr.cosine.groupfinder.presentation.view.common.util.ActivityUtil
+import kr.cosine.groupfinder.presentation.view.compose.ui.BaseColor
 import kr.cosine.groupfinder.util.MyFirebaseMessagingService
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -132,8 +134,10 @@ fun LoginScreen(
                     fontSize = 15.sp
                 )
             }
+            HeightSpace(20.dp)
             BaseButton(
-                text = stringResource(R.string.login)
+                text = stringResource(R.string.login),
+                containerColor = BaseColor.AccountLoginButtonBackground
             ) {
                 loadingViewModel.show()
                 loginViewModel.loginByInput()
@@ -142,7 +146,9 @@ fun LoginScreen(
             val context = LocalContext.current
             val registerResultLauncher = getRegisterResultLanuncher()
             BaseButton(
-                text = stringResource(R.string.register)
+                text = stringResource(R.string.register),
+                containerColor = BaseColor.Background,
+                elevation = 0.dp
             ) {
                 startRegisterActivity(context, registerResultLauncher)
             }
@@ -151,9 +157,9 @@ fun LoginScreen(
 }
 
 @Composable
-private fun HeightSpace() {
+private fun HeightSpace(height: Dp = 10.dp) {
     Space(
-        height = 10.dp
+        height = height
     )
 }
 
