@@ -4,11 +4,11 @@ import kr.cosine.groupfinder.presentation.view.list.state.item.GroupItem
 
 sealed interface GroupUiState {
 
+    data object Loading : GroupUiState
+
     open class Notice(
         val message: String
     ) : GroupUiState
-
-    data object Loading : GroupUiState
 
     data object ResultEmpty : Notice("검색 결과 없음")
 

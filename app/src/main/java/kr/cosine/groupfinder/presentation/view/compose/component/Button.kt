@@ -1,4 +1,4 @@
-package kr.cosine.groupfinder.presentation.view.account.component
+package kr.cosine.groupfinder.presentation.view.compose.component
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -12,10 +12,10 @@ import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import kr.cosine.groupfinder.R
+import kr.cosine.groupfinder.presentation.view.compose.ui.BaseColor
 
 private const val CLICK_INTERVAL = 1000
 
@@ -39,8 +39,8 @@ fun BaseButton(
         },
         shape = RoundedCornerShape(8.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = colorResource(R.color.account_enable_button_background),
-            disabledContainerColor = colorResource(R.color.account_disable_button_background)
+            containerColor = BaseColor.AccountEnableButtonBackground,
+            disabledContainerColor = BaseColor.AccountDisableButtonBackground
         ),
         elevation = ButtonDefaults.elevatedButtonElevation(
             defaultElevation = 2.dp
@@ -56,9 +56,9 @@ fun BaseButton(
             text = text,
             fontSize = 17.sp,
             color = if (isEnabled) {
-                colorResource(R.color.white)
+                Color.White
             } else {
-                colorResource(R.color.account_disable_button_text)
+                BaseColor.AccountDisableButtonText
             }
         )
     }
