@@ -14,6 +14,7 @@ import kr.cosine.groupfinder.domain.model.GroupOwnerEntity
 import kr.cosine.groupfinder.enums.Lane
 import kr.cosine.groupfinder.enums.TestGlobalUserData.HOST
 import kr.cosine.groupfinder.enums.TestGlobalUserData.PARTICIPANT
+import kr.cosine.groupfinder.presentation.view.common.data.IntentKey
 import kr.cosine.groupfinder.util.MyFirebaseMessagingService
 import java.util.UUID
 
@@ -30,10 +31,10 @@ class DetailActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val postUUID = UUID.fromString(intent.getStringExtra("postUniqueId"))
         setContentView(binding.root)
+        val postUniqueId = intent.getSerializableExtra(IntentKey.POST_UNIQUE_ID) as UUID
         observeData()
-        detailViewModel.getPostDetail(postUUID)
+        detailViewModel.getPostDetail(postUniqueId)
         laneOnClick()
     }
 

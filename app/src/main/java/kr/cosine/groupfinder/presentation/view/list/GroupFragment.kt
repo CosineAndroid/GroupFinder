@@ -29,6 +29,7 @@ import kr.cosine.groupfinder.presentation.view.list.model.GroupViewModel
 import kr.cosine.groupfinder.presentation.view.tag.model.TagViewModel
 import kr.cosine.groupfinder.presentation.view.common.data.Interval
 import kr.cosine.groupfinder.presentation.view.common.extension.applyWhite
+import kr.cosine.groupfinder.presentation.view.detail.DetailActivity
 import kr.cosine.groupfinder.presentation.view.list.state.GroupUiState
 import kr.cosine.groupfinder.presentation.view.tag.sheet.TagBottomSheetFragment
 import kr.cosine.groupfinder.presentation.view.write.WriteActivity
@@ -93,7 +94,10 @@ class GroupFragment(
 
     private fun registerGroupRecyclerView() = with(binding.groupRecyclerView) {
         adapter = GroupAdpater(context) { post ->
-
+            val intent = Intent(context, DetailActivity::class.java).apply {
+                putExtra(IntentKey.POST_UNIQUE_ID, post.postUniqueId)
+            }
+            startActivity(intent)
         }.apply {
             groupAdpater = this
         }

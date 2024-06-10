@@ -11,4 +11,6 @@ object IntentKey {
     const val NICKNAME = "nickname"
 
     const val TAG = "tag"
+
+    const val POST_UNIQUE_ID = "post_unique_id"
 }
