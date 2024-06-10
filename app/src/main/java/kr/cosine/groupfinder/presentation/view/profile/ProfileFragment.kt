@@ -107,7 +107,7 @@ class ProfileFragment : Fragment() {
             profileViewModel.uiState.flowWithLifecycle(lifecycle).collectLatest { uiState ->
                 val isLoading = uiState is ProfileUiState.Loading
 
-                // 로딩 중엔 다른 UI 숨겨야 함
+                totalConstraintLayout.isVisible = !isLoading
                 progressBar.isVisible = isLoading
 
                 if (uiState is ProfileUiState.Success) {
