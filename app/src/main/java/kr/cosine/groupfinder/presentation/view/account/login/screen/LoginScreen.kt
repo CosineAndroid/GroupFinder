@@ -34,6 +34,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.google.firebase.iid.FirebaseInstanceId
+import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.flow.collectLatest
 import kr.cosine.groupfinder.R
 import kr.cosine.groupfinder.data.manager.LocalAccountManager
@@ -52,6 +54,7 @@ import kr.cosine.groupfinder.presentation.view.account.register.RegisterActivity
 import kr.cosine.groupfinder.presentation.view.common.data.Code
 import kr.cosine.groupfinder.presentation.view.common.data.IntentKey
 import kr.cosine.groupfinder.presentation.view.common.util.ActivityUtil
+import kr.cosine.groupfinder.util.MyFirebaseMessagingService
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -170,6 +173,11 @@ private suspend fun onLoginEvent(
                 val uniqueId = event.accountEntity.uniqueId
                 LocalAccountRegistry.setUniqueId(uniqueId)
                 localAccountManager.setUniqueId(uniqueId)
+
+                FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+                    val token = task.result
+                    MyFirebaseMessagingService().sendRegistrationToServer(token, uniqueId)
+                }
 
                 ActivityUtil.startNewActivity(activity, MainActivity::class)
                 loadingViewModel.hide()

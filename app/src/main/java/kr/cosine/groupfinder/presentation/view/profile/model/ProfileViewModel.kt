@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kr.cosine.groupfinder.data.registry.LocalAccountRegistry
+import kr.cosine.groupfinder.domain.exception.WithdrawWithJoinException
 import kr.cosine.groupfinder.domain.extension.isJoinedPeople
 import kr.cosine.groupfinder.domain.usecase.GetAccountUseCase
 import kr.cosine.groupfinder.domain.usecase.GetPostsUseCase
@@ -56,8 +57,11 @@ class ProfileViewModel @Inject constructor(
         withdrawAccountUseCase(uniqueId).onSuccess {
             val event = ProfileEvent.Success
             _event.emit(event)
-        }.onFailure {
-            val event = ProfileEvent.UnknownFail
+        }.onFailure { throwable ->
+            val event = when (throwable) {
+                is WithdrawWithJoinException -> ProfileEvent.JoinFail
+                else -> ProfileEvent.UnknownFail
+            }
             _event.emit(event)
         }
     }
