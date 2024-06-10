@@ -67,6 +67,7 @@ class ProfileFragment : Fragment() {
         }.apply {
             groupAdpater = this
         }
+        suppressLayout(true)
     }
 
     private fun registerLogoutButton() {
@@ -106,7 +107,7 @@ class ProfileFragment : Fragment() {
             profileViewModel.uiState.flowWithLifecycle(lifecycle).collectLatest { uiState ->
                 val isLoading = uiState is ProfileUiState.Loading
 
-                // 로딩 중엔 다른 UI 숨겨야 함
+                totalConstraintLayout.isVisible = !isLoading
                 progressBar.isVisible = isLoading
 
                 if (uiState is ProfileUiState.Success) {
@@ -115,7 +116,7 @@ class ProfileFragment : Fragment() {
                         uiState.nickname,
                         uiState.tag
                     )
-                    val postItem = uiState.postItem
+                    val postItem = uiState.groupItem
                     if (postItem != null) {
                         groupAdpater.setPost(postItem)
                     }

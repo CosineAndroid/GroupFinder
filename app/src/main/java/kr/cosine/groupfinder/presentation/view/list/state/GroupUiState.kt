@@ -1,6 +1,6 @@
 package kr.cosine.groupfinder.presentation.view.list.state
 
-import kr.cosine.groupfinder.presentation.view.list.state.item.PostItem
+import kr.cosine.groupfinder.presentation.view.list.state.item.GroupItem
 
 sealed interface GroupUiState {
 
@@ -15,6 +15,6 @@ sealed interface GroupUiState {
     data object UnknownFail : Notice("알 수 없는 오류")
 
     data class Success(
-        val posts: List<PostItem> = emptyList()
+        val posts: List<GroupItem> = emptyList()
     ) : GroupUiState
 }

@@ -6,6 +6,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kr.cosine.groupfinder.data.remote.CloudFunctionDataSource
 import kr.cosine.groupfinder.data.remote.RiotAsiaDataSource
 import kr.cosine.groupfinder.data.remote.FirebaseDataSource
 import kr.cosine.groupfinder.data.remote.RiotKoreaDataSource
@@ -72,5 +73,23 @@ class DataSourceModule {
         @RiotKoreaRetrofit retrofit: Retrofit,
     ): RiotKoreaDataSource {
         return retrofit.create(RiotKoreaDataSource::class.java)
+    }
+
+    @Provides
+    fun provideCloudFunctionRetrofit(
+        okHttpClient: OkHttpClient,
+    ): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl("https://asia-northeast2-groupfinder-b2f8e.cloudfunctions.net/")
+            .client(okHttpClient)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+    }
+
+    @Provides
+    fun provideCloudFunctionDatasource(
+        retrofit: Retrofit,
+    ): CloudFunctionDataSource {
+        return retrofit.create(CloudFunctionDataSource::class.java)
     }
 }

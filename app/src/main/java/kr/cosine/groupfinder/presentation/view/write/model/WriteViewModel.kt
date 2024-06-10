@@ -35,6 +35,7 @@ class WriteViewModel @Inject constructor(
             val event = WriteEvent.Success(postEntity)
             _event.emit(event)
         }.onFailure { throwable ->
+            throwable.printStackTrace()
             val event = when (throwable) {
                 is AlreadyJoinException -> WriteEvent.AlreadyJoinFail
                 else -> WriteEvent.UnknownFail

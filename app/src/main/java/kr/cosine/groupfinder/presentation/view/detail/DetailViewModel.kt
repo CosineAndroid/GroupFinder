@@ -52,7 +52,7 @@ class DetailViewModel @Inject constructor(private val repositry: PostRepository)
         val ownerUniqueId = UUID.fromString("56ab6671-2fdd-4e89-9b0c-82ce2f004331")
         val tags = listOf("tag1", "tag2", "tag3")
         val laneMap = mapOf(Lane.TOP to UUID.fromString("56ab6671-2fdd-4e89-9b0c-82ce2f004331"), Lane.SUPPORT to null)
-        val time = Timestamp.now()
+        val time = System.currentTimeMillis()
 
 
         _postDetail.value = PostEntity(postUniqueId, mode, title, body, ownerUniqueId, tags, laneMap, time)
