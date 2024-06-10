@@ -26,10 +26,11 @@ import kr.cosine.groupfinder.presentation.view.common.data.Code
 import kr.cosine.groupfinder.presentation.view.common.extension.setOnClickListenerWithCooldown
 import kr.cosine.groupfinder.presentation.view.common.data.IntentKey
 import kr.cosine.groupfinder.presentation.view.list.adapter.decoration.GroupTagItemDecoration
-import kr.cosine.groupfinder.presentation.view.list.event.TagEvent
+import kr.cosine.groupfinder.presentation.view.tag.event.TagEvent
 import kr.cosine.groupfinder.presentation.view.list.model.GroupViewModel
 import kr.cosine.groupfinder.presentation.view.tag.model.TagViewModel
 import kr.cosine.groupfinder.presentation.view.common.data.Interval
+import kr.cosine.groupfinder.presentation.view.common.extension.applyWhite
 import kr.cosine.groupfinder.presentation.view.list.state.GroupUiState
 import kr.cosine.groupfinder.presentation.view.tag.sheet.TagBottomSheetFragment
 import kr.cosine.groupfinder.presentation.view.write.WriteActivity
@@ -72,12 +73,8 @@ class GroupFragment(
         registerTagViewModel()
     }
 
-    private fun registerProgressBar() = with(binding.searchProgressBar) {
-        isIndeterminate = true
-        indeterminateDrawable.setColorFilter(
-            context.getColor(R.color.white),
-            PorterDuff.Mode.MULTIPLY
-        )
+    private fun registerProgressBar() {
+        binding.progressBar.applyWhite()
     }
 
     private fun registerWriteActivityResultLauncher() {
@@ -142,7 +139,7 @@ class GroupFragment(
                 val isLoading = uiState is GroupUiState.Loading
                 val isNotice = uiState is GroupUiState.Notice
 
-                searchProgressBar.isVisible = isLoading
+                progressBar.isVisible = isLoading
                 searchResultNoticeTextView.isVisible = isNotice
                 groupRecyclerView.isVisible = !isLoading
 

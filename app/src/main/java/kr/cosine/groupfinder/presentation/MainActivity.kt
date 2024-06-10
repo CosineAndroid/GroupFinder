@@ -2,10 +2,12 @@ package kr.cosine.groupfinder.presentation
 
 import android.os.Bundle
 import android.view.MenuItem
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.Fragment
 import com.google.android.material.navigation.NavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import kr.cosine.groupfinder.R
@@ -21,19 +23,21 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private lateinit var drawerLayout: DrawerLayout
 
+    private lateinit var backPressedCallback: OnBackPressedCallback
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        navigationSetting(savedInstanceState)
+        registerNavigationDrawer()
+        registerBackPressedCallback()
     }
 
-    private fun navigationSetting(savedInstanceState: Bundle?) {
+    private fun registerNavigationDrawer() {
         drawerLayout = binding.drawerLayout
         val toolbar = binding.toolbar
         val navigationView = binding.navigationView
 
         setSupportActionBar(toolbar)
-
         navigationView.setNavigationItemSelectedListener(this)
 
         val toggle = ActionBarDrawerToggle(
@@ -46,50 +50,45 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
-        if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, GroupFragment(Mode.NORMAL)).commit()
-            navigationView.setCheckedItem(R.id.navigation_All)
-        }
+        replaceFragment(GroupFragment())
+        navigationView.setCheckedItem(R.id.navigationAll)
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.navigation_All -> {
-                supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, GroupFragment(null)).commit()
-            }
-            R.id.navigation_Normal -> {
-                supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, GroupFragment(Mode.NORMAL)).commit()
-            }
-            R.id.navigation_Aram -> {
-                supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, GroupFragment(Mode.ARAM)).commit()
-            }
-            R.id.navigation_Duo -> {
-                supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, GroupFragment(Mode.DUO_RANK)).commit()
-            }
-            R.id.navigation_Flex -> {
-                supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, GroupFragment(Mode.FLEX_RANK)).commit()
-            }
-            R.id.navigation_myProfile -> {
-                supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, ProfileFragment()).commit()
-            }
-        }
+        val fragment = when (item.itemId) {
+            R.id.navigationAll -> GroupFragment()
+
+            R.id.navigationNormal -> GroupFragment(Mode.NORMAL)
+
+            R.id.navigationAram -> GroupFragment(Mode.ARAM)
+
+            R.id.navigationDuoRank -> GroupFragment(Mode.DUO_RANK)
+
+            R.id.navigationFlexRank -> GroupFragment(Mode.FLEX_RANK)
+
+            R.id.navigationProfile -> ProfileFragment()
+
+            else -> null
+        } ?: return false
+        replaceFragment(fragment)
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
     }
 
-    override fun onBackPressed() {
-        super.onBackPressed()
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START)
-        } else {
-            onBackPressedDispatcher.onBackPressed()
+    private fun replaceFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, fragment)
+            .commit()
+    }
+
+    private fun registerBackPressedCallback() {
+        backPressedCallback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                    drawerLayout.closeDrawer(GravityCompat.START)
+                }
+            }
         }
+        onBackPressedDispatcher.addCallback(this, backPressedCallback)
     }
 }

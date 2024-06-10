@@ -10,7 +10,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kr.cosine.groupfinder.R
-import kr.cosine.groupfinder.databinding.FragmentTagBinding
+import kr.cosine.groupfinder.databinding.FragmentTagBottomSheetBinding
 import kr.cosine.groupfinder.presentation.view.tag.adapter.TagAdapter
 import kr.cosine.groupfinder.presentation.view.tag.model.TagViewModel
 import kr.cosine.groupfinder.presentation.view.common.flexbox.decoration.FlexboxItemDecoration
@@ -19,7 +19,7 @@ import kr.cosine.groupfinder.presentation.view.common.flexbox.manager.FlexboxLay
 class TagBottomSheetFragment : BottomSheetDialogFragment() {
 
     //Binding
-    private var _binding: FragmentTagBinding? = null
+    private var _binding: FragmentTagBottomSheetBinding? = null
     private val binding get() = _binding!!
 
     //ViewModel
@@ -29,7 +29,7 @@ class TagBottomSheetFragment : BottomSheetDialogFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentTagBinding.inflate(inflater, container, false)
+        _binding = FragmentTagBottomSheetBinding.inflate(inflater, container, false)
         return binding.root
     }
 

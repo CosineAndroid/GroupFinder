@@ -99,6 +99,10 @@ class GroupAdpater(
         notifyDataSetChanged()
     }
 
+    fun setPost(post: PostItem) {
+        setPosts(listOf(post))
+    }
+
     fun clearPosts() {
         setPosts(emptyList())
     }
