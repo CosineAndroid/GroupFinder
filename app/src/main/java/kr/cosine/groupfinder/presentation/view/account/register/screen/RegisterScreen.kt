@@ -1,7 +1,6 @@
 package kr.cosine.groupfinder.presentation.view.account.register.screen
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Intent
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.layout.Arrangement
@@ -18,7 +17,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
@@ -29,24 +27,25 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.flow.collectLatest
 import kr.cosine.groupfinder.R
 import kr.cosine.groupfinder.data.manager.LocalAccountManager
-import kr.cosine.groupfinder.presentation.view.account.component.BaseButton
-import kr.cosine.groupfinder.presentation.view.account.component.BaseScaffold
-import kr.cosine.groupfinder.presentation.view.account.component.DefaultTextField
-import kr.cosine.groupfinder.presentation.view.account.component.LoadingScreen
-import kr.cosine.groupfinder.presentation.view.common.data.IntentKey
+import kr.cosine.groupfinder.presentation.view.compose.component.BaseButton
+import kr.cosine.groupfinder.presentation.view.compose.component.BaseScaffold
+import kr.cosine.groupfinder.presentation.view.compose.component.DefaultTextField
+import kr.cosine.groupfinder.presentation.view.compose.component.LoadingScreen
 import kr.cosine.groupfinder.presentation.view.account.login.LoginActivity
-import kr.cosine.groupfinder.presentation.view.account.model.LoadingViewModel
+import kr.cosine.groupfinder.presentation.view.compose.model.LoadingViewModel
 import kr.cosine.groupfinder.presentation.view.account.register.screen.component.InfoTextField
 import kr.cosine.groupfinder.presentation.view.account.register.event.RegisterEvent
 import kr.cosine.groupfinder.presentation.view.account.register.model.RegisterViewModel
 import kr.cosine.groupfinder.presentation.view.account.register.state.RegisterErrorUiState
+import kr.cosine.groupfinder.presentation.view.common.data.Code
+import kr.cosine.groupfinder.presentation.view.common.data.IntentKey
+import kr.cosine.groupfinder.presentation.view.compose.ui.BaseColor
 
 private val RegisterErrorUiState.color
-    @Composable
     get() = if (this is RegisterErrorUiState.Valid) {
-        colorResource(R.color.register_valid_border)
+        BaseColor.RegisterValidBorder
     } else {
-        colorResource(R.color.register_invalid_border)
+        BaseColor.RegisterInvalidBorder
     }
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -132,7 +131,7 @@ private suspend fun onRegisterEvent(
                     putExtra(IntentKey.ID, accountEntity.id)
                     putExtra(IntentKey.PASSWORD, accountEntity.password)
                 }
-                activity.setResult(Activity.RESULT_OK, intent)
+                activity.setResult(Code.SUCCESS_REGISTER_ACCOUNT, intent)
                 activity.finish()
                 loadingViewModel.hide()
             }

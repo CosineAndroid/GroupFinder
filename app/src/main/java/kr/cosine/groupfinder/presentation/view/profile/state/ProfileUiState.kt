@@ -1,6 +1,6 @@
 package kr.cosine.groupfinder.presentation.view.profile.state
 
-import kr.cosine.groupfinder.presentation.view.list.state.item.PostItem
+import kr.cosine.groupfinder.presentation.view.list.state.item.GroupItem
 
 sealed interface ProfileUiState {
 
@@ -9,6 +9,6 @@ sealed interface ProfileUiState {
     data class Success(
         val nickname: String,
         val tag: String,
-        val postItem: PostItem?
+        val groupItem: GroupItem?
     ) : ProfileUiState
 }

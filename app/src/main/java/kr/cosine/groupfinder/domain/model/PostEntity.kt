@@ -1,6 +1,5 @@
 package kr.cosine.groupfinder.domain.model
 
-import com.google.firebase.Timestamp
 import kr.cosine.groupfinder.enums.Lane
 import kr.cosine.groupfinder.enums.Mode
 import java.util.UUID
@@ -13,7 +12,7 @@ data class PostEntity(
     val ownerUniqueId: UUID,
     val tags: List<String>,
     val laneMap: Map<Lane, UUID?>,
-    val time: Timestamp
+    val time: Long
 ) {
 
     constructor(
@@ -31,6 +30,6 @@ data class PostEntity(
         id,
         tags,
         laneMap,
-        Timestamp.now()
+        System.currentTimeMillis()
     )
 }

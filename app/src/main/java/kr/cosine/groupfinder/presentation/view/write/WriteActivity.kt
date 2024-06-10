@@ -3,7 +3,6 @@ package kr.cosine.groupfinder.presentation.view.write
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels

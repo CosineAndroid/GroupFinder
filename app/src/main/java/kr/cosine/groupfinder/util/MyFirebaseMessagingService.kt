@@ -25,7 +25,6 @@ import java.util.UUID
 
 class MyFirebaseMessagingService : FirebaseMessagingService() {
 
-
     override fun onMessageReceived(message: RemoteMessage) {
         val myApp = applicationContext as GroupFinderApplication
         Log.d("FCM", "onMessageReceived: ")
