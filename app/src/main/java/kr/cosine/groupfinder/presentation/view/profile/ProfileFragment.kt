@@ -67,6 +67,7 @@ class ProfileFragment : Fragment() {
         }.apply {
             groupAdpater = this
         }
+        suppressLayout(true)
     }
 
     private fun registerLogoutButton() {
