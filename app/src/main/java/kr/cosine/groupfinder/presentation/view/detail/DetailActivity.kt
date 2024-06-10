@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kr.cosine.groupfinder.data.registry.LocalAccountRegistry.uniqueId
 import kr.cosine.groupfinder.databinding.ActivityDetailBinding
+import kr.cosine.groupfinder.domain.model.GroupDetailEntity
+import kr.cosine.groupfinder.domain.model.GroupOwnerEntity
 import kr.cosine.groupfinder.domain.model.PostEntity
 import kr.cosine.groupfinder.enums.Lane
 import kr.cosine.groupfinder.enums.TestGlobalUserData.HOST
@@ -29,9 +31,10 @@ class DetailActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val postUUID = UUID.fromString(intent.getStringExtra("postUniqueId"))
         setContentView(binding.root)
         observeData()
-        detailViewModel.getTest()
+        detailViewModel.getPostDetail(postUUID)
         laneOnClick()
     }
 
@@ -41,7 +44,7 @@ class DetailActivity : AppCompatActivity() {
             if (post != null) {
                 bindDetailInformation(post)
                 bindCategoriesFromData(post.tags)
-//                bindLanesFromData(post.laneMap)
+                bindLanesFromData(post.laneMap)
             } else {
                 Log.d("Error", "onCreate: 비 정상적인 로딩")
                 // 잘못된 게시글 로드시 에러처리 오류창 디자인 요청.
@@ -52,11 +55,11 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun bindDetailInformation(postEntity: PostEntity) {
+    private fun bindDetailInformation(groupDetailEntity: GroupDetailEntity) {
         with(binding) {
-            titleTextView.text = postEntity.title
-            idTextView.text = postEntity.ownerUniqueId.toString() //컨버팅 필요
-            memoTextView.text = postEntity.body
+            titleTextView.text = groupDetailEntity.title
+            idTextView.text = "${groupDetailEntity.owner.nickname}#${groupDetailEntity.owner.tag}"
+            memoTextView.text = groupDetailEntity.body
         }
     }
 
@@ -68,7 +71,7 @@ class DetailActivity : AppCompatActivity() {
         categoryAdapter.categoriesUpdate(tags)
     }
 
-    private fun bindLanesFromData(lanes: Map<Lane, UUID?>) {
+    private fun bindLanesFromData(lanes: Map<Lane, GroupOwnerEntity?>) {
         with(binding.lanes) {
             adapter = laneAdapter
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -82,7 +85,7 @@ class DetailActivity : AppCompatActivity() {
                 Log.d("test", "onClick: $lane, Empty") // 참가요청 보내는 로직
                 detailViewModel.postDetail.value?.let { post ->
                     MyFirebaseMessagingService().sendJoinRequest(
-                        targetUUID = post.ownerUniqueId,
+                        targetUUID = post.owner.uniqueId,
                         senderUUID = uniqueId,
                         lane = lane,
                         postUUID = post.postUniqueId

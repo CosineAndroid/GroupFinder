@@ -1,6 +1,5 @@
 package kr.cosine.groupfinder.domain.model
 
-import com.google.firebase.Timestamp
 import kr.cosine.groupfinder.enums.Lane
 import kr.cosine.groupfinder.enums.Mode
 import java.util.UUID
