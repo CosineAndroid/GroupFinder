@@ -15,7 +15,11 @@
     <color name="group_default_background">#2E3034</color>
     <color name="group_join_background">#6E4BDC</color>
     <color name="group_full_background">#131517</color>
-    <color name="navigation">#131517</color>
     <color name="group_write_button_background">#5534BE</color>
-    <color name="group_tagged_nickname">#C8CDDB</color>
+    <color name="group_default_tagged_nickname">#C8CDDB</color>
+    <color name="group_default_people_text">#C8CDDB</color>
+    <color name="group_default_time_text">#E5EAF7</color>
+    <color name="group_full_title_text">#565960</color>
+    <color name="group_full_text">#474A50</color>
+    <color name="navigation">#131517</color>
 </resources>
