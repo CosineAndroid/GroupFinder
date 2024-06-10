@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
-import kr.cosine.groupfinder.presentation.view.list.event.TagEvent
+import kr.cosine.groupfinder.presentation.view.tag.event.TagEvent
 
 class TagViewModel : ViewModel() {
 

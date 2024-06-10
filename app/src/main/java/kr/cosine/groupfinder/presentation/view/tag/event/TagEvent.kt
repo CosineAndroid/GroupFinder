@@ -1,4 +1,4 @@
-package kr.cosine.groupfinder.presentation.view.list.event
+package kr.cosine.groupfinder.presentation.view.tag.event
 
 sealed interface TagEvent {
 

@@ -3,28 +3,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-        <item
-            android:id="@+id/navigation_All"
-            android:title="전체" />
+    <item
+        android:id="@+id/navigationAll"
+        android:title="@string/navigation_all" />
 
-        <item
-            android:id="@+id/navigation_Normal"
-            android:title="일반" />
+    <item
+        android:id="@+id/navigationNormal"
+        android:title="@string/navigation_normal" />
 
-        <item
-            android:id="@+id/navigation_Wind"
-            android:title="칼바람 나락" />
+    <item
+        android:id="@+id/navigationAram"
+        android:title="@string/navigation_aram" />
 
-        <item
-            android:id="@+id/navigation_Solo"
-            android:title="듀오 랭크" />
+    <item
+        android:id="@+id/navigationDuoRank"
+        android:title="@string/navigation_duo_rank" />
 
-        <item
-            android:id="@+id/navigation_Free"
-            android:title="자유랭크" />
+    <item
+        android:id="@+id/navigationFlexRank"
+        android:title="@string/navigation_flex_rank" />
 
-        <item
-            android:id="@+id/navigation_myProfile"
-            android:title="내 프로필" />
-
+    <item
+        android:id="@+id/navigationProfile"
+        android:title="@string/navigation_profile" />
 </menu>

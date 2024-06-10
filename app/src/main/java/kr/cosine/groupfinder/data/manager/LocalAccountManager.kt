@@ -20,14 +20,21 @@ class LocalAccountManager(
         }
     }
 
+    fun findUniqueId(): UUID? {
+        return sharedPreferences.getString(UUID_KEY, null)?.run(UUID::fromString)
+    }
+
     fun setUniqueId(uniqueId: UUID) {
         modifySharedPreferences {
             putString(UUID_KEY, uniqueId.toString())
         }
     }
 
-    fun findUniqueId(): UUID? {
-        return sharedPreferences.getString(UUID_KEY, null)?.run(UUID::fromString)
+    fun reset() {
+        modifySharedPreferences {
+            remove(AUTO_LOGIN_KEY)
+            remove(UUID_KEY)
+        }
     }
 
     private fun modifySharedPreferences(editor: SharedPreferences.Editor.() -> Unit) {
