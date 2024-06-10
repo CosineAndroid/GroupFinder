@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">GroupFinder</string>
-    <string name="profile_title">내 프로필</string>
-    <string name="profile_id_title">닉네임</string>
     <string name="profile_tagged_nickname_format">%s#%s</string>
-    <string name="profile_group_title">참가중인 방</string>
+    <string name="profile_notification">앱 푸시알림 받기</string>
+    <string name="profile_terms">서비스 이용약관</string>
+    <string name="profile_policy">개인정보처리방침</string>
     <string name="profile_logout_title">로그아웃</string>
     <string name="profile_withdraw_title">탈퇴하기</string>
     <string name="group_title_format">%s</string>
