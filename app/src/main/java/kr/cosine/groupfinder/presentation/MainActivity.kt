@@ -2,7 +2,6 @@ package kr.cosine.groupfinder.presentation
 
 import android.os.Bundle
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -13,10 +12,6 @@ import kr.cosine.groupfinder.R
 import kr.cosine.groupfinder.databinding.ActivityMainBinding
 import kr.cosine.groupfinder.enums.Mode
 import kr.cosine.groupfinder.presentation.view.list.GroupFragment
-import kr.cosine.groupfinder.presentation.view.list.FreeFragment
-import kr.cosine.groupfinder.presentation.view.list.NormalFragment
-import kr.cosine.groupfinder.presentation.view.list.SoloFragment
-import kr.cosine.groupfinder.presentation.view.list.WindFragment
 import kr.cosine.groupfinder.presentation.view.profile.ProfileFragment
 
 @AndroidEntryPoint
@@ -62,23 +57,23 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         when (item.itemId) {
             R.id.navigation_All -> {
                 supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, GroupFragment(Mode.NORMAL)).commit()
+                    .replace(R.id.fragment_container, GroupFragment(null)).commit()
             }
             R.id.navigation_Normal -> {
                 supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, NormalFragment()).commit()
+                    .replace(R.id.fragment_container, GroupFragment(Mode.NORMAL)).commit()
             }
-            R.id.navigation_Wind -> {
+            R.id.navigation_Aram -> {
                 supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, WindFragment()).commit()
+                    .replace(R.id.fragment_container, GroupFragment(Mode.ARAM)).commit()
             }
-            R.id.navigation_Solo -> {
+            R.id.navigation_Duo -> {
                 supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, SoloFragment()).commit()
+                    .replace(R.id.fragment_container, GroupFragment(Mode.DUO_RANK)).commit()
             }
-            R.id.navigation_Free -> {
+            R.id.navigation_Flex -> {
                 supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, FreeFragment()).commit()
+                    .replace(R.id.fragment_container, GroupFragment(Mode.FLEX_RANK)).commit()
             }
             R.id.navigation_myProfile -> {
                 supportFragmentManager.beginTransaction()
