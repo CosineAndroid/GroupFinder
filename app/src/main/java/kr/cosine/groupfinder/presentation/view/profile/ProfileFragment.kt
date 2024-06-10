@@ -65,7 +65,22 @@ class ProfileFragment : Fragment() {
 
     private fun deleteMember() {
         binding.withdrawButton.setOnClickListener {
+            val builder = AlertDialog.Builder(context)
+            builder.setMessage("탈퇴 하시겠습니까?")
 
+            val listener = object : DialogInterface.OnClickListener {
+                override fun onClick(dialog: DialogInterface?, which: Int) {
+                    when (which) {
+                        DialogInterface.BUTTON_POSITIVE -> {
+
+                        }
+                    }
+                }
+            }
+
+            builder.setPositiveButton("확인", listener)
+            builder.setNegativeButton("취소", null)
+            builder.show()
         }
     }
 
