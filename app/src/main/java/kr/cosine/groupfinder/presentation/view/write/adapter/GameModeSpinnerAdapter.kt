@@ -9,7 +9,6 @@ import android.widget.TextView
 import kr.cosine.groupfinder.R
 import kr.cosine.groupfinder.enums.Mode
 
-
 class GameModeSpinnerAdapter(
     context: Context,
     private val items: Array<Mode>

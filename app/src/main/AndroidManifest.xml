@@ -35,6 +35,9 @@
         <activity
             android:name=".presentation.view.detail.DetailActivity"
             android:exported="true" />
+        <activity
+            android:name=".presentation.view.record.RecordActivity"
+            android:exported="true" />
         <service
             android:name=".util.MyFirebaseMessagingService"
             android:exported="false">
@@ -42,6 +45,5 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
         </service>
-
     </application>
 </manifest>

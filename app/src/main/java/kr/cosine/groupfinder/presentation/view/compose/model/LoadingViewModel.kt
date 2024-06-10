@@ -1,4 +1,4 @@
-package kr.cosine.groupfinder.presentation.view.account.model
+package kr.cosine.groupfinder.presentation.view.compose.model
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -1,4 +1,4 @@
-package kr.cosine.groupfinder.presentation.view.account.ui
+package kr.cosine.groupfinder.presentation.view.compose.ui
 
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
