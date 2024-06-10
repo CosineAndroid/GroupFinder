@@ -11,7 +11,6 @@ import kr.cosine.groupfinder.data.registry.LocalAccountRegistry.uniqueId
 import kr.cosine.groupfinder.databinding.ActivityDetailBinding
 import kr.cosine.groupfinder.domain.model.GroupDetailEntity
 import kr.cosine.groupfinder.domain.model.GroupOwnerEntity
-import kr.cosine.groupfinder.domain.model.PostEntity
 import kr.cosine.groupfinder.enums.Lane
 import kr.cosine.groupfinder.enums.TestGlobalUserData.HOST
 import kr.cosine.groupfinder.enums.TestGlobalUserData.PARTICIPANT
@@ -96,18 +95,29 @@ class DetailActivity : AppCompatActivity() {
             }
 
 
-            override fun onExitClick(view: View, lane: Lane, userName: UUID) {
-                val userRole = detailViewModel.groupRole.value
-                if (userRole == HOST) {
-                    if (uniqueId == userName) {
-                        Log.d("test", "onExitClick: 방을 닫겠습니까?")
-                    } else {
-                        Log.d("test", "onExitClick: ${userName} 유저를 강퇴 하시겠습니까?")
+            override fun onExitClick(view: View, lane: Lane, userUUID: UUID) {
+                when (detailViewModel.groupRole.value) {
+                    HOST -> {
+                        if (uniqueId == userUUID) {
+                            Log.d("test", "onExitClick: 방을 닫겠습니까?")
+                        } else {
+                            Log.d("test", "onExitClick: $userUUID 유저를 강퇴 하시겠습니까?")
+                        }
                     }
-                } else if (userRole == PARTICIPANT) {
-                    Log.d("test", "onExitClick: 방을 나가겠습니까?")
+                    PARTICIPANT -> {
+                        Log.d("test", "onExitClick: 방을 나가겠습니까?")
+                    }
+                    else -> return
+                }
+
+                detailViewModel.postDetail.value?.let { post ->
+                    MyFirebaseMessagingService().sendLeaveGroupRequest(
+                        postUUID = post.postUniqueId,
+                        targetUUID = userUUID
+                    )
                 }
             }
+
         }
     }
 
