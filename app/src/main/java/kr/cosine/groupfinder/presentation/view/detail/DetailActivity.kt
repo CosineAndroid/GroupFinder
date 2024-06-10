@@ -7,12 +7,13 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
+import kr.cosine.groupfinder.data.registry.LocalAccountRegistry.uniqueId
 import kr.cosine.groupfinder.databinding.ActivityDetailBinding
 import kr.cosine.groupfinder.domain.model.PostEntity
 import kr.cosine.groupfinder.enums.Lane
 import kr.cosine.groupfinder.enums.TestGlobalUserData.HOST
 import kr.cosine.groupfinder.enums.TestGlobalUserData.PARTICIPANT
-import kr.cosine.groupfinder.enums.TestGlobalUserData.userID
+import kr.cosine.groupfinder.util.MyFirebaseMessagingService
 import java.util.UUID
 
 @AndroidEntryPoint
@@ -34,18 +35,13 @@ class DetailActivity : AppCompatActivity() {
         laneOnClick()
     }
 
-    private fun test() {
-        val testid = "f22b0151-5145-42ad-bbfb-4272b23fa57f"
-        val uuid = UUID.fromString(testid)
-        detailViewModel.getPostDetail(uuid)
-    }
 
     private fun observeData() {
         detailViewModel.postDetail.observe(this) { post ->
             if (post != null) {
                 bindDetailInformation(post)
                 bindCategoriesFromData(post.tags)
-                //bindLanesFromData(post.laneMap)
+//                bindLanesFromData(post.laneMap)
             } else {
                 Log.d("Error", "onCreate: 비 정상적인 로딩")
                 // 잘못된 게시글 로드시 에러처리 오류창 디자인 요청.
@@ -59,7 +55,7 @@ class DetailActivity : AppCompatActivity() {
     private fun bindDetailInformation(postEntity: PostEntity) {
         with(binding) {
             titleTextView.text = postEntity.title
-            // idTextView.text = postEntity.id
+            idTextView.text = postEntity.ownerUniqueId.toString() //컨버팅 필요
             memoTextView.text = postEntity.body
         }
     }
@@ -68,12 +64,11 @@ class DetailActivity : AppCompatActivity() {
         with(binding.tags) {
             adapter = categoryAdapter
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            //addItemDecoration(TagItemDecoration(right = 5, bottom = 0))
         }
         categoryAdapter.categoriesUpdate(tags)
     }
 
-    private fun bindLanesFromData(lanes: Map<Lane, String?>) {
+    private fun bindLanesFromData(lanes: Map<Lane, UUID?>) {
         with(binding.lanes) {
             adapter = laneAdapter
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -84,14 +79,24 @@ class DetailActivity : AppCompatActivity() {
     private fun laneOnClick() {
         laneAdapter.itemClick = object : DetailLaneAdapter.ItemClick {
             override fun onClick(view: View, lane: Lane) {
-                Log.d("test", "onClick: ${lane}, Empty") // 참가요청 보내는 로직
+                Log.d("test", "onClick: $lane, Empty") // 참가요청 보내는 로직
+                detailViewModel.postDetail.value?.let { post ->
+                    MyFirebaseMessagingService().sendJoinRequest(
+                        targetUUID = post.ownerUniqueId,
+                        senderUUID = uniqueId,
+                        lane = lane,
+                        postUUID = post.postUniqueId
+                    )
+                } ?: run {
+                    Log.e("test", "ownerUniqueId is null, unable to send join request")
+                }
             }
 
-            override fun onExitClick(view: View, lane: Lane, userName: String?) {
+
+            override fun onExitClick(view: View, lane: Lane, userName: UUID) {
                 val userRole = detailViewModel.groupRole.value
-                val loginUserName = userID
                 if (userRole == HOST) {
-                    if (loginUserName == userName) {
+                    if (uniqueId == userName) {
                         Log.d("test", "onExitClick: 방을 닫겠습니까?")
                     } else {
                         Log.d("test", "onExitClick: ${userName} 유저를 강퇴 하시겠습니까?")
@@ -102,6 +107,5 @@ class DetailActivity : AppCompatActivity() {
             }
         }
     }
-
 
 }
