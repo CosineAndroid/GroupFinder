@@ -4,21 +4,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import kr.cosine.groupfinder.R
+import kr.cosine.groupfinder.data.registry.LocalAccountRegistry.uniqueId
 import kr.cosine.groupfinder.databinding.ActivityDetailSelectLaneBinding
 import kr.cosine.groupfinder.enums.Lane
 import kr.cosine.groupfinder.enums.TestGlobalUserData.HOST
 import kr.cosine.groupfinder.enums.TestGlobalUserData.NONE
 import kr.cosine.groupfinder.enums.TestGlobalUserData.PARTICIPANT
-import kr.cosine.groupfinder.enums.TestGlobalUserData.userID
+import java.util.UUID
 
 class DetailLaneAdapter : RecyclerView.Adapter<DetailLaneAdapter.Holder>() {
-    private var laneMap: Map<Lane, String?> = emptyMap()
+    private var laneMap: Map<Lane, UUID?> = emptyMap()
     private var power: Int = 0
 
     interface ItemClick {
         fun onClick(view: View, lane: Lane)
-        fun onExitClick(view: View, lane: Lane, userName: String?)
+        fun onExitClick(view: View, lane: Lane, userName: UUID)
     }
 
     var itemClick: ItemClick? = null
@@ -41,14 +41,14 @@ class DetailLaneAdapter : RecyclerView.Adapter<DetailLaneAdapter.Holder>() {
         private val binding: ActivityDetailSelectLaneBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(lane: Lane, userName: String?, power: Int, itemClick: ItemClick?) {
+        fun bind(lane: Lane, userName: UUID?, power: Int, itemClick: ItemClick?) {
             val (icon, emptyIcon) = lane.drawableId to lane.emptyDrawableId
             binding.selectLaneImageView.setImageResource(if (userName != null) icon else emptyIcon)
-            binding.selectIdTextView.text = userName ?: "없음"
+            binding.selectIdTextView.text = userName.toString() ?: "없음"
 
             val isExitVisible = when(power) {
                 HOST -> true
-                PARTICIPANT -> userName == userID
+                PARTICIPANT -> userName == uniqueId
                 else -> false
             }
 
@@ -56,7 +56,9 @@ class DetailLaneAdapter : RecyclerView.Adapter<DetailLaneAdapter.Holder>() {
 
             binding.selectExitImageView.setOnClickListener {
                 if (isExitVisible) {
-                    itemClick?.onExitClick(it, lane, userName)
+                    userName?.let { userId ->
+                        itemClick?.onExitClick(it, lane, userId)
+                    }
                 }
             }
 
@@ -68,7 +70,7 @@ class DetailLaneAdapter : RecyclerView.Adapter<DetailLaneAdapter.Holder>() {
         }
     }
 
-    fun laneUpdate(item: Map<Lane, String?>) {
+    fun laneUpdate(item: Map<Lane, UUID?>) {
         this.laneMap = item
     }
 
