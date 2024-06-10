@@ -31,4 +31,16 @@
     <string name="navigation_duo_rank">듀오 랭크</string>
     <string name="navigation_flex_rank">자유 랭크</string>
     <string name="navigation_profile">내 프로필</string>
+    <string name="terms_title">서비스 이용약관</string>
+    <string name="terms_article1">제1조 (목적)</string>
+    <string name="terms_article2">제2조 (약관의 적용)</string>
+    <string name="terms_article3">제3조 (용어의 정의)</string>
+    <string name="terms_article4">제4조 (서비스의 종류)</string>
+    <string name="terms_article5">제5조 (서비스 이용 계약의 성립)</string>
+    <string name="policy_title">개인정보처리방침</string>
+    <string name="policy_article1">제1조 (목적)</string>
+    <string name="policy_article2">제2조 (약관의 적용)</string>
+    <string name="policy_article3">제3조 (용어의 정의)</string>
+    <string name="policy_article4">제4조 (서비스의 종류)</string>
+    <string name="policy_article5">제5조 (서비스 이용 계약의 성립)</string>
 </resources>
