@@ -35,6 +35,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 "join_denied" -> showJoinDeniedDialog(myApp.getCurrentActivity())
                 "force_exit" -> showForceExitDialog(myApp.getCurrentActivity())
                 "already_cancel_request" -> showCanceledRequestDialog(myApp.getCurrentActivity())
+                "permissionDenied" -> showPermissionDeniedDialog(myApp.getCurrentActivity())
                 // 다른 메시지 유형에 대한 처리 추가시 타입과 함수 추가.
             }
         }
@@ -178,6 +179,40 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         })
     }
 
+    fun sendLeaveGroupRequest(postUUID: UUID, targetUUID: UUID) {
+        val url = "https://leavegrouprequest-wy3rih3y5a-dt.a.run.app"
+        val json = JSONObject().apply {
+            put("postUUID", postUUID)
+            put("senderUUID", uniqueId)
+            put("targetUUID", targetUUID)
+        }
+
+        val requestBody =
+            json.toString().toRequestBody("application/json; charset=utf-8".toMediaType())
+
+        val request = Request.Builder()
+            .url(url)
+            .post(requestBody)
+            .build()
+
+        val client = OkHttpClient()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                println("Failed to send request: ${e.message}")
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                if (!response.isSuccessful) {
+                    println("Failed to send request: ${response.message}")
+                } else {
+                    val responseBody = response.body?.string()
+                    println("Success: $responseBody")
+                }
+            }
+        })
+    }
+
 
     private fun showJoinRequestDialog(context: Context, data: Map<String, String>) {
         Handler(Looper.getMainLooper()).post {
@@ -221,6 +256,10 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     private fun showForceExitDialog(context: Context) {
         showDialog(context,"강제 퇴장", "강제 퇴장되었습니다.")
+    }
+
+    private fun showPermissionDeniedDialog(context: Context) {
+        showDialog(context, "권한 오류", "잠시 후 다시 시도해주세요.")
     }
 
     private fun showDialog(context: Context, title: String, message: String) {
