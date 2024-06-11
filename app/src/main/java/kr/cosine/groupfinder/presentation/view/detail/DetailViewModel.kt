@@ -28,20 +28,20 @@ class DetailViewModel @Inject constructor(
     private val _groupRole = MutableLiveData<Int>()
     val groupRole: LiveData<Int> get() = _groupRole
 
-    fun getPostDetail(uniqueId: UUID) = viewModelScope.launch {
+    fun getPostDetail(uniqueId: UUID, isJoined: Boolean) = viewModelScope.launch {
         getGroupDetailUseCase.invoke(uniqueId).onSuccess { item ->
             _postDetail.value = item
-            checkRole()
+            checkRole(isJoined)
         }
     }
 
-    private fun checkRole() {
+    private fun checkRole(isJoined: Boolean) {
         _groupRole.value = when {
+            !isJoined -> NONE
             uuID == null -> NONE
-            postDetail.value?.postUniqueId != uuID -> ANOTHER
             uniqueId == postDetail.value?.owner?.uniqueId -> HOST
-            else -> PARTICIPANT
+            postDetail.value?.laneMap?.values?.any { it?.uniqueId == uniqueId } == true -> PARTICIPANT
+            else -> ANOTHER
         }
     }
-
 }

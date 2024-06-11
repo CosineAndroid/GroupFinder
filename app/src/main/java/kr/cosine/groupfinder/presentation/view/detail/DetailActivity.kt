@@ -38,13 +38,16 @@ class DetailActivity : AppCompatActivity() {
 
     private var progressDialog: Dialog? = null
     private var isProgressDialogDismissed = false
+    private var isJoined = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         val postUniqueId = intent.getSerializableExtra(IntentKey.POST_UNIQUE_ID) as UUID
+        val currentJoined = intent.getBooleanExtra("isJoined", false)
+        isJoined = currentJoined
         observeData()
-        detailViewModel.getPostDetail(postUniqueId)
+        detailViewModel.getPostDetail(postUniqueId, isJoined)
         laneOnClick()
     }
 
@@ -182,6 +185,7 @@ class DetailActivity : AppCompatActivity() {
     }
 
     fun reFreshGroupDetail(postUniqueId: UUID) {
-        detailViewModel.getPostDetail(postUniqueId)
+        isJoined = true
+        detailViewModel.getPostDetail(postUniqueId, isJoined)
     }
 }
