@@ -14,6 +14,7 @@ import kr.cosine.groupfinder.presentation.view.common.extension.setOnClickListen
 class Dialog(
     private val title: String = "",
     private val message: String = "",
+    private val cancelButtonVisibility: Int = View.VISIBLE,
     private val onCancelClick: () -> Unit = {},
     private val onConfirmClick: () -> Unit = {}
 ) : DialogFragment() {
@@ -60,7 +61,9 @@ class Dialog(
     }
 
     private fun registerCancelButton() {
-        binding.cancelButton.setOnClickListenerWithCooldown(Interval.CLICK_BUTTON) {
+        binding.cancelButton.apply {
+            visibility = cancelButtonVisibility
+        }.setOnClickListenerWithCooldown(Interval.CLICK_BUTTON) {
             onCancelClick()
             dismiss()
         }
