@@ -5,7 +5,7 @@
     android:id="@+id/writeActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black"
+    android:background="@color/background"
     android:clickable="true"
     tools:context=".presentation.view.write.WriteActivity">
 
@@ -37,12 +37,13 @@
 
             <Spinner
                 android:id="@+id/gameModeSpinner"
-                android:layout_width="wrap_content"
+                android:layout_width="160dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="32dp"
                 android:popupBackground="@color/group_default_background"
                 android:text="일반 모드"
+                android:background="@drawable/spinner_mode_custom"
                 tools:listitem="@layout/item_gamemodespinner"
                 android:textColor="@color/white"
                 app:layout_constraintStart_toStartOf="parent"
