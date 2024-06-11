@@ -9,11 +9,9 @@ import kotlinx.coroutines.launch
 import kr.cosine.groupfinder.data.registry.LocalAccountRegistry.uniqueId
 import kr.cosine.groupfinder.domain.model.GroupDetailEntity
 import kr.cosine.groupfinder.domain.usecase.GetGroupDetailUseCase
-import kr.cosine.groupfinder.enums.TestGlobalUserData.ANOTHER
 import kr.cosine.groupfinder.enums.TestGlobalUserData.HOST
 import kr.cosine.groupfinder.enums.TestGlobalUserData.NONE
 import kr.cosine.groupfinder.enums.TestGlobalUserData.PARTICIPANT
-import kr.cosine.groupfinder.enums.TestGlobalUserData.uuID
 import java.util.UUID
 import javax.inject.Inject
 
@@ -28,20 +26,18 @@ class DetailViewModel @Inject constructor(
     private val _groupRole = MutableLiveData<Int>()
     val groupRole: LiveData<Int> get() = _groupRole
 
-    fun getPostDetail(uniqueId: UUID, isJoined: Boolean) = viewModelScope.launch {
+    fun getPostDetail(uniqueId: UUID) = viewModelScope.launch {
         getGroupDetailUseCase.invoke(uniqueId).onSuccess { item ->
             _postDetail.value = item
-            checkRole(isJoined)
+            checkRole()
         }
     }
 
-    private fun checkRole(isJoined: Boolean) {
+    private fun checkRole() {
         _groupRole.value = when {
-            !isJoined -> NONE
-            uuID == null -> NONE
             uniqueId == postDetail.value?.owner?.uniqueId -> HOST
             postDetail.value?.laneMap?.values?.any { it?.uniqueId == uniqueId } == true -> PARTICIPANT
-            else -> ANOTHER
+            else -> NONE
         }
     }
 }

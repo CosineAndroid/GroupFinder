@@ -5,13 +5,10 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.View
-import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.view.ContextThemeWrapper
 import androidx.fragment.app.FragmentActivity
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import kr.cosine.groupfinder.GroupFinderApplication
-import kr.cosine.groupfinder.R
 import kr.cosine.groupfinder.data.registry.LocalAccountRegistry.uniqueId
 import kr.cosine.groupfinder.enums.Lane
 import kr.cosine.groupfinder.presentation.view.detail.DetailActivity
@@ -31,7 +28,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     override fun onMessageReceived(message: RemoteMessage) {
         val myApp = applicationContext as GroupFinderApplication
-        Log.d("FCM", "onMessageReceived: ")
+        Log.d("FCM", "onMessageReceived")
         message.data.let { data ->
             val messageType = data["type"]
             when (messageType) {
@@ -273,6 +270,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             Dialog(
                 title = "참가 요청",
                 message = "${participantName}님이 ${participantLane}에 참가를 요청 합니다.",
+                cancelButtonTitle = "거절",
+                confirmButtonTitle = "수락",
                 onConfirmClick = {
                     acceptJoinRequest(
                         senderUUID = senderUUID,
