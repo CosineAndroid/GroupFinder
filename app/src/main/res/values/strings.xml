@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">GroupFinder</string>
-    <string name="profile_title">내 프로필</string>
-    <string name="profile_id_title">닉네임</string>
     <string name="profile_tagged_nickname_format">%s#%s</string>
-    <string name="profile_group_title">참가중인 방</string>
+    <string name="profile_notification">앱 푸시알림 받기</string>
+    <string name="profile_terms">서비스 이용약관</string>
+    <string name="profile_policy">개인정보처리방침</string>
     <string name="profile_logout_title">로그아웃</string>
     <string name="profile_withdraw_title">탈퇴하기</string>
     <string name="group_title_format">%s</string>
@@ -30,7 +30,19 @@
     <string name="navigation_aram">칼바람 나락</string>
     <string name="navigation_duo_rank">듀오 랭크</string>
     <string name="navigation_flex_rank">자유 랭크</string>
-    <string name="navigation_profile">내 프로필</string>
     <string name="dialog_confirm_title">확인</string>
     <string name="dialog_cancel_title">취소</string>
+    <string name="navigation_profile">설정</string>
+    <string name="terms_title">서비스 이용약관</string>
+    <string name="terms_article1">제1조 (목적)</string>
+    <string name="terms_article2">제2조 (약관의 적용)</string>
+    <string name="terms_article3">제3조 (용어의 정의)</string>
+    <string name="terms_article4">제4조 (서비스의 종류)</string>
+    <string name="terms_article5">제5조 (서비스 이용 계약의 성립)</string>
+    <string name="policy_title">개인정보처리방침</string>
+    <string name="policy_article1">제1조 (목적)</string>
+    <string name="policy_article2">제2조 (약관의 적용)</string>
+    <string name="policy_article3">제3조 (용어의 정의)</string>
+    <string name="policy_article4">제4조 (서비스의 종류)</string>
+    <string name="policy_article5">제5조 (서비스 이용 계약의 성립)</string>
 </resources>
