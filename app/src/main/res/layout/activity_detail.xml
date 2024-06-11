@@ -10,34 +10,35 @@
 
     <TextView
         android:id="@+id/titleTextView"
-        style="@style/textView_Title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="그랜드 마스터만 받음"
-        app:layout_constraintEnd_toEndOf="parent"
+        style="@style/textView_Title"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="35dp"/>
 
     <TextView
         android:id="@+id/idTextView"
-        style="@style/textView_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="5dp"
         android:text="페이커#KR1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleTextView" />
+        style="@style/textView_id"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/tags"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="13dp"
         android:orientation="horizontal"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/idTextView"
+        app:layout_constraintTop_toBottomOf="@+id/titleTextView"
         tools:itemCount="6"
         tools:listitem="@layout/item_tag" />
 
@@ -53,13 +54,13 @@
 
     <TextView
         android:id="@+id/memoTextView"
-        style="@style/textView_explanation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:background="@drawable/edittext_box"
         android:lines="3"
         android:text="본인 마스터 그마까지 켠왕 갈사람 구합니다.\n징징이x"
+        style="@style/textView_explanation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tags" />
