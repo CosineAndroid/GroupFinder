@@ -19,6 +19,7 @@ import kr.cosine.groupfinder.enums.Lane
 import kr.cosine.groupfinder.enums.TestGlobalUserData.HOST
 import kr.cosine.groupfinder.enums.TestGlobalUserData.PARTICIPANT
 import kr.cosine.groupfinder.presentation.view.common.data.IntentKey
+import kr.cosine.groupfinder.presentation.view.common.extension.setOnClickListenerWithCooldown
 import kr.cosine.groupfinder.util.MyFirebaseMessagingService
 import java.util.UUID
 
@@ -89,15 +90,17 @@ class DetailActivity : AppCompatActivity() {
     private fun laneOnClick() {
         laneAdapter.itemClick = object : DetailLaneAdapter.ItemClick {
             override fun onClick(view: View, lane: Lane) {
-                Log.d("test", "onClick: $lane, Empty") // 참가요청 보내는 로직
-                detailViewModel.postDetail.value?.let { post ->
-                    showJoinRequestDialog(
-                        ownerUniqueId = post.owner.uniqueId,
-                        postUniqueId = post.postUniqueId,
-                        lane = lane
-                    )
-                } ?: run {
-                    Log.e("test", "ownerUniqueId is null, unable to send join request")
+                view.setOnClickListenerWithCooldown(1000) {
+                    Log.d("test", "onClick: click!")
+                    detailViewModel.postDetail.value?.let { post ->
+                        showJoinRequestDialog(
+                            ownerUniqueId = post.owner.uniqueId,
+                            postUniqueId = post.postUniqueId,
+                            lane = lane
+                        )
+                    } ?: run {
+                        Log.e("test", "ownerUniqueId is null, unable to send join request")
+                    }
                 }
             }
 
