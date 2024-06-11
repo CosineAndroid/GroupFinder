@@ -10,5 +10,6 @@ data class AccountEntity(
     val password: String,
     val nickname: String,
     val tag: String,
-    val token: String?
+    val token: String?,
+    val groupUniqueId: UUID?
 )

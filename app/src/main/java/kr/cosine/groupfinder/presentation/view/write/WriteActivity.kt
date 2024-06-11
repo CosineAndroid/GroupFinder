@@ -75,7 +75,6 @@ class WriteActivity : AppCompatActivity() {
         setOnCreateRoomClickListener()
         registerTagViewModel()
         addTagsButton()
-       // setGameModeText()
         registerViewModelEvent()
         setGameModeSpinner()
     }
@@ -94,10 +93,6 @@ class WriteActivity : AppCompatActivity() {
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
     }
-
-//    private fun setGameModeText() {
-//        binding.gameModeTextView.text = mode.displayName
-//    }
 
     private fun setupTagRecyclerViewAdapter() = with(binding.writeTagRecyclerView) {
         adapter = TagAdapter(tagViewModel.tags.toMutableList(), tagViewModel::removeTag).apply {
@@ -204,6 +199,7 @@ class WriteActivity : AppCompatActivity() {
 
             lanes[selectedMyLane] = ownerUniqueId
             writeViewModel.createPost(mode, title, body, ownerUniqueId, tags, lanes)
+            finish()
         }
     }
 

@@ -73,8 +73,7 @@ class ProfileFragment : Fragment() {
     private fun registerLogoutButton() {
         binding.logoutButton.setOnClickListenerWithCooldown(Interval.OPEN_SCREEN) {
             showDialog(getString(R.string.profile_logout_message)) {
-                LocalAccountRegistry.isLogout = true
-                LocalAccountRegistry.resetUniqueId()
+                resetLocalAccount()
                 ActivityUtil.startNewActivity(requireContext, LoginActivity::class)
             }
         }
@@ -123,13 +122,18 @@ class ProfileFragment : Fragment() {
                     is ProfileEvent.Notice -> requireContext.showToast(event.message)
 
                     is ProfileEvent.Success -> {
-                        LocalAccountRegistry.isLogout = true
-                        LocalAccountManager(requireContext).reset()
+                        resetLocalAccount()
                         ActivityUtil.startNewActivity(requireContext, LoginActivity::class)
                     }
                 }
             }
         }
+    }
+
+    private fun resetLocalAccount() {
+        LocalAccountRegistry.isLogout = true
+        LocalAccountRegistry.resetUniqueId()
+        LocalAccountManager(requireContext).reset()
     }
 
     override fun onDestroyView() {
