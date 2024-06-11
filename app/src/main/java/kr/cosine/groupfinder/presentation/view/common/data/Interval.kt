@@ -5,4 +5,6 @@ object Interval {
     const val OPEN_SCREEN = 500
 
     const val CLICK_TAG = 200
+
+    const val CLICK_BUTTON = 500
 }

@@ -39,13 +39,14 @@ import kr.cosine.groupfinder.presentation.view.account.register.model.RegisterVi
 import kr.cosine.groupfinder.presentation.view.account.register.state.RegisterErrorUiState
 import kr.cosine.groupfinder.presentation.view.common.data.Code
 import kr.cosine.groupfinder.presentation.view.common.data.IntentKey
+import kr.cosine.groupfinder.presentation.view.compose.component.Space
 import kr.cosine.groupfinder.presentation.view.compose.ui.BaseColor
 
 private val RegisterErrorUiState.color
-    get() = if (this is RegisterErrorUiState.Valid) {
-        BaseColor.RegisterValidBorder
-    } else {
-        BaseColor.RegisterInvalidBorder
+    get() = when (this) {
+        is RegisterErrorUiState.Blank -> BaseColor.RegisterEmptyBorder
+        is RegisterErrorUiState.Valid -> BaseColor.RegisterValidBorder
+        else -> BaseColor.RegisterInvalidBorder
     }
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -100,6 +101,7 @@ fun RegisterScreen(
                     onValueChange = registerViewModel::checkTag
                 )
             }
+            Space(height = 20.dp)
             registerViewModel.checkButtonEnable()
             BaseButton(
                 isEnabled = uiState.isButtonEnabled,

@@ -63,13 +63,15 @@ class TagBottomSheetFragment : BottomSheetDialogFragment() {
     }
 
     companion object {
+        private val micTags = mutableListOf("마이크X", "마이크O", "상관없음")
+        private val styleTags = mutableListOf("빡겜", "즐겜", "욕X", "듣톡", "채팅X")
+
+        private const val TAG = "TagBottomSheetFragment"
+
         fun show(fragmentManager: FragmentManager) {
             val tagBottomSheetFragment = TagBottomSheetFragment()
             tagBottomSheetFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerBottomSheetDialogTheme)
-            tagBottomSheetFragment.show(fragmentManager, null)
+            tagBottomSheetFragment.show(fragmentManager, TAG)
         }
-
-        private val micTags = mutableListOf("마이크X", "마이크O", "상관없음")
-        private val styleTags = mutableListOf("빡겜", "즐겜", "욕X", "듣톡", "채팅X")
     }
 }

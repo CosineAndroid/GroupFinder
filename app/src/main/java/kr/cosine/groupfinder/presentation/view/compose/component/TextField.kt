@@ -89,7 +89,8 @@ fun BaseTextField(
                 text = hint,
                 fontSize = 16.sp,
                 color = BaseColor.AccountTextFieldHint,
-                modifier = Modifier.align(Alignment.CenterStart)
+                modifier = Modifier
+                    .align(Alignment.CenterStart)
             )
         }
         BasicTextField(
@@ -100,7 +101,8 @@ fun BaseTextField(
             textStyle = TextStyle(
                 fontSize = 18.sp,
                 fontFamily = Font.sansFontFamily,
-                fontWeight = FontWeight.Normal
+                fontWeight = FontWeight.Normal,
+                color = BaseColor.AccountTextFieldContent
             ),
             singleLine = true,
             decorationBox = { innerTextField ->
@@ -111,7 +113,8 @@ fun BaseTextField(
                 }
             },
             visualTransformation = visualTransformation,
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize()
         )
     }
 }
