@@ -31,7 +31,7 @@ class RegisterViewModel @Inject constructor(
     private val _event = MutableSharedFlow<RegisterEvent>()
     val event: SharedFlow<RegisterEvent> get() = _event.asSharedFlow()
 
-    private val passwordRegex = Regex("^.*(?=^.{10,}\$)(?=.*\\d)(?=.*[a-zA-Z])(?=.*[!@^*~]).*\$")
+    private val passwordRegex = Regex("^.*(?=^.{8,20}\$)(?=.*\\d)(?=.*[a-zA-Z])(?=.*[!*@#\$%^&+=]).*\$")
 
     private val RegisterErrorUiState.text get() = (this as RegisterErrorUiState.Valid).text
 
@@ -40,7 +40,8 @@ class RegisterViewModel @Inject constructor(
             prevUiState.copy(
                 id = when {
                     id.isBlank() -> RegisterErrorUiState.Blank
-                    id.length < NICKNAME_LENGTH -> RegisterErrorUiState.Length
+                    id.containsBlank() -> RegisterErrorUiState.ContainBlank
+                    id.length < ID_MIN_LENGTH -> RegisterErrorUiState.Length
                     else -> RegisterErrorUiState.Valid(id)
                 }
             )
@@ -52,6 +53,7 @@ class RegisterViewModel @Inject constructor(
             prevUiState.copy(
                 password = when {
                     password.isBlank() -> RegisterErrorUiState.Blank
+                    password.containsBlank() -> RegisterErrorUiState.ContainBlank
                     !passwordRegex.matches(password) -> RegisterErrorUiState.Password
                     else -> RegisterErrorUiState.Valid(password)
                 }
@@ -59,12 +61,14 @@ class RegisterViewModel @Inject constructor(
         }
     }
 
+    private fun String.containsBlank(): Boolean = contains(" ")
+
     fun checkNickname(nickname: String) {
         _uiState.update { prevUiState ->
             prevUiState.copy(
                 nickname = when {
                     nickname.isBlank() -> RegisterErrorUiState.Blank
-                    nickname.length > INFO_LENGTH -> RegisterErrorUiState.Length
+                    nickname.length > INFO_MAX_LENGTH -> RegisterErrorUiState.Length
                     else -> RegisterErrorUiState.Valid(nickname)
                 }
             )
@@ -76,7 +80,7 @@ class RegisterViewModel @Inject constructor(
             prevUiState.copy(
                 tag = when {
                     tag.isBlank() -> RegisterErrorUiState.Blank
-                    tag.length > INFO_LENGTH -> RegisterErrorUiState.Length
+                    tag.length > INFO_MAX_LENGTH -> RegisterErrorUiState.Length
                     else -> {
                         checkButtonEnable()
                         RegisterErrorUiState.Valid(tag)
@@ -120,7 +124,7 @@ class RegisterViewModel @Inject constructor(
     }
 
     private companion object {
-        const val NICKNAME_LENGTH = 5
-        const val INFO_LENGTH = 16
+        const val ID_MIN_LENGTH = 5
+        const val INFO_MAX_LENGTH = 16
     }
 }
