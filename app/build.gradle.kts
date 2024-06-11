@@ -89,6 +89,7 @@ dependencies {
     implementation("com.google.android.material:material:1.12.0")
     implementation("com.google.dagger:hilt-android:2.50")
     implementation("com.google.android.flexbox:flexbox:3.0.0")
+    implementation("com.google.android.gms:play-services-ads:23.1.0")
     kapt("com.google.dagger:hilt-compiler:2.50")
 
     implementation("de.svenkubiak:jBCrypt:0.4.1")
