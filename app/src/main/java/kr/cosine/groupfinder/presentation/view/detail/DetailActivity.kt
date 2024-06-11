@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
@@ -84,11 +85,10 @@ class DetailActivity : AppCompatActivity() {
             override fun onClick(view: View, lane: Lane) {
                 Log.d("test", "onClick: $lane, Empty") // 참가요청 보내는 로직
                 detailViewModel.postDetail.value?.let { post ->
-                    MyFirebaseMessagingService().sendJoinRequest(
-                        targetUUID = post.owner.uniqueId,
-                        senderUUID = uniqueId,
-                        lane = lane,
-                        postUUID = post.postUniqueId
+                    showJoinRequestDialog(
+                        ownerUniqueId = post.owner.uniqueId,
+                        postUniqueId = post.postUniqueId,
+                        lane = lane
                     )
                 } ?: run {
                     Log.e("test", "ownerUniqueId is null, unable to send join request")
@@ -105,9 +105,11 @@ class DetailActivity : AppCompatActivity() {
                             Log.d("test", "onExitClick: $userUUID 유저를 강퇴 하시겠습니까?")
                         }
                     }
+
                     PARTICIPANT -> {
                         Log.d("test", "onExitClick: 방을 나가겠습니까?")
                     }
+
                     else -> return
                 }
 
@@ -120,6 +122,25 @@ class DetailActivity : AppCompatActivity() {
             }
 
         }
+    }
+
+    private fun showJoinRequestDialog(ownerUniqueId: UUID, postUniqueId: UUID, lane: Lane) {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("참가 요청")
+        builder.setMessage("${lane.displayName}라인에 참가하시겠습니까?")
+        builder.setPositiveButton("예") { _, _ ->
+            MyFirebaseMessagingService().sendJoinRequest(
+                targetUUID = ownerUniqueId,
+                senderUUID = uniqueId,
+                lane = lane,
+                postUUID = postUniqueId
+            )
+        }
+        builder.setNegativeButton("아니오") { dialog, _ ->
+            dialog.dismiss()
+        }
+        val dialog: AlertDialog = builder.create()
+        dialog.show()
     }
 
 }
