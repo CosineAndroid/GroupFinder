@@ -1,9 +1,13 @@
 package kr.cosine.groupfinder.presentation.view.detail
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.View
+import android.widget.ProgressBar
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
@@ -15,6 +19,7 @@ import kr.cosine.groupfinder.enums.Lane
 import kr.cosine.groupfinder.enums.TestGlobalUserData.HOST
 import kr.cosine.groupfinder.enums.TestGlobalUserData.PARTICIPANT
 import kr.cosine.groupfinder.presentation.view.common.data.IntentKey
+import kr.cosine.groupfinder.presentation.view.common.extension.setOnClickListenerWithCooldown
 import kr.cosine.groupfinder.util.MyFirebaseMessagingService
 import java.util.UUID
 
@@ -28,6 +33,9 @@ class DetailActivity : AppCompatActivity() {
     private val categoryAdapter by lazy { DetailCategoryAdapter() }
 
     private val laneAdapter by lazy { DetailLaneAdapter() }
+
+    private var progressDialog: AlertDialog? = null
+    private var isProgressDialogDismissed = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,16 +90,17 @@ class DetailActivity : AppCompatActivity() {
     private fun laneOnClick() {
         laneAdapter.itemClick = object : DetailLaneAdapter.ItemClick {
             override fun onClick(view: View, lane: Lane) {
-                Log.d("test", "onClick: $lane, Empty") // 참가요청 보내는 로직
-                detailViewModel.postDetail.value?.let { post ->
-                    MyFirebaseMessagingService().sendJoinRequest(
-                        targetUUID = post.owner.uniqueId,
-                        senderUUID = uniqueId,
-                        lane = lane,
-                        postUUID = post.postUniqueId
-                    )
-                } ?: run {
-                    Log.e("test", "ownerUniqueId is null, unable to send join request")
+                view.setOnClickListenerWithCooldown(1000) {
+                    Log.d("test", "onClick: click!")
+                    detailViewModel.postDetail.value?.let { post ->
+                        showJoinRequestDialog(
+                            ownerUniqueId = post.owner.uniqueId,
+                            postUniqueId = post.postUniqueId,
+                            lane = lane
+                        )
+                    } ?: run {
+                        Log.e("test", "ownerUniqueId is null, unable to send join request")
+                    }
                 }
             }
 
@@ -105,9 +114,11 @@ class DetailActivity : AppCompatActivity() {
                             Log.d("test", "onExitClick: $userUUID 유저를 강퇴 하시겠습니까?")
                         }
                     }
+
                     PARTICIPANT -> {
                         Log.d("test", "onExitClick: 방을 나가겠습니까?")
                     }
+
                     else -> return
                 }
 
@@ -122,4 +133,58 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
+    private fun showJoinRequestDialog(ownerUniqueId: UUID, postUniqueId: UUID, lane: Lane) {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("참가 요청")
+        builder.setMessage("${lane.displayName} 라인에 참가하시겠습니까?")
+        builder.setPositiveButton("예") { _, _ ->
+            val progressBar = ProgressBar(this)
+            progressDialog = AlertDialog.Builder(this)
+                .setTitle("참가 요청 중...")
+                .setView(progressBar)
+                .setCancelable(false)
+                .create()
+
+            isProgressDialogDismissed = false
+            progressDialog?.show()
+
+            MyFirebaseMessagingService().sendJoinRequest(
+                targetUUID = ownerUniqueId,
+                senderUUID = uniqueId,
+                lane = lane,
+                postUUID = postUniqueId
+            )
+
+            val handler = Handler(Looper.getMainLooper())
+            handler.postDelayed({
+                if (!isProgressDialogDismissed) {
+                    progressDialog?.dismiss()
+                    if(!isFinishing && !isDestroyed) { //중간에 다른 어플을 사용하다 온 경우 안전을 위함
+                        AlertDialog.Builder(this)
+                            .setTitle("시간 초과")
+                            .setMessage("잠시 후 다시 시도해주세요.")
+                            .setPositiveButton("확인") { dialog, _ ->
+                                dialog.dismiss()
+                            }
+                            .show()
+                    }
+                }
+            }, 25000)
+        }
+        builder.setNegativeButton("아니오") { dialog, _ ->
+            dialog.dismiss()
+        }
+        val dialog: AlertDialog = builder.create()
+        dialog.show()
+    }
+
+    fun dismissProgressDialog() {
+        isProgressDialogDismissed = true
+        progressDialog?.dismiss()
+    }
+
+    fun reFreshGroupDetail(postUniqueId: UUID) {
+        detailViewModel.getPostDetail(postUniqueId)
+
+    }
 }

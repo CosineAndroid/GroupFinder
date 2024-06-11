@@ -12,6 +12,7 @@ import kr.cosine.groupfinder.GroupFinderApplication
 import kr.cosine.groupfinder.R
 import kr.cosine.groupfinder.data.registry.LocalAccountRegistry.uniqueId
 import kr.cosine.groupfinder.enums.Lane
+import kr.cosine.groupfinder.presentation.view.detail.DetailActivity
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.MediaType.Companion.toMediaType
@@ -32,7 +33,21 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             val messageType = data["type"]
             when (messageType) {
                 "join_request" -> showJoinRequestDialog(myApp.getCurrentActivity(), data)
-                "join_denied" -> showJoinDeniedDialog(myApp.getCurrentActivity())
+                "join_denied" -> {
+                    val currentActivity = myApp.getCurrentActivity()
+                    if(currentActivity is DetailActivity) {
+                        currentActivity.dismissProgressDialog()
+                    }
+                    showJoinDeniedDialog(myApp.getCurrentActivity())
+                }
+                "join_accept" -> {
+                    val currentActivity = myApp.getCurrentActivity()
+                    val postUUID = UUID.fromString(data["postUUID"])
+                    if(currentActivity is DetailActivity) {
+                        currentActivity.dismissProgressDialog()
+                        currentActivity.reFreshGroupDetail(postUUID)
+                    }
+                }
                 "force_exit" -> showForceExitDialog(myApp.getCurrentActivity())
                 "already_cancel_request" -> showCanceledRequestDialog(myApp.getCurrentActivity())
                 "permissionDenied" -> showPermissionDeniedDialog(myApp.getCurrentActivity())
