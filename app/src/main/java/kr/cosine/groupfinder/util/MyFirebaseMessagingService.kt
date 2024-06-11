@@ -6,6 +6,7 @@ import android.os.Looper
 import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.view.ContextThemeWrapper
+import androidx.fragment.app.FragmentActivity
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import kr.cosine.groupfinder.GroupFinderApplication
@@ -13,6 +14,7 @@ import kr.cosine.groupfinder.R
 import kr.cosine.groupfinder.data.registry.LocalAccountRegistry.uniqueId
 import kr.cosine.groupfinder.enums.Lane
 import kr.cosine.groupfinder.presentation.view.detail.DetailActivity
+import kr.cosine.groupfinder.presentation.view.dialog.Dialog
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.MediaType.Companion.toMediaType
@@ -236,27 +238,22 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             val senderUUID = data["senderUUID"] ?: "error"
             val postUUID = data["postUUID"] ?: "error"
             Log.d("FCM", "showJoinRequestDialog: $senderUUID,$postUUID")
-            val contextWrapper = ContextThemeWrapper(
-                context,
-                R.style.Theme_GroupFinder
-            )
-            val dialogBuilder = AlertDialog.Builder(contextWrapper)
-            dialogBuilder.setTitle("참가 요청")
-            dialogBuilder.setMessage("${participantName}님이 ${participantLane}에 참가를 요청 합니다.")
-            dialogBuilder.setPositiveButton("수락") { dialog, which ->
-                acceptJoinRequest(
-                    senderUUID = senderUUID,
-                    postUUID = postUUID,
-                    lane = Lane.getLaneByDisplayName(participantLane!!)
-                )
-            }
-            dialogBuilder.setNegativeButton("거부") { dialog, which ->
-                deniedJoinRequest(
-                    senderUUID = senderUUID
-                )
-            }
-            val dialog = dialogBuilder.create()
-            dialog.show()
+            Dialog(
+                title = "참가 요청",
+                message = "${participantName}님이 ${participantLane}에 참가를 요청 합니다.",
+                onConfirmClick = {
+                    acceptJoinRequest(
+                        senderUUID = senderUUID,
+                        postUUID = postUUID,
+                        lane = Lane.getLaneByDisplayName(participantLane!!)
+                    )
+                },
+                onCancelClick = {
+                    deniedJoinRequest(
+                        senderUUID = senderUUID
+                    )
+                }
+            ).show((context as FragmentActivity).supportFragmentManager, Dialog.TAG)
         }
     }
 
@@ -265,7 +262,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     private fun showJoinDeniedDialog(context: Context) {
-        showDialog(context, "참가 거절", "참가 요청이 거절되었습니다.")
+        test(context, "참가 거절", "참가 요청이 거절되었습니다.")
     }
 
 
@@ -293,5 +290,10 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             dialog.show()
         }
     }
-
+    fun test(context: Context, title: String, message: String) {
+        Dialog(
+            title = title,
+            message = message
+        ).show((context as FragmentActivity).supportFragmentManager,Dialog.TAG)
+    }
 }
