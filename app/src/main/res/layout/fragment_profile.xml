@@ -44,7 +44,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="30dp"
             android:gravity="center"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/backImageButton">
@@ -67,7 +67,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:paddingVertical="12dp"
                 android:text="님"
                 android:textColor="@color/group_tagged_nickname"
                 android:textSize="16sp"
@@ -90,8 +89,7 @@
             android:id="@+id/groupRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginTop="8dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -99,8 +97,19 @@
             tools:itemCount="1"
             tools:listitem="@layout/item_group" />
 
-        <Button
-            android:id="@+id/notificationButton"
+        <View
+            android:id="@+id/lineView"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_margin="16dp"
+            android:background="#1F2326"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/groupRecyclerView" />
+
+
+        <TextView
+            android:id="@+id/notificationTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -110,7 +119,7 @@
             android:textColor="@color/setting"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/groupRecyclerView" />
+            app:layout_constraintTop_toBottomOf="@+id/lineView" />
 
         <Switch
             android:id="@+id/notificationSwitch"
@@ -121,16 +130,17 @@
             android:layout_gravity="center"
             android:thumb="@drawable/ic_switch"
             android:track="@drawable/profile_switch"
-            app:layout_constraintBottom_toBottomOf="@+id/notificationButton"
+            app:layout_constraintBottom_toBottomOf="@+id/notificationTextView"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/notificationButton"
+            app:layout_constraintTop_toTopOf="@+id/notificationTextView"
             tools:ignore="UseSwitchCompatOrMaterialXml" />
 
-        <Button
-            android:id="@+id/termsButton"
+        <TextView
+            android:id="@+id/termsTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="4dp"
+            android:layout_marginBottom="16dp"
             android:background="@color/background"
             android:text="@string/profile_terms"
             android:textColor="@color/setting"
@@ -151,11 +161,12 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <Button
-            android:id="@+id/policyButton"
+        <TextView
+            android:id="@+id/policyTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
+            android:layout_marginBottom="16dp"
             android:background="@color/background"
             android:text="@string/profile_policy"
             android:textColor="@color/setting"
@@ -163,33 +174,33 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/line"/>
 
-        <Button
-            android:id="@+id/logoutButton"
+        <TextView
+            android:id="@+id/logoutTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="32dp"
             android:background="@color/background"
             android:text="@string/profile_logout_title"
             android:textColor="@color/setting"
             android:textSize="16sp"
             android:gravity="center_vertical"
-            app:layout_constraintTop_toBottomOf="@+id/notificationButton"
+            app:layout_constraintTop_toBottomOf="@+id/notificationTextView"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <Button
-            android:id="@+id/withdrawButton"
+        <TextView
+            android:id="@+id/withdrawTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="32dp"
             android:background="@color/background"
             android:text="@string/profile_withdraw_title"
             android:textColor="@color/setting"
             android:textSize="16sp"
             android:gravity="center_vertical"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/logoutButton"/>
+            app:layout_constraintTop_toBottomOf="@+id/logoutTextView"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
