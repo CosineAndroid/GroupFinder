@@ -13,6 +13,7 @@ fun AccountResponse.toEntity(): AccountEntity {
         password = password,
         nickname = nickname,
         tag = tag,
-        token = token
+        token = token,
+        groupUniqueId = groupUniqueId?.run(UUID::fromString)
     )
 }
