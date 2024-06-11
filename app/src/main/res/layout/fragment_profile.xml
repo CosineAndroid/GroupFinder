@@ -16,29 +16,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageButton
-            android:id="@+id/backImageButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:background="@android:color/transparent"
-            android:src="@drawable/ic_app_back_white"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="설정"
-            android:textColor="@color/white"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <LinearLayout
             android:id="@+id/nicknameLayout"
             android:layout_width="wrap_content"
@@ -47,15 +24,15 @@
             android:layout_marginTop="8dp"
             android:gravity="center"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/backImageButton">
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
                 android:id="@+id/taggedNicknameTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="안양학#KR1"
-                android:textColor="@color/group_tagged_nickname"
-                android:textSize="16sp"
+                android:text="아이디#KR1"
+                android:textColor="@color/white"
+                android:textSize="18sp"
                 android:textStyle="bold" />
 
             <Space
@@ -67,10 +44,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:paddingVertical="12dp"
                 android:text="님"
-                android:textColor="@color/group_tagged_nickname"
-                android:textSize="16sp"
+                android:textColor="@color/white"
+                android:textSize="15sp"
                 android:textStyle="bold" />
 
             <Space
@@ -99,26 +75,38 @@
             tools:itemCount="1"
             tools:listitem="@layout/item_group" />
 
+        <View
+            android:id="@+id/horizontalLine"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@color/profile_horizontal_line"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/groupRecyclerView" />
+
         <Button
             android:id="@+id/notificationButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="16dp"
             android:background="@color/background"
             android:text="@string/profile_notification"
             android:textColor="@color/setting"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/groupRecyclerView" />
+            app:layout_constraintTop_toBottomOf="@+id/horizontalLine" />
 
         <Switch
             android:id="@+id/notificationSwitch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginEnd="16dp"
             android:gravity="center"
-            android:layout_gravity="center"
             android:thumb="@drawable/ic_switch"
             android:track="@drawable/profile_switch"
             app:layout_constraintBottom_toBottomOf="@+id/notificationButton"
@@ -142,8 +130,8 @@
             android:id="@+id/line"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/background"
             android:layout_marginBottom="16dp"
+            android:background="@color/background"
             android:text="|"
             android:textColor="@color/setting"
             android:textSize="13sp"
@@ -161,7 +149,7 @@
             android:textColor="@color/setting"
             android:textSize="13sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/line"/>
+            app:layout_constraintStart_toEndOf="@+id/line" />
 
         <Button
             android:id="@+id/logoutButton"
@@ -170,12 +158,12 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:background="@color/background"
+            android:gravity="center_vertical"
             android:text="@string/profile_logout_title"
             android:textColor="@color/setting"
             android:textSize="16sp"
-            android:gravity="center_vertical"
-            app:layout_constraintTop_toBottomOf="@+id/notificationButton"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/notificationButton" />
 
         <Button
             android:id="@+id/withdrawButton"
@@ -184,12 +172,12 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:background="@color/background"
+            android:gravity="center_vertical"
             android:text="@string/profile_withdraw_title"
             android:textColor="@color/setting"
             android:textSize="16sp"
-            android:gravity="center_vertical"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/logoutButton"/>
+            app:layout_constraintTop_toBottomOf="@+id/logoutButton" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

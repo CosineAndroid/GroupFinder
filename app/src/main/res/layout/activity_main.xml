@@ -21,7 +21,8 @@
             android:layout_height="wrap_content"
             android:background="@color/background"
             app:navigationIcon="@drawable/ic_app_category"
-            app:title=" " />
+            app:title=" "
+            app:titleTextColor="@color/white" />
 
         <FrameLayout
             android:id="@+id/fragment_container"

@@ -32,7 +32,7 @@
     <string name="navigation_flex_rank">자유 랭크</string>
     <string name="dialog_confirm_title">확인</string>
     <string name="dialog_cancel_title">취소</string>
-    <string name="navigation_profile">설정</string>
+    <string name="navigation_profile">프로필</string>
     <string name="terms_title">서비스 이용약관</string>
     <string name="terms_article1">제1조 (목적)</string>
     <string name="terms_article2">제2조 (약관의 적용)</string>

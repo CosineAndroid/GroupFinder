@@ -36,7 +36,7 @@ import kr.cosine.groupfinder.presentation.view.write.WriteActivity
 
 @AndroidEntryPoint
 class GroupFragment(
-    private val mode: Mode? = null
+    val mode: Mode? = null
 ) : Fragment() {
 
     private var _binding: FragmentGroupBinding? = null
