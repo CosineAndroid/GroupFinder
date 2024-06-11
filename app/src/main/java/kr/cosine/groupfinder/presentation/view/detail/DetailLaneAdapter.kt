@@ -19,7 +19,7 @@ class DetailLaneAdapter : RecyclerView.Adapter<DetailLaneAdapter.Holder>() {
 
     interface ItemClick {
         fun onClick(view: View, lane: Lane)
-        fun onExitClick(view: View, lane: Lane, userName: UUID)
+        fun onExitClick(view: View, lane: Lane, userUUID: UUID)
     }
 
     var itemClick: ItemClick? = null
@@ -53,7 +53,7 @@ class DetailLaneAdapter : RecyclerView.Adapter<DetailLaneAdapter.Holder>() {
             binding.selectIdTextView.text = text
 
             val isExitVisible = when(power) {
-                HOST -> true
+                HOST -> userInfo?.uniqueId != uniqueId
                 PARTICIPANT -> userInfo?.uniqueId == uniqueId
                 else -> false
             }
