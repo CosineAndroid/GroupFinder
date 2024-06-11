@@ -49,7 +49,7 @@
                 tools:listitem="@layout/item_gamemodespinner" />
 
             <Button
-                android:id="@+id/createRoomButton"
+                android:id="@+id/create_group_button"
                 android:layout_width="60dp"
                 android:layout_height="30dp"
                 android:layout_marginTop="16dp"
@@ -136,7 +136,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/bodyEditTextView" />
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/tag_background_card_view"
+                android:id="@+id/tagBackgroundCardView"
                 android:layout_width="15dp"
                 android:layout_height="15dp"
                 android:layout_marginStart="5dp"

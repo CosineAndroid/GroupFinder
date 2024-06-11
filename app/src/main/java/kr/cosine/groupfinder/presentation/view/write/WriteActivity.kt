@@ -167,22 +167,22 @@ class WriteActivity : AppCompatActivity() {
 
     //생성하기 버튼
     private fun setOnCreateRoomClickListener() {
-        binding.createRoomButton.setOnClickListener {
+        binding.createGroupButton.setOnClickListenerWithCooldown(Interval.CREATE_GROUP) {
             val hasDuplicateLanes = checkDuplicateLanes()
             val hasDefaultLane = checkDefaultLane()
             val title = binding.titleEditTextView.text.toString()
 
             if (title.isBlank()) {
                 showToast("제목이 입력되지 않았습니다")
-                return@setOnClickListener
+                return@setOnClickListenerWithCooldown
             }
             if (hasDefaultLane) {
                 showToast("설정하지 않은 라인이 있습니다")
-                return@setOnClickListener
+                return@setOnClickListenerWithCooldown
             }
             if (hasDuplicateLanes) {
                 showToast("중복된 라인이 존재합니다")
-                return@setOnClickListener
+                return@setOnClickListenerWithCooldown
             }
             // 게시글 생성
             val requireLaneSelected = requireLaneRecyclerViewAdapter.getLanes().map { it.lane }
@@ -199,7 +199,6 @@ class WriteActivity : AppCompatActivity() {
 
             lanes[selectedMyLane] = ownerUniqueId
             writeViewModel.createPost(mode, title, body, ownerUniqueId, tags, lanes)
-            finish()
         }
     }
 
