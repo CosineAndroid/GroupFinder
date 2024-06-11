@@ -10,7 +10,8 @@ data class AccountResponse(
     val password: String,
     val nickname: String,
     val tag: String,
-    val token: String?
+    val token: String?,
+    val groupUniqueId: String?
 ) {
 
     constructor() : this(
@@ -20,6 +21,7 @@ data class AccountResponse(
         "",
         "",
         "",
+        null,
         null
     )
 
@@ -35,6 +37,7 @@ data class AccountResponse(
         password,
         nickname,
         tag,
+        null,
         null
     )
 }
