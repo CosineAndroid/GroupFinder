@@ -39,7 +39,7 @@ class DetailViewModel @Inject constructor(
         _groupRole.value = when {
             uuID == null -> NONE
             postDetail.value?.postUniqueId != uuID -> ANOTHER
-            uuID == postDetail.value?.postUniqueId && uniqueId == postDetail.value?.owner?.uniqueId -> HOST
+            uniqueId == postDetail.value?.owner?.uniqueId -> HOST
             else -> PARTICIPANT
         }
     }

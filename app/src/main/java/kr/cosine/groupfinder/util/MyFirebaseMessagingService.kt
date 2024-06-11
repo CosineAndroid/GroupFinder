@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.fragment.app.FragmentActivity
@@ -93,6 +94,37 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 }
             }
         })
+    }
+
+    fun cancelJoinRequest() {
+        val url = "https://canceljoinrequest-wy3rih3y5a-dt.a.run.app"
+        val json = JSONObject().apply {
+            put("senderUUID", uniqueId)
+        }
+
+        val requestBody =
+            json.toString().toRequestBody("application/json; charset=utf-8".toMediaType())
+
+        val request = Request.Builder()
+            .url(url)
+            .post(requestBody)
+            .build()
+
+        val client = OkHttpClient()
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                Log.e("FCM", "Failed to accept: 1$e")
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                if (!response.isSuccessful) {
+                    Log.d("FCM", "Failed to accept: 2${response.message}, ${response.code}")
+                } else {
+                    Log.d("FCM", "accept Success")
+                }
+            }
+        })
+
     }
 
     private fun acceptJoinRequest(senderUUID: String, postUUID: String, lane: Lane) {
@@ -262,9 +294,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     private fun showJoinDeniedDialog(context: Context) {
-        test(context, "참가 거절", "참가 요청이 거절되었습니다.")
+        showDialog(context, "참가 거절", "참가 요청이 거절되었습니다.")
     }
-
 
     private fun showForceExitDialog(context: Context) {
         showDialog(context,"강제 퇴장", "강제 퇴장되었습니다.")
@@ -275,25 +306,10 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     private fun showDialog(context: Context, title: String, message: String) {
-        Handler(Looper.getMainLooper()).post {
-            val contextWrapper = ContextThemeWrapper(
-                context,
-                R.style.Theme_GroupFinder
-            )
-            val dialogBuilder = AlertDialog.Builder(contextWrapper)
-            dialogBuilder.setTitle(title)
-            dialogBuilder.setMessage(message)
-            dialogBuilder.setPositiveButton("확인") { dialog, _ ->
-                dialog.dismiss()
-            }
-            val dialog = dialogBuilder.create()
-            dialog.show()
-        }
-    }
-    fun test(context: Context, title: String, message: String) {
         Dialog(
             title = title,
-            message = message
+            message = message,
+            cancelButtonVisibility = View.GONE
         ).show((context as FragmentActivity).supportFragmentManager,Dialog.TAG)
     }
 }
