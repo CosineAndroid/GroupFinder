@@ -19,7 +19,7 @@ class DetailLaneAdapter : RecyclerView.Adapter<DetailLaneAdapter.Holder>() {
 
     interface ItemClick {
         fun onClick(view: View, lane: Lane)
-        fun onExitClick(view: View, lane: Lane, userName: UUID)
+        fun onExitClick(view: View, lane: Lane, userUUID: UUID)
     }
 
     var itemClick: ItemClick? = null
