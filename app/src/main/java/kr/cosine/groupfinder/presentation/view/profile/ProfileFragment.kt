@@ -1,6 +1,5 @@
 package kr.cosine.groupfinder.presentation.view.profile
 
-import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -23,6 +22,7 @@ import kr.cosine.groupfinder.presentation.view.common.extension.applyWhite
 import kr.cosine.groupfinder.presentation.view.common.extension.setOnClickListenerWithCooldown
 import kr.cosine.groupfinder.presentation.view.common.extension.showToast
 import kr.cosine.groupfinder.presentation.view.common.util.ActivityUtil
+import kr.cosine.groupfinder.presentation.view.dialog.Dialog
 import kr.cosine.groupfinder.presentation.view.list.adapter.GroupAdpater
 import kr.cosine.groupfinder.presentation.view.profile.event.ProfileEvent
 import kr.cosine.groupfinder.presentation.view.profile.model.ProfileViewModel
@@ -88,17 +88,11 @@ class ProfileFragment : Fragment() {
         }
     }
 
-    private fun showDialog(message: String, onConfirm: () -> Unit) {
-        AlertDialog.Builder(requireContext).apply {
-            setCancelable(false)
-            setMessage(message)
-            setNegativeButton(getString(R.string.dialog_cancel)) { dialog, _ ->
-                dialog.dismiss()
-            }
-            setPositiveButton(getString(R.string.dialog_confirm)) { _, _ ->
-                onConfirm()
-            }
-        }.show()
+    private fun showDialog(message: String, onConfirmClick: () -> Unit) {
+        Dialog(
+            message = message,
+            onConfirmClick = onConfirmClick
+        ).show(childFragmentManager, Dialog.TAG)
     }
 
     private fun registerViewModelEvent() = with(binding) {
