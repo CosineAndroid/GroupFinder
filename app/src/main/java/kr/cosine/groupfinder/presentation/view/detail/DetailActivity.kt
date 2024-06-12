@@ -327,6 +327,17 @@ class DetailActivity : AppCompatActivity() {
         rootConstraintLayout.visibility = View.INVISIBLE
         progressBar.visibility = View.VISIBLE
     }
+    
+    fun showForceExitDialog() {
+        Dialog(
+            title = "강제 퇴장",
+            message = "강제 퇴장되었습니다.",
+            cancelButtonVisibility = View.GONE,
+            onConfirmClick = {
+                finish()
+            }
+        ).show((this as FragmentActivity).supportFragmentManager, Dialog.TAG)
+    }
 
     fun dismissProgressDialog() {
         isProgressDialogDismissed = true
