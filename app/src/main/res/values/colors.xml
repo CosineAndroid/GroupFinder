@@ -4,7 +4,7 @@
     <color name="white">#FFFFFF</color>
     <color name="background">#131517</color>
     <color name="button_background">#5534BE</color>
-    <color name="tag_background">#5C5E62</color>
+    <color name="tag_background">#B2EAEAEA</color>
     <color name="text_hint">#9498A5</color>
     <color name="profile_logout_button_background">#D4D4D4</color>
     <color name="profile_withdraw_button_background">#FF8078</color>
