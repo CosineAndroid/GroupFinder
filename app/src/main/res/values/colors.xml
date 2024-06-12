@@ -2,6 +2,8 @@
 <resources>
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
+    <color name="profile_logout_button_background">#D4D4D4</color>
+    <color name="profile_withdraw_button_background">#FF8078</color>
     <color name="background">#131517</color>
     <color name="button_background">#5534BE</color>
     <color name="navigation">#131517</color>
@@ -19,6 +21,10 @@
     <color name="group_default_time_text">#E5EAF7</color>
     <color name="group_full_title_text">#565960</color>
     <color name="group_full_text">#474A50</color>
+    <color name="group_tagged_nickname">#C8CDDB</color>
+    <color name="profile_horizontal_line">#1F2326</color>
+    <color name="navigation">#131517</color>
+    <color name="setting">#FFFFFF</color>
     <color name="button_main">#9685E6</color>
 
     <color name="write_text_title">#C8CDDB</color>
