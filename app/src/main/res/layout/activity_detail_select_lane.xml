@@ -10,14 +10,16 @@
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:scaleType="fitXY"
-        android:src="@drawable/ic_clear"
+        android:src="@drawable/ic_close"
         android:layout_gravity="center" />
+
     <ImageView
         android:id="@+id/selectLaneImageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:src="@drawable/ic_lane_ad"/>
+
     <TextView
         android:id="@+id/selectIdTextView"
         android:layout_width="wrap_content"
@@ -25,5 +27,6 @@
         android:layout_marginStart="8dp"
         android:text="T1 Zeus#KR1"
         android:textSize="15sp"
+        android:textColor="@color/white"
         android:layout_gravity="center"/>
 </LinearLayout>
