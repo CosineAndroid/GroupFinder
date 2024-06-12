@@ -223,7 +223,7 @@ class WriteActivity : AppCompatActivity() {
                 when (writeEvent) {
                     is WriteEvent.Success -> {
                         showToast("생성이 완료되었습니다")
-                        setResult(Code.SUCCESS_CREATE_POST)
+                        setResult(Code.SUCCESS_POST_TASK)
                         finish()
                     }
 

@@ -1,13 +1,13 @@
 <resources>
     <string name="app_name">GroupFinder</string>
-    <string name="profile_tagged_nickname_format">%s#%s</string>
+    <string name="title_replacer">제목</string>
+    <string name="tagged_nickname_format">%s#%s</string>
     <string name="profile_notification">앱 푸시알림 받기</string>
-    <string name="profile_terms">서비스 이용약관</string>
-    <string name="profile_policy">개인정보처리방침</string>
+    <string name="profile_terms_title">서비스 이용약관</string>
+    <string name="profile_policy_title">개인정보처리방침</string>
+    <string name="profile_block_user_title">차단한 유저</string>
     <string name="profile_logout_title">로그아웃</string>
     <string name="profile_withdraw_title">탈퇴하기</string>
-    <string name="group_title_format">%s</string>
-    <string name="group_id_format">%s</string>
     <string name="group_people_format">%d/%d</string>
     <string name="group_time_format">%s 전</string>
     <string name="tag_replacer">태그</string>
@@ -17,22 +17,23 @@
     <string name="login_password_hint">비밀번호</string>
     <string name="register_id_hint">아이디 (5글자 이상)</string>
     <string name="register_password_hint">비밀번호 (8글자 이상, 숫자/특수문자 포함)</string>
-    <string name="register_nickname_hint">닉네임</string>
-    <string name="register_tag_hint">태그</string>
+    <string name="nickname_hint">닉네임</string>
+    <string name="tag_hint">태그</string>
     <string name="dialog_cancel">취소</string>
     <string name="dialog_confirm">확인</string>
     <string name="profile_logout_message">로그아웃 하시겠습니까?</string>
     <string name="profile_withdraw_message">탈퇴 하시겠습니까?</string>
     <string name="open_navigation">메뉴 열기</string>
     <string name="close_navigation">메뉴 닫기</string>
-    <string name="navigation_all">전체</string>
-    <string name="navigation_normal">일반</string>
-    <string name="navigation_aram">칼바람 나락</string>
-    <string name="navigation_duo_rank">듀오 랭크</string>
-    <string name="navigation_flex_rank">자유 랭크</string>
+    <string name="navigation_menu_all">전체</string>
+    <string name="navigation_menu_normal">일반</string>
+    <string name="navigation_menu_aram">칼바람 나락</string>
+    <string name="navigation_menu_duo_rank">듀오 랭크</string>
+    <string name="navigation_menu_flex_rank">자유 랭크</string>
     <string name="dialog_confirm_title">확인</string>
     <string name="dialog_cancel_title">취소</string>
-    <string name="navigation_profile">프로필</string>
+    <string name="navigation_menu_profile">프로필</string>
+    <string name="block_user_title">차단한 유저</string>
     <string name="terms_title">서비스 이용약관</string>
     <string name="terms_article1">제1조 (목적)</string>
     <string name="terms_article2">제2조 (약관의 적용)</string>
@@ -45,18 +46,22 @@
     <string name="policy_article3">제3조 (용어의 정의)</string>
     <string name="policy_article4">제4조 (서비스의 종류)</string>
     <string name="policy_article5">제5조 (서비스 이용 계약의 성립)</string>
-
-    <!--detail-->
+    <string name="profile_vertical_line_title">|</string>
     <string name="detail_lane_select">원하는 라인을 선택하세요.</string>
-
-    <!--write-->
     <string name="write_title">제목</string>
-    <string name="write_buttonGroupMaking">생성</string>
+    <string name="write_create_group_title">생성</string>
     <string name="write_explanation">내용</string>
-    <string name="write_titleHint">제목을 입력하세요</string>
-    <string name="write_explanationHint">내용을 입력하세요</string>
-    <string name="write_myLane">내 라인</string>
-    <string name="write_addLane">필요한 라인</string>
-
-
+    <string name="write_title_hint">제목을 입력하세요</string>
+    <string name="write_explanation_hint">내용을 입력하세요</string>
+    <string name="write_my_lane">내 라인</string>
+    <string name="write_add_lane">필요한 라인</string>
+    <string name="tagged_nickname_input_dialog_title">닉네임 및 태그 변경</string>
+    <string name="tagged_nickname_replacer">닉네임#태그</string>
+    <string name="detail_delete_group_title">삭제</string>
+    <string name="detail_body_replacer">내용</string>
+    <string name="detail_select_lane_title">원하는 라인을 선택하세요.</string>
+    <string name="post_menu_report_post">게시글 신고하기</string>
+    <string name="post_menu_report_user">작성자 신고하기</string>
+    <string name="post_menu_block_user">작성자 차단하기</string>
+    <string name="post_menu_delete_post">게시글 삭제하기</string>
 </resources>

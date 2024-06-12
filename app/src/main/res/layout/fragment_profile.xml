@@ -8,7 +8,7 @@
     tools:context=".presentation.view.profile.ProfileFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/totalConstraintLayout"
+        android:id="@+id/rootConstraintLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -30,23 +30,9 @@
                 android:id="@+id/taggedNicknameTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="아이디#KR1"
+                android:text="@string/tagged_nickname_replacer"
                 android:textColor="@color/white"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
-            <Space
-                android:layout_width="4dp"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:text="님"
-                android:textColor="@color/white"
-                android:textSize="15sp"
+                android:textSize="24sp"
                 android:textStyle="bold" />
 
             <Space
@@ -54,7 +40,7 @@
                 android:layout_height="wrap_content" />
 
             <ImageButton
-                android:id="@+id/settingImageButton"
+                android:id="@+id/changeTaggedNicknameImageButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -87,41 +73,61 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/groupRecyclerView" />
 
-        <Button
-            android:id="@+id/notificationButton"
+        <TextView
+            android:id="@+id/blockedUserShowButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:background="@color/background"
-            android:text="@string/profile_notification"
-            android:textColor="@color/setting"
+            android:gravity="center"
+            android:minHeight="48dp"
+            android:text="@string/profile_block_user_title"
+            android:textColor="@color/white"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/horizontalLine" />
 
-        <Switch
-            android:id="@+id/notificationSwitch"
+        <TextView
+            android:id="@+id/logoutButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:background="@color/background"
             android:gravity="center"
-            android:thumb="@drawable/ic_switch"
-            android:track="@drawable/profile_switch"
-            app:layout_constraintBottom_toBottomOf="@+id/notificationButton"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/notificationButton"
-            tools:ignore="UseSwitchCompatOrMaterialXml" />
+            android:minHeight="48dp"
+            android:text="@string/profile_logout_title"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/blockedUserShowButton" />
 
-        <Button
+        <TextView
+            android:id="@+id/withdrawButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:background="@color/background"
+            android:gravity="center"
+            android:minHeight="48dp"
+            android:text="@string/profile_withdraw_title"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/logoutButton" />
+
+        <TextView
             android:id="@+id/termsButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="4dp"
             android:background="@color/background"
-            android:text="@string/profile_terms"
-            android:textColor="@color/setting"
+            android:gravity="center"
+            android:minHeight="48dp"
+            android:text="@string/profile_terms_title"
+            android:textColor="@color/white"
             android:textSize="13sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/line" />
@@ -132,53 +138,26 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:background="@color/background"
-            android:text="|"
-            android:textColor="@color/setting"
+            android:text="@string/profile_vertical_line_title"
+            android:textColor="@color/white"
             android:textSize="13sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <Button
+        <TextView
             android:id="@+id/policyButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:background="@color/background"
-            android:text="@string/profile_policy"
-            android:textColor="@color/setting"
+            android:gravity="center"
+            android:minHeight="48dp"
+            android:text="@string/profile_policy_title"
+            android:textColor="@color/white"
             android:textSize="13sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/line" />
-
-        <Button
-            android:id="@+id/logoutButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:background="@color/background"
-            android:gravity="center_vertical"
-            android:text="@string/profile_logout_title"
-            android:textColor="@color/setting"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/notificationButton" />
-
-        <Button
-            android:id="@+id/withdrawButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:background="@color/background"
-            android:gravity="center_vertical"
-            android:text="@string/profile_withdraw_title"
-            android:textColor="@color/setting"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/logoutButton" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ProgressBar

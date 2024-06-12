@@ -91,12 +91,12 @@ fun RegisterScreen(
                     .padding(horizontal = 30.dp)
             ) {
                 InfoTextField(
-                    text = stringResource(R.string.register_nickname_hint),
+                    text = stringResource(R.string.nickname_hint),
                     borderColor = uiState.nickname.color,
                     onValueChange = registerViewModel::checkNickname
                 )
                 InfoTextField(
-                    text = stringResource(R.string.register_tag_hint),
+                    text = stringResource(R.string.tag_hint),
                     borderColor = uiState.tag.color,
                     onValueChange = registerViewModel::checkTag
                 )
