@@ -18,6 +18,7 @@ import kr.cosine.groupfinder.domain.usecase.RegisterAccountUseCase
 import kr.cosine.groupfinder.presentation.view.account.register.event.RegisterEvent
 import kr.cosine.groupfinder.presentation.view.account.register.state.RegisterUiState
 import kr.cosine.groupfinder.presentation.view.account.register.state.RegisterErrorUiState
+import kr.cosine.groupfinder.presentation.view.common.extension.containsBlank
 import javax.inject.Inject
 
 @HiltViewModel
@@ -60,8 +61,6 @@ class RegisterViewModel @Inject constructor(
             )
         }
     }
-
-    private fun String.containsBlank(): Boolean = contains(" ")
 
     fun checkNickname(nickname: String) {
         _uiState.update { prevUiState ->

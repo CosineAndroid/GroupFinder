@@ -29,6 +29,7 @@ import kr.cosine.groupfinder.presentation.view.list.model.GroupViewModel
 import kr.cosine.groupfinder.presentation.view.tag.model.TagViewModel
 import kr.cosine.groupfinder.presentation.view.common.data.Interval
 import kr.cosine.groupfinder.presentation.view.common.extension.applyWhite
+import kr.cosine.groupfinder.presentation.view.common.util.ActivityUtil.launch
 import kr.cosine.groupfinder.presentation.view.detail.DetailActivity
 import kr.cosine.groupfinder.presentation.view.list.state.GroupUiState
 import kr.cosine.groupfinder.presentation.view.tag.sheet.TagBottomSheetFragment
@@ -48,7 +49,7 @@ class GroupFragment(
     private lateinit var groupAdpater: GroupAdpater
     private lateinit var tagAdapter: TagAdapter
 
-    private lateinit var writeActivityResultLauncher: ActivityResultLauncher<Intent>
+    private lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -77,10 +78,10 @@ class GroupFragment(
     }
 
     private fun registerWriteActivityResultLauncher() {
-        writeActivityResultLauncher = registerForActivityResult(
+        activityResultLauncher = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()
         ) { result ->
-            if (result.resultCode != Code.SUCCESS_CREATE_POST) return@registerForActivityResult
+            if (result.resultCode != Code.SUCCESS_POST_TASK) return@registerForActivityResult
             search()
         }
     }
@@ -93,11 +94,10 @@ class GroupFragment(
     }
 
     private fun registerGroupRecyclerView() = with(binding.groupRecyclerView) {
-        adapter = GroupAdpater(context) { post ->
-            val intent = Intent(context, DetailActivity::class.java).apply {
+        adapter = GroupAdpater { post ->
+            activityResultLauncher.launch(context, DetailActivity::class) {
                 putExtra(IntentKey.POST_UNIQUE_ID, post.postUniqueId)
             }
-            startActivity(intent)
         }.apply {
             groupAdpater = this
         }
@@ -124,9 +124,9 @@ class GroupFragment(
 
     private fun registerWriteButton() = with(binding.writeImageButton) {
         setOnClickListener {
-            val intent = Intent(context, WriteActivity::class.java)
-            intent.putExtra(IntentKey.MODE, mode ?: Mode.NORMAL)
-            writeActivityResultLauncher.launch(intent)
+            activityResultLauncher.launch(context, WriteActivity::class) {
+                putExtra(IntentKey.MODE, mode ?: Mode.NORMAL)
+            }
         }
     }
 
@@ -149,7 +149,7 @@ class GroupFragment(
                     is GroupUiState.Success -> groupAdpater.setPosts(uiState.posts)
 
                     is GroupUiState.Notice -> {
-                        if (uiState is GroupUiState.ResultEmpty) {
+                        if (uiState is GroupUiState.Empty) {
                             groupAdpater.clearPosts()
                         }
                         searchResultNoticeTextView.text = uiState.message

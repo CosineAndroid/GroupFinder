@@ -19,7 +19,7 @@ class GroupViewModel @Inject constructor(
     private val getGroupsUseCase: GetGroupsUseCase
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow<GroupUiState>(GroupUiState.ResultEmpty)
+    private val _uiState = MutableStateFlow<GroupUiState>(GroupUiState.Empty)
     val uiState: StateFlow<GroupUiState> get() = _uiState.asStateFlow()
 
     fun onSearch(mode: Mode?, tags: Set<String>) = viewModelScope.launch(Dispatchers.IO) {
@@ -27,7 +27,7 @@ class GroupViewModel @Inject constructor(
         getGroupsUseCase(mode, tags).onSuccess { groupItems ->
             _uiState.update {
                 if (groupItems.isEmpty()) {
-                    GroupUiState.ResultEmpty
+                    GroupUiState.Empty
                 } else {
                     GroupUiState.Success(groupItems)
                 }

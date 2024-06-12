@@ -1,7 +1,6 @@
 package kr.cosine.groupfinder.presentation.view.list.adapter
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,18 +17,19 @@ import kr.cosine.groupfinder.presentation.view.list.adapter.listener.TagScrollLi
 import kr.cosine.groupfinder.presentation.view.list.state.item.GroupItem
 import kr.cosine.groupfinder.presentation.view.list.state.item.extension.isJoinedPeople
 import kr.cosine.groupfinder.presentation.view.list.state.item.extension.joinedPeopleCount
-import kr.cosine.groupfinder.presentation.view.list.state.item.extension.tageedNickname
 import kr.cosine.groupfinder.presentation.view.list.state.item.extension.totalPeopleCount
 import kr.cosine.groupfinder.util.TimeUtil
 
 class GroupAdpater(
-    private val context: Context,
+    private val posts: MutableList<GroupItem> = mutableListOf(),
     private val onItemClick: (GroupItem) -> Unit = {}
 ) : RecyclerView.Adapter<GroupAdpater.GroupViewHolder>() {
 
     inner class GroupViewHolder(
         private val binding: ItemGroupBinding
     ) : RecyclerView.ViewHolder(binding.root) {
+
+        private val context = binding.root.context
 
         init {
             binding.root.setOnClickListenerWithCooldown(Interval.OPEN_SCREEN) {
@@ -45,39 +45,59 @@ class GroupAdpater(
             val isMaxGroup = !post.isJoinedPeople(LocalAccountRegistry.uniqueId) &&
                     joinedPeopleCount == totalPeopleCount
 
-            fun TextView.applyColor(color: Int = R.color.group_full_text): TextView {
-                if (isMaxGroup) {
-                    val colorStateList = context.getColorStateList(color)
-                    setTextColor(colorStateList)
-                }
+            fun TextView.applyColor(defaultColor: Int, fullColor: Int): TextView {
+                val color = if (isMaxGroup) fullColor else defaultColor
+                val colorStateList = context.getColorStateList(color)
+                setTextColor(colorStateList)
                 return this
             }
 
-            groupTitleTextView.applyColor(R.color.group_full_title_text).text = post.title
-            groupTaggedNicknameTextView.applyColor().text = post.owner.tageedNickname
+            groupTitleTextView.applyColor(
+                R.color.group_default_title,
+                R.color.group_full_title_text
+            ).text = post.title
+
+            val owner = post.owner
+            groupTaggedNicknameTextView.applyColor(
+                R.color.group_default_tagged_nickname,
+                R.color.group_full_text
+            ).text = context.getString(
+                R.string.tagged_nickname_format,
+                owner.nickname,
+                owner.tag
+            )
+
             val tags = post.tags
             val isMaxTag = tags.size >= MAX_TAG
             if (isMaxTag) {
                 noticeMoreTagImageView.visibility = View.VISIBLE
             }
             groupTagRecyclerView.apply {
-                val groupTagAdapter = GroupTagAdapter(tags, isMaxGroup)
-                adapter = groupTagAdapter
+                adapter = GroupTagAdapter(tags, isMaxGroup)
                 removeItemDecoration(GroupTagItemDecoration)
                 addItemDecoration(GroupTagItemDecoration)
                 addOnScrollListener(TagScrollListener(noticeMoreTagImageView, isMaxTag))
             }
             val laneMap = post.laneMap
             groupLaneRecyclerView.adapter = GroupLaneAdapter(laneMap, isMaxGroup)
-            groupPeopleTextView.applyColor().text = context.getString(
+
+            groupPeopleTextView.applyColor(
+                R.color.group_default_people_text,
+                R.color.group_full_text
+            ).text = context.getString(
                 R.string.group_people_format,
                 joinedPeopleCount,
                 totalPeopleCount
             )
-            groupTimeTextView.applyColor().text = context.getString(
+
+            groupTimeTextView.applyColor(
+                R.color.group_default_time_text,
+                R.color.group_full_text
+            ).text = context.getString(
                 R.string.group_time_format,
                 TimeUtil.getFormattedTime(post.time)
             )
+
             root.background = AppCompatResources.getDrawable(
                 context,
                 when {
@@ -88,8 +108,6 @@ class GroupAdpater(
             )
         }
     }
-
-    private val posts = mutableListOf<GroupItem>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GroupViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)

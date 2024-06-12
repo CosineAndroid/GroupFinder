@@ -18,13 +18,17 @@ import kr.cosine.groupfinder.data.manager.LocalAccountManager
 import kr.cosine.groupfinder.data.registry.LocalAccountRegistry
 import kr.cosine.groupfinder.databinding.FragmentProfileBinding
 import kr.cosine.groupfinder.presentation.view.account.login.LoginActivity
-import kr.cosine.groupfinder.presentation.view.common.data.Interval
+import kr.cosine.groupfinder.presentation.view.common.data.IntentKey
 import kr.cosine.groupfinder.presentation.view.common.extension.applyWhite
 import kr.cosine.groupfinder.presentation.view.common.extension.setOnClickListenerWithCooldown
 import kr.cosine.groupfinder.presentation.view.common.extension.showToast
 import kr.cosine.groupfinder.presentation.view.common.util.ActivityUtil
+import kr.cosine.groupfinder.presentation.view.common.util.ActivityUtil.startActivity
+import kr.cosine.groupfinder.presentation.view.detail.DetailActivity
 import kr.cosine.groupfinder.presentation.view.dialog.Dialog
+import kr.cosine.groupfinder.presentation.view.dialog.TaggedNicknameInputDialog
 import kr.cosine.groupfinder.presentation.view.list.adapter.GroupAdpater
+import kr.cosine.groupfinder.presentation.view.profile.event.ProfileChangeEvent
 import kr.cosine.groupfinder.presentation.view.profile.event.ProfileEvent
 import kr.cosine.groupfinder.presentation.view.profile.model.ProfileViewModel
 import kr.cosine.groupfinder.presentation.view.profile.state.ProfileUiState
@@ -52,9 +56,13 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         registerProgressBar()
+        registerChangeTaggedNicknameButton()
         registerRecyclerView()
+        registerBlockedUserShowButton()
         registerLogoutButton()
         registerWithdrawButton()
+        registerTermsButton()
+        registerPolicyButton()
         registerViewModelEvent()
         policy()
     }
@@ -63,17 +71,32 @@ class ProfileFragment : Fragment() {
         binding.progressBar.applyWhite()
     }
 
-    private fun registerRecyclerView() = with(binding.groupRecyclerView) {
-        adapter = GroupAdpater(context) { post ->
+    private fun registerChangeTaggedNicknameButton() = with(binding) {
+        changeTaggedNicknameImageButton.setOnClickListenerWithCooldown {
+            val split = taggedNicknameTextView.text.toString().split("#", limit = 2)
+            TaggedNicknameInputDialog(split[0], split[1], profileViewModel::setTaggedNickname)
+                .show(childFragmentManager, TaggedNicknameInputDialog.TAG)
+        }
+    }
 
+    private fun registerRecyclerView() = with(binding.groupRecyclerView) {
+        adapter = GroupAdpater { post ->
+            requireContext.startActivity(DetailActivity::class) {
+                putExtra(IntentKey.POST_UNIQUE_ID, post.postUniqueId)
+            }
         }.apply {
             groupAdpater = this
         }
-        suppressLayout(true)
+    }
+
+    private fun registerBlockedUserShowButton() {
+        binding.blockedUserShowButton.setOnClickListenerWithCooldown {
+            requireContext.startActivity(BlockUserActivity::class)
+        }
     }
 
     private fun registerLogoutButton() {
-        binding.logoutButton.setOnClickListenerWithCooldown(Interval.OPEN_SCREEN) {
+        binding.logoutButton.setOnClickListenerWithCooldown {
             showDialog(getString(R.string.profile_logout_message)) {
                 resetLocalAccount()
                 ActivityUtil.startNewActivity(requireContext, LoginActivity::class)
@@ -82,7 +105,7 @@ class ProfileFragment : Fragment() {
     }
 
     private fun registerWithdrawButton() {
-        binding.withdrawButton.setOnClickListenerWithCooldown(Interval.OPEN_SCREEN) {
+        binding.withdrawButton.setOnClickListenerWithCooldown {
             showDialog(getString(R.string.profile_withdraw_message)) {
                 profileViewModel.withdraw(LocalAccountRegistry.uniqueId)
             }
@@ -96,21 +119,29 @@ class ProfileFragment : Fragment() {
         ).show(childFragmentManager, Dialog.TAG)
     }
 
+    private fun registerTermsButton() {
+//        binding.termsButton.setOnClickListenerWithCooldown {
+//            requireContext.startActivity(TermsActivity::class)
+//        }
+    }
+
+    private fun registerPolicyButton() {
+        binding.policyButton.setOnClickListenerWithCooldown {
+            requireContext.startActivity(PolicyActivity::class)
+        }
+    }
+
     private fun registerViewModelEvent() = with(binding) {
-        profileViewModel.loadProfile(LocalAccountRegistry.uniqueId)
+        profileViewModel.loadProfile()
         lifecycleScope.launch {
             profileViewModel.uiState.flowWithLifecycle(lifecycle).collectLatest { uiState ->
                 val isLoading = uiState is ProfileUiState.Loading
 
-                totalConstraintLayout.isVisible = !isLoading
+                rootConstraintLayout.isVisible = !isLoading
                 progressBar.isVisible = isLoading
 
                 if (uiState is ProfileUiState.Success) {
-                    taggedNicknameTextView.text = getString(
-                        R.string.profile_tagged_nickname_format,
-                        uiState.nickname,
-                        uiState.tag
-                    )
+                    setTaggedNickname(uiState.nickname, uiState.tag)
                     val postItem = uiState.groupItem
                     if (postItem == null) {
                         groupRecyclerView.visibility = View.GONE
@@ -132,6 +163,24 @@ class ProfileFragment : Fragment() {
                 }
             }
         }
+        lifecycleScope.launch {
+            profileViewModel.changeEvent.flowWithLifecycle(lifecycle).collectLatest { event ->
+                if (event is ProfileChangeEvent.Notice) {
+                    if (event is ProfileChangeEvent.Success) {
+                        setTaggedNickname(event.nickname, event.tag)
+                    }
+                    requireContext.showToast(event.message)
+                }
+            }
+        }
+    }
+
+    private fun setTaggedNickname(nickname: String, tag: String) {
+        binding.taggedNicknameTextView.text = getString(
+            R.string.tagged_nickname_format,
+            nickname,
+            tag
+        )
     }
 
     private fun resetLocalAccount() {

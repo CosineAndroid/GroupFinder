@@ -1,10 +1,11 @@
 package kr.cosine.groupfinder.presentation.view.common.extension
 
 import android.view.View
+import kr.cosine.groupfinder.presentation.view.common.data.Interval
 
 private val cooldownMap = mutableMapOf<Int, Long>()
 
-fun View.setOnClickListenerWithCooldown(interval: Int = 0, listener: (View) -> Unit) {
+fun View.setOnClickListenerWithCooldown(interval: Int = Interval.OPEN_SCREEN, listener: (View) -> Unit) {
     setOnClickListener { view ->
         if (interval != 0) {
             val id = view.id

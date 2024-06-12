@@ -10,7 +10,7 @@ sealed interface GroupUiState {
         val message: String
     ) : GroupUiState
 
-    data object ResultEmpty : Notice("검색 결과 없음")
+    data object Empty : Notice("검색 결과 없음")
 
     data object UnknownFail : Notice("알 수 없는 오류")
 

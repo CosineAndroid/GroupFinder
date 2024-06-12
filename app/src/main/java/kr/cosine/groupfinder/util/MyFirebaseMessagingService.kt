@@ -28,44 +28,40 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     override fun onMessageReceived(message: RemoteMessage) {
         val myApp = applicationContext as GroupFinderApplication
+        val currentActivity = myApp.getCurrentActivity()
         Log.d("FCM", "onMessageReceived")
         message.data.let { data ->
             val messageType = data["type"]
             when (messageType) {
                 "join_request" -> showJoinRequestDialog(myApp.getCurrentActivity(), data)
                 "join_denied" -> {
-                    val currentActivity = myApp.getCurrentActivity()
                     if(currentActivity is DetailActivity) {
                         currentActivity.dismissProgressDialog()
                     }
                     showJoinDeniedDialog(myApp.getCurrentActivity())
                 }
                 "join_accept" -> {
-                    val currentActivity = myApp.getCurrentActivity()
                     if(currentActivity is DetailActivity) {
                         currentActivity.dismissProgressDialog()
                         currentActivity.reFreshGroupDetail()
                     }
                 }
                 "force_exit" -> {
-                    val currentActivity = myApp.getCurrentActivity()
                     if(currentActivity is DetailActivity) {
-                        currentActivity.dismissProgressDialog()
-                        currentActivity.reFreshGroupDetail()
+                        currentActivity.showForceExitDialog()
+                    } else {
+                        showForceExitDialog(myApp.getCurrentActivity())
                     }
-                    showForceExitDialog(myApp.getCurrentActivity())
                 }
                 "already_cancel_request" -> showCanceledRequestDialog(myApp.getCurrentActivity())
                 "permissionDenied" -> showPermissionDeniedDialog(myApp.getCurrentActivity())
                 "alreadyJoined" -> {
-                    val currentActivity = myApp.getCurrentActivity()
                     if(currentActivity is DetailActivity) {
                         currentActivity.dismissProgressDialog()
                     }
                     showAlreadyJoinedDialog(myApp.getCurrentActivity())
                 }
                 "changeInRoom" -> {
-                    val currentActivity = myApp.getCurrentActivity()
                     if(currentActivity is DetailActivity) {
                         currentActivity.reFreshGroupDetail()
                     }
@@ -278,7 +274,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         })
     }
 
-    fun sendDeleteGroupRequest(postUUID: UUID) {
+    fun sendDeleteGroupRequest(postUUID: UUID, onSuccess: () -> Unit) {
         val url = "https://deletegrouprequest-wy3rih3y5a-dt.a.run.app"
         val json = JSONObject().apply {
             put("postUUID", postUUID)
@@ -306,6 +302,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 } else {
                     val responseBody = response.body?.string()
                     println("Success: $responseBody")
+                    onSuccess()
                 }
             }
         })
