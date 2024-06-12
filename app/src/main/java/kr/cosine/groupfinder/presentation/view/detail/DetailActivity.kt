@@ -45,6 +45,7 @@ class DetailActivity : AppCompatActivity() {
         observeData()
         detailViewModel.getPostDetail(postUniqueId)
         laneOnClick()
+        setOnClickCloseButton()
     }
 
 
@@ -61,6 +62,7 @@ class DetailActivity : AppCompatActivity() {
         }
         detailViewModel.groupRole.observe(this) { role ->
             laneAdapter.powerUpdate(role)
+            showCloseButton(role)
             Log.d("DETAIL", "observeData: ${role}")
         }
     }
@@ -140,17 +142,14 @@ class DetailActivity : AppCompatActivity() {
                         targetUUID = userUUID
                     )
                     if (detailViewModel.groupRole.value == PARTICIPANT) {
+                        finish()
                     }
-                    Handler().postDelayed({
-                        detailViewModel.getPostDetail(postUniqueId)
-                    }, 1000)
                 }
             }
         ).show((this as FragmentActivity).supportFragmentManager, Dialog.TAG)
 
         Log.d("test", "onExitClick: $message")
     }
-
 
 
     private fun showJoinRequestDialog(ownerUniqueId: UUID, postUniqueId: UUID, lane: Lane) {
@@ -182,7 +181,7 @@ class DetailActivity : AppCompatActivity() {
                 handler.postDelayed({
                     if (!isProgressDialogDismissed) {
                         progressDialog!!.dismiss()
-                        if(!isFinishing && !isDestroyed) {
+                        if (!isFinishing && !isDestroyed) {
                             Dialog(
                                 title = "시간 초과",
                                 message = "잠시 후 다시 시도해주세요.",
@@ -195,12 +194,34 @@ class DetailActivity : AppCompatActivity() {
         ).show((this as FragmentActivity).supportFragmentManager, Dialog.TAG)
     }
 
+    private fun showCloseButton(role: Int) {
+        if (role == 1) {
+            binding.closeImageButton.visibility = View.VISIBLE
+        } else {
+            binding.closeImageButton.visibility = View.GONE
+        }
+    }
+
+    private fun setOnClickCloseButton() {
+        binding.closeImageButton.setOnClickListenerWithCooldown(1000) {
+            Log.d("DETAIL", "setOnClickCloseButton: click!")
+            Dialog(
+                title = "방 삭제",
+                message = "정말 방을 삭제하시겠습니까?",
+                onConfirmClick = {
+                    MyFirebaseMessagingService().sendDeleteGroupRequest(postUniqueId)
+                    finish()
+                }
+            ).show((this as FragmentActivity).supportFragmentManager, Dialog.TAG)
+        }
+    }
+
     fun dismissProgressDialog() {
         isProgressDialogDismissed = true
         progressDialog?.dismiss()
     }
 
-    fun reFreshGroupDetail(postUniqueId: UUID) {
+    fun reFreshGroupDetail() {
         detailViewModel.getPostDetail(postUniqueId)
     }
 

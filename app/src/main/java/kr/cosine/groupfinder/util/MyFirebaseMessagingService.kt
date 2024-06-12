@@ -42,15 +42,34 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 }
                 "join_accept" -> {
                     val currentActivity = myApp.getCurrentActivity()
-                    val postUUID = UUID.fromString(data["postUUID"])
                     if(currentActivity is DetailActivity) {
                         currentActivity.dismissProgressDialog()
-                        currentActivity.reFreshGroupDetail(postUUID)
+                        currentActivity.reFreshGroupDetail()
                     }
                 }
-                "force_exit" -> showForceExitDialog(myApp.getCurrentActivity())
+                "force_exit" -> {
+                    val currentActivity = myApp.getCurrentActivity()
+                    if(currentActivity is DetailActivity) {
+                        currentActivity.dismissProgressDialog()
+                        currentActivity.reFreshGroupDetail()
+                    }
+                    showForceExitDialog(myApp.getCurrentActivity())
+                }
                 "already_cancel_request" -> showCanceledRequestDialog(myApp.getCurrentActivity())
                 "permissionDenied" -> showPermissionDeniedDialog(myApp.getCurrentActivity())
+                "alreadyJoined" -> {
+                    val currentActivity = myApp.getCurrentActivity()
+                    if(currentActivity is DetailActivity) {
+                        currentActivity.dismissProgressDialog()
+                    }
+                    showAlreadyJoinedDialog(myApp.getCurrentActivity())
+                }
+                "changeInRoom" -> {
+                    val currentActivity = myApp.getCurrentActivity()
+                    if(currentActivity is DetailActivity) {
+                        currentActivity.reFreshGroupDetail()
+                    }
+                }
                 // 다른 메시지 유형에 대한 처리 추가시 타입과 함수 추가.
             }
         }
@@ -259,6 +278,39 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         })
     }
 
+    fun sendDeleteGroupRequest(postUUID: UUID) {
+        val url = "https://deletegrouprequest-wy3rih3y5a-dt.a.run.app"
+        val json = JSONObject().apply {
+            put("postUUID", postUUID)
+            put("senderUUID", uniqueId)
+        }
+
+        val requestBody =
+            json.toString().toRequestBody("application/json; charset=utf-8".toMediaType())
+
+        val request = Request.Builder()
+            .url(url)
+            .post(requestBody)
+            .build()
+
+        val client = OkHttpClient()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                println("Failed to send request: ${e.message}")
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                if (!response.isSuccessful) {
+                    println("Failed to send request: ${response.message}")
+                } else {
+                    val responseBody = response.body?.string()
+                    println("Success: $responseBody")
+                }
+            }
+        })
+    }
+
 
     private fun showJoinRequestDialog(context: Context, data: Map<String, String>) {
         Handler(Looper.getMainLooper()).post {
@@ -302,6 +354,10 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     private fun showPermissionDeniedDialog(context: Context) {
         showDialog(context, "권한 오류", "잠시 후 다시 시도해주세요.")
+    }
+
+    private fun showAlreadyJoinedDialog(context: Context) {
+        showDialog(context, "오류", "이미 참가중인 그룹이 있습니다.")
     }
 
     private fun showDialog(context: Context, title: String, message: String) {
