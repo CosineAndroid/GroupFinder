@@ -24,7 +24,7 @@
 
             <Spinner
                 android:id="@+id/gameModeSpinner"
-                android:layout_width="180dp"
+                android:layout_width="190dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="32dp"
