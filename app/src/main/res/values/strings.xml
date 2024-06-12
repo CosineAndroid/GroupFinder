@@ -30,7 +30,21 @@
     <string name="navigation_aram">칼바람 나락</string>
     <string name="navigation_duo_rank">듀오 랭크</string>
     <string name="navigation_flex_rank">자유 랭크</string>
-    <string name="navigation_profile">내 프로필</string>
+    <string name="navigation_profile">설정</string>
     <string name="dialog_confirm_title">확인</string>
     <string name="dialog_cancel_title">취소</string>
+
+    <!--detail-->
+    <string name="detail_lane_select">원하는 라인을 선택하세요.</string>
+
+    <!--write-->
+    <string name="write_title">제목</string>
+    <string name="write_buttonGroupMaking">생성</string>
+    <string name="write_explanation">내용</string>
+    <string name="write_titleHint">제목을 입력하세요</string>
+    <string name="write_explanationHint">내용을 입력하세요</string>
+    <string name="write_myLane">내 라인</string>
+    <string name="write_addLane">필요한 라인</string>
+
+
 </resources>

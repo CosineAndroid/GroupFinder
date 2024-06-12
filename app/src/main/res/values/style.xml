@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--게시글 디테일 : activity_detail-->
-    <style name="textView_Title" parent="@android:style/Widget.DeviceDefault.TextView">
+    <style name="textView_mainTitle" parent="@android:style/Widget.DeviceDefault.TextView">
         <item name="fontFamily">@font/nanum_square_kr</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">22sp</item>
         <item name="android:textColor">@color/white</item>
     </style>
 
     <style name="textView_id" parent="@android:style/Widget.DeviceDefault.TextView">
         <item name="fontFamily">@font/nanum_square_kr</item>
         <item name="android:textColor">@color/group_default_tagged_nickname</item>
+        <item name="android:textSize">12sp</item>
     </style>
 
     <style name="textView_explanation" parent="@android:style/Widget.DeviceDefault.TextView">
         <item name="fontFamily">@font/nanum_square_kr</item>
-        <item name="android:textColor">@color/text</item>
-        <item name="android:textSize">11sp</item>
+        <item name="android:textColor">@color/text_hint</item>
+        <item name="android:textSize">14sp</item>
         <item name="android:lineSpacingExtra">5dp</item>
-        <item name="android:lines">3</item>
     </style>
 
     <style name="textView_select" parent="@android:style/Widget.DeviceDefault.TextView">
@@ -28,11 +28,37 @@
         <item name="android:textStyle">bold</item>
     </style>
 
-
     <style name="tag" parent="@android:style/Widget.DeviceDefault.TextView">
         <item name="fontFamily">@font/nanum_square_kr</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">12sp</item>
     </style>
 
+    <style name="button_main">
+        <item name="fontFamily">@font/nanum_square_eb</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/button_main</item>
+    </style>
+
+    <style name="spinner_mode">
+        <item name="fontFamily">@font/nanum_square_eb</item>
+        <item name="android:textSize">30sp</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="textView_title">
+        <item name="fontFamily">@font/nanum_square_kr</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/write_text_title</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="textView_lane">
+        <item name="fontFamily">@font/nanum_square_kr</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:textColor">@color/write_text_title</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+        
 </resources>

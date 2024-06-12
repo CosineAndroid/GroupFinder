@@ -6,7 +6,7 @@
     <color name="button_background">#5534BE</color>
     <color name="navigation">#131517</color>
     <color name="tag_background">#5C5E62</color>
-    <color name="text">#9498A5</color>
+    <color name="text_hint">#9498A5</color>
 
     <color name="profile_logout_button_background">#D4D4D4</color>
     <color name="profile_withdraw_button_background">#FF8078</color>
@@ -19,5 +19,7 @@
     <color name="group_default_time_text">#E5EAF7</color>
     <color name="group_full_title_text">#565960</color>
     <color name="group_full_text">#474A50</color>
+    <color name="button_main">#9685E6</color>
 
+    <color name="write_text_title">#C8CDDB</color>
 </resources>
