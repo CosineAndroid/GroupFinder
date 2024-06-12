@@ -5,16 +5,16 @@
     android:id="@+id/detailActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.view.detail.DetailActivity"
-    android:padding="16dp">
+    android:padding="16dp"
+    tools:context=".presentation.view.detail.DetailActivity">
 
     <TextView
         android:id="@+id/titleTextView"
+        style="@style/textView_mainTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="38dp"
         android:text="그랜드 마스터만 받음"
-        android:textSize="20sp"
-        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -22,64 +22,57 @@
         android:id="@+id/idTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="5dp"
         android:text="페이커#KR1"
+        style="@style/textView_id"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleTextView" />
+        app:layout_constraintTop_toBottomOf="@id/titleTextView" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/tags"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:layout_marginTop="13dp"
         android:orientation="horizontal"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/idTextView"
         tools:itemCount="6"
-        tools:listitem="@layout/item_tag"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/idTextView" />
-
-    <View
-        android:id="@+id/line"
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:layout_marginTop="16dp"
-        android:background="@color/black"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tags" />
+        tools:listitem="@layout/item_tag" />
 
     <ImageButton
         android:id="@+id/closeImageButton"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:scaleType="fitXY"
-        android:src="@drawable/ic_clear"
         android:background="@android:color/transparent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_back"
+        android:layout_marginTop="5dp"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/memoTextView"
+        style="@style/textView_explanation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:background="@drawable/edittext_box"
         android:lines="3"
         android:text="본인 마스터 그마까지 켠왕 갈사람 구합니다.\n징징이x"
-        android:textSize="11sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/line" />
+        app:layout_constraintTop_toBottomOf="@+id/tags" />
 
     <TextView
         android:id="@+id/textView5"
+        style="@style/textView_select"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:text="원하는 라인을 선택하세요."
-        android:textSize="17.3sp"
-        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/memoTextView" />
 
@@ -87,11 +80,11 @@
         android:id="@+id/lanes"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        tools:listitem="@layout/activity_detail_select_lane"
-        tools:itemCount="5"
         android:nestedScrollingEnabled="false"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView5"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        tools:itemCount="5"
+        tools:listitem="@layout/activity_detail_select_lane" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -47,4 +47,12 @@
     <string name="policy_article4">제4조 (서비스의 종류)</string>
     <string name="policy_article5">제5조 (서비스 이용 계약의 성립)</string>
     <string name="profile_vertical_line_title">|</string>
+    <string name="detail_lane_select">원하는 라인을 선택하세요.</string>
+    <string name="write_title">제목</string>
+    <string name="write_buttonGroupMaking">생성</string>
+    <string name="write_explanation">내용</string>
+    <string name="write_titleHint">제목을 입력하세요</string>
+    <string name="write_explanationHint">내용을 입력하세요</string>
+    <string name="write_myLane">내 라인</string>
+    <string name="write_addLane">필요한 라인</string>
 </resources>

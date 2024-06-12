@@ -19,7 +19,7 @@ class DetailLaneAdapter : RecyclerView.Adapter<DetailLaneAdapter.Holder>() {
 
     interface ItemClick {
         fun onClick(view: View, lane: Lane)
-        fun onExitClick(view: View, lane: Lane, userUUID: UUID)
+        fun onExitClick(view: View, lane: Lane, userUUID: UUID, userNickname: String, userTag: String)
     }
 
     var itemClick: ItemClick? = null
@@ -62,8 +62,8 @@ class DetailLaneAdapter : RecyclerView.Adapter<DetailLaneAdapter.Holder>() {
 
             binding.selectExitImageView.setOnClickListener {
                 if (isExitVisible) {
-                    userInfo?.let { userId ->
-                        itemClick?.onExitClick(it, lane, userInfo.uniqueId)
+                    userInfo?.let { userInfo ->
+                        itemClick?.onExitClick(it, lane, userInfo.uniqueId, userInfo.nickname, userInfo.tag)
                     }
                 }
             }

@@ -4,15 +4,15 @@ import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.view.ContextThemeWrapper
+import android.view.View
+import androidx.fragment.app.FragmentActivity
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import kr.cosine.groupfinder.GroupFinderApplication
-import kr.cosine.groupfinder.R
 import kr.cosine.groupfinder.data.registry.LocalAccountRegistry.uniqueId
 import kr.cosine.groupfinder.enums.Lane
 import kr.cosine.groupfinder.presentation.view.detail.DetailActivity
+import kr.cosine.groupfinder.presentation.view.dialog.Dialog
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.MediaType.Companion.toMediaType
@@ -28,7 +28,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     override fun onMessageReceived(message: RemoteMessage) {
         val myApp = applicationContext as GroupFinderApplication
-        Log.d("FCM", "onMessageReceived: ")
+        Log.d("FCM", "onMessageReceived")
         message.data.let { data ->
             val messageType = data["type"]
             when (messageType) {
@@ -42,15 +42,34 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 }
                 "join_accept" -> {
                     val currentActivity = myApp.getCurrentActivity()
-                    val postUUID = UUID.fromString(data["postUUID"])
                     if(currentActivity is DetailActivity) {
                         currentActivity.dismissProgressDialog()
-                        currentActivity.reFreshGroupDetail(postUUID)
+                        currentActivity.reFreshGroupDetail()
                     }
                 }
-                "force_exit" -> showForceExitDialog(myApp.getCurrentActivity())
+                "force_exit" -> {
+                    val currentActivity = myApp.getCurrentActivity()
+                    if(currentActivity is DetailActivity) {
+                        currentActivity.dismissProgressDialog()
+                        currentActivity.reFreshGroupDetail()
+                    }
+                    showForceExitDialog(myApp.getCurrentActivity())
+                }
                 "already_cancel_request" -> showCanceledRequestDialog(myApp.getCurrentActivity())
                 "permissionDenied" -> showPermissionDeniedDialog(myApp.getCurrentActivity())
+                "alreadyJoined" -> {
+                    val currentActivity = myApp.getCurrentActivity()
+                    if(currentActivity is DetailActivity) {
+                        currentActivity.dismissProgressDialog()
+                    }
+                    showAlreadyJoinedDialog(myApp.getCurrentActivity())
+                }
+                "changeInRoom" -> {
+                    val currentActivity = myApp.getCurrentActivity()
+                    if(currentActivity is DetailActivity) {
+                        currentActivity.reFreshGroupDetail()
+                    }
+                }
                 // 다른 메시지 유형에 대한 처리 추가시 타입과 함수 추가.
             }
         }
@@ -91,6 +110,37 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 }
             }
         })
+    }
+
+    fun cancelJoinRequest() {
+        val url = "https://canceljoinrequest-wy3rih3y5a-dt.a.run.app"
+        val json = JSONObject().apply {
+            put("senderUUID", uniqueId)
+        }
+
+        val requestBody =
+            json.toString().toRequestBody("application/json; charset=utf-8".toMediaType())
+
+        val request = Request.Builder()
+            .url(url)
+            .post(requestBody)
+            .build()
+
+        val client = OkHttpClient()
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                Log.e("FCM", "Failed to accept: 1$e")
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                if (!response.isSuccessful) {
+                    Log.d("FCM", "Failed to accept: 2${response.message}, ${response.code}")
+                } else {
+                    Log.d("FCM", "accept Success")
+                }
+            }
+        })
+
     }
 
     private fun acceptJoinRequest(senderUUID: String, postUUID: String, lane: Lane) {
@@ -228,6 +278,39 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         })
     }
 
+    fun sendDeleteGroupRequest(postUUID: UUID) {
+        val url = "https://deletegrouprequest-wy3rih3y5a-dt.a.run.app"
+        val json = JSONObject().apply {
+            put("postUUID", postUUID)
+            put("senderUUID", uniqueId)
+        }
+
+        val requestBody =
+            json.toString().toRequestBody("application/json; charset=utf-8".toMediaType())
+
+        val request = Request.Builder()
+            .url(url)
+            .post(requestBody)
+            .build()
+
+        val client = OkHttpClient()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                println("Failed to send request: ${e.message}")
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                if (!response.isSuccessful) {
+                    println("Failed to send request: ${response.message}")
+                } else {
+                    val responseBody = response.body?.string()
+                    println("Success: $responseBody")
+                }
+            }
+        })
+    }
+
 
     private fun showJoinRequestDialog(context: Context, data: Map<String, String>) {
         Handler(Looper.getMainLooper()).post {
@@ -236,27 +319,24 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             val senderUUID = data["senderUUID"] ?: "error"
             val postUUID = data["postUUID"] ?: "error"
             Log.d("FCM", "showJoinRequestDialog: $senderUUID,$postUUID")
-            val contextWrapper = ContextThemeWrapper(
-                context,
-                R.style.Theme_GroupFinder
-            )
-            val dialogBuilder = AlertDialog.Builder(contextWrapper)
-            dialogBuilder.setTitle("참가 요청")
-            dialogBuilder.setMessage("${participantName}님이 ${participantLane}에 참가를 요청 합니다.")
-            dialogBuilder.setPositiveButton("수락") { dialog, which ->
-                acceptJoinRequest(
-                    senderUUID = senderUUID,
-                    postUUID = postUUID,
-                    lane = Lane.getLaneByDisplayName(participantLane!!)
-                )
-            }
-            dialogBuilder.setNegativeButton("거부") { dialog, which ->
-                deniedJoinRequest(
-                    senderUUID = senderUUID
-                )
-            }
-            val dialog = dialogBuilder.create()
-            dialog.show()
+            Dialog(
+                title = "참가 요청",
+                message = "${participantName}님이 ${participantLane}에 참가를 요청 합니다.",
+                cancelButtonTitle = "거절",
+                confirmButtonTitle = "수락",
+                onConfirmClick = {
+                    acceptJoinRequest(
+                        senderUUID = senderUUID,
+                        postUUID = postUUID,
+                        lane = Lane.getLaneByDisplayName(participantLane!!)
+                    )
+                },
+                onCancelClick = {
+                    deniedJoinRequest(
+                        senderUUID = senderUUID
+                    )
+                }
+            ).show((context as FragmentActivity).supportFragmentManager, Dialog.TAG)
         }
     }
 
@@ -268,7 +348,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         showDialog(context, "참가 거절", "참가 요청이 거절되었습니다.")
     }
 
-
     private fun showForceExitDialog(context: Context) {
         showDialog(context,"강제 퇴장", "강제 퇴장되었습니다.")
     }
@@ -277,21 +356,15 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         showDialog(context, "권한 오류", "잠시 후 다시 시도해주세요.")
     }
 
-    private fun showDialog(context: Context, title: String, message: String) {
-        Handler(Looper.getMainLooper()).post {
-            val contextWrapper = ContextThemeWrapper(
-                context,
-                R.style.Theme_GroupFinder
-            )
-            val dialogBuilder = AlertDialog.Builder(contextWrapper)
-            dialogBuilder.setTitle(title)
-            dialogBuilder.setMessage(message)
-            dialogBuilder.setPositiveButton("확인") { dialog, _ ->
-                dialog.dismiss()
-            }
-            val dialog = dialogBuilder.create()
-            dialog.show()
-        }
+    private fun showAlreadyJoinedDialog(context: Context) {
+        showDialog(context, "오류", "이미 참가중인 그룹이 있습니다.")
     }
 
+    private fun showDialog(context: Context, title: String, message: String) {
+        Dialog(
+            title = title,
+            message = message,
+            cancelButtonVisibility = View.GONE
+        ).show((context as FragmentActivity).supportFragmentManager,Dialog.TAG)
+    }
 }
