@@ -15,8 +15,7 @@ class BlockUserUseCase @Inject constructor(
 
     suspend operator fun invoke(blockedUserUniqueId: UUID): Result<Any> {
         return runCatching {
-            val reporterAccount = accountRepository.findAccountByUniqueId(LocalAccountRegistry.uniqueId)
-                ?: throw AccountNotExistsException()
+            val reporterAccount = accountRepository.getAccountByUniqueId(LocalAccountRegistry.uniqueId)
             val blockedUserUniqueIds = reporterAccount.blockedUserUniqueIds
             val blockedUserUniqueIdText = blockedUserUniqueId.toString()
             if (blockedUserUniqueIds.contains(blockedUserUniqueIdText)) {

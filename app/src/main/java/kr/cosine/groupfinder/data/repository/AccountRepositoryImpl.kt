@@ -4,6 +4,7 @@ import com.google.firebase.firestore.CollectionReference
 import kotlinx.coroutines.tasks.await
 import kr.cosine.groupfinder.data.model.AccountResponse
 import kr.cosine.groupfinder.data.remote.FirebaseDataSource
+import kr.cosine.groupfinder.domain.exception.AccountNotExistsException
 import kr.cosine.groupfinder.domain.repository.AccountRepository
 import org.mindrot.jbcrypt.BCrypt
 import java.util.UUID
@@ -45,6 +46,10 @@ class AccountRepositoryImpl @Inject constructor(
     override suspend fun findAccountByUniqueId(uniqueId: UUID): AccountResponse? {
         val documentSnapshot = reference.document(uniqueId.toString()).get().await()
         return documentSnapshot.toObject(AccountResponse::class.java)
+    }
+
+    override suspend fun getAccountByUniqueId(uniqueId: UUID): AccountResponse {
+        return findAccountByUniqueId(uniqueId) ?: throw AccountNotExistsException()
     }
 
     override suspend fun findAccountByIdAndPassword(

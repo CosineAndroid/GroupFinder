@@ -1,6 +1,5 @@
 package kr.cosine.groupfinder.presentation.view.profile
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -30,7 +29,6 @@ import kr.cosine.groupfinder.presentation.view.list.adapter.GroupAdpater
 import kr.cosine.groupfinder.presentation.view.profile.event.ProfileEvent
 import kr.cosine.groupfinder.presentation.view.profile.model.ProfileViewModel
 import kr.cosine.groupfinder.presentation.view.profile.state.ProfileUiState
-import kotlin.reflect.KClass
 
 @AndroidEntryPoint
 class ProfileFragment : Fragment() {
@@ -69,14 +67,13 @@ class ProfileFragment : Fragment() {
     }
 
     private fun registerRecyclerView() = with(binding.groupRecyclerView) {
-        adapter = GroupAdpater(context) { post ->
+        adapter = GroupAdpater { post ->
             requireContext.startActivity(DetailActivity::class) {
                 putExtra(IntentKey.POST_UNIQUE_ID, post.postUniqueId)
             }
         }.apply {
             groupAdpater = this
         }
-        suppressLayout(true)
     }
     
     private fun registerBlockedUserShowButton() {
@@ -122,7 +119,7 @@ class ProfileFragment : Fragment() {
     }
 
     private fun registerViewModelEvent() = with(binding) {
-        profileViewModel.loadProfile(LocalAccountRegistry.uniqueId)
+        profileViewModel.loadProfile()
         lifecycleScope.launch {
             profileViewModel.uiState.flowWithLifecycle(lifecycle).collectLatest { uiState ->
                 val isLoading = uiState is ProfileUiState.Loading

@@ -1,7 +1,6 @@
 package kr.cosine.groupfinder.presentation.view.list.adapter
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,13 +21,15 @@ import kr.cosine.groupfinder.presentation.view.list.state.item.extension.totalPe
 import kr.cosine.groupfinder.util.TimeUtil
 
 class GroupAdpater(
-    private val context: Context,
+    private val posts: MutableList<GroupItem> = mutableListOf(),
     private val onItemClick: (GroupItem) -> Unit = {}
 ) : RecyclerView.Adapter<GroupAdpater.GroupViewHolder>() {
 
     inner class GroupViewHolder(
         private val binding: ItemGroupBinding
     ) : RecyclerView.ViewHolder(binding.root) {
+
+        private val context = binding.root.context
 
         init {
             binding.root.setOnClickListenerWithCooldown(Interval.OPEN_SCREEN) {
@@ -92,8 +93,6 @@ class GroupAdpater(
             )
         }
     }
-
-    private val posts = mutableListOf<GroupItem>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GroupViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)

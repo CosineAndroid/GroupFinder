@@ -4,7 +4,6 @@ import dagger.hilt.android.scopes.ViewModelScoped
 import kr.cosine.groupfinder.data.extension.isJoinedPeople
 import kr.cosine.groupfinder.data.model.GroupItemResponse
 import kr.cosine.groupfinder.data.registry.LocalAccountRegistry
-import kr.cosine.groupfinder.domain.exception.AccountNotExistsException
 import kr.cosine.groupfinder.domain.extension.isJoinedPeople
 import kr.cosine.groupfinder.domain.extension.joinedPeopleCount
 import kr.cosine.groupfinder.domain.extension.totalPeopleCount
@@ -26,8 +25,7 @@ class GetGroupsUseCase @Inject constructor(
     suspend operator fun invoke(mode: Mode?, tags: Set<String>): Result<List<GroupItem>> {
         return runCatching {
             val accountUniqueId = LocalAccountRegistry.uniqueId
-            val account = accountRepository.findAccountByUniqueId(accountUniqueId)
-                ?: throw AccountNotExistsException()
+            val account = accountRepository.getAccountByUniqueId(accountUniqueId)
             var groups = groupRepository.getGroupList().groups.filterNot {
                 account.reportedPostUniqueIds.contains(it.postUniqueId) ||
                         account.blockedUserUniqueIds.contains(it.owner.uniqueId)

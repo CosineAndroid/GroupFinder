@@ -94,7 +94,7 @@ class GroupFragment(
     }
 
     private fun registerGroupRecyclerView() = with(binding.groupRecyclerView) {
-        adapter = GroupAdpater(context) { post ->
+        adapter = GroupAdpater { post ->
             context.startActivity(DetailActivity::class) {
                 putExtra(IntentKey.POST_UNIQUE_ID, post.postUniqueId)
             }
@@ -149,7 +149,7 @@ class GroupFragment(
                     is GroupUiState.Success -> groupAdpater.setPosts(uiState.posts)
 
                     is GroupUiState.Notice -> {
-                        if (uiState is GroupUiState.ResultEmpty) {
+                        if (uiState is GroupUiState.Empty) {
                             groupAdpater.clearPosts()
                         }
                         searchResultNoticeTextView.text = uiState.message

@@ -20,6 +20,7 @@ class BlockUserAdapter(
 
         init {
             binding.unblockImageButton.setOnClickListenerWithCooldown(Interval.CLICK_BUTTON) {
+                val bindingAdapterPosition = bindingAdapterPosition
                 val blockUser = blockUsers[bindingAdapterPosition]
                 removeBlockUser(bindingAdapterPosition, blockUser)
                 onUnblockButtonClick(blockUser)
@@ -60,6 +61,6 @@ class BlockUserAdapter(
 
     private fun removeBlockUser(position: Int, blockUser: BlockUserItem) {
         blockUsers.remove(blockUser)
-        notifyItemChanged(position)
+        notifyItemRemoved(position)
     }
 }
