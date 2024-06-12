@@ -135,7 +135,7 @@ class ProfileFragment : Fragment() {
             profileViewModel.uiState.flowWithLifecycle(lifecycle).collectLatest { uiState ->
                 val isLoading = uiState is ProfileUiState.Loading
 
-                totalConstraintLayout.isVisible = !isLoading
+                rootConstraintLayout.isVisible = !isLoading
                 progressBar.isVisible = isLoading
 
                 if (uiState is ProfileUiState.Success) {

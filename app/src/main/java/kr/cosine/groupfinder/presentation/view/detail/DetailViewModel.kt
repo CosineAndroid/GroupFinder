@@ -27,7 +27,7 @@ class DetailViewModel @Inject constructor(
     val groupRole: LiveData<Int> get() = _groupRole
 
     fun getPostDetail(uniqueId: UUID) = viewModelScope.launch {
-        getGroupDetailUseCase.invoke(uniqueId).onSuccess { item ->
+        getGroupDetailUseCase(uniqueId).onSuccess { item ->
             _postDetail.value = item
             checkRole()
         }

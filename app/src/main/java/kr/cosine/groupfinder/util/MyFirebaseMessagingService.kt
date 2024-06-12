@@ -278,7 +278,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         })
     }
 
-    fun sendDeleteGroupRequest(postUUID: UUID) {
+    fun sendDeleteGroupRequest(postUUID: UUID, onSuccess: () -> Unit) {
         val url = "https://deletegrouprequest-wy3rih3y5a-dt.a.run.app"
         val json = JSONObject().apply {
             put("postUUID", postUUID)
@@ -306,6 +306,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 } else {
                     val responseBody = response.body?.string()
                     println("Success: $responseBody")
+                    onSuccess()
                 }
             }
         })

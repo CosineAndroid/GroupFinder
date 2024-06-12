@@ -7,7 +7,6 @@ import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kr.cosine.groupfinder.data.registry.LocalAccountRegistry.uniqueId
@@ -17,9 +16,12 @@ import kr.cosine.groupfinder.domain.model.GroupOwnerEntity
 import kr.cosine.groupfinder.enums.Lane
 import kr.cosine.groupfinder.enums.TestGlobalUserData.HOST
 import kr.cosine.groupfinder.enums.TestGlobalUserData.PARTICIPANT
+import kr.cosine.groupfinder.presentation.view.common.data.Code
 import kr.cosine.groupfinder.presentation.view.common.data.IntentKey
+import kr.cosine.groupfinder.presentation.view.common.extension.applyWhite
 import kr.cosine.groupfinder.presentation.view.common.extension.setOnClickListenerWithCooldown
 import kr.cosine.groupfinder.presentation.view.dialog.Dialog
+import kr.cosine.groupfinder.presentation.view.list.adapter.decoration.GroupTagItemDecoration
 import kr.cosine.groupfinder.util.MyFirebaseMessagingService
 import java.util.UUID
 
@@ -42,12 +44,21 @@ class DetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         postUniqueId = intent.getSerializableExtra(IntentKey.POST_UNIQUE_ID) as UUID
+        registerProgressBar()
+        registerCloseButton()
         observeData()
         detailViewModel.getPostDetail(postUniqueId)
         laneOnClick()
-        setOnClickCloseButton()
+        setOnClickDeleteGroupButton()
     }
 
+    private fun registerProgressBar() = with(binding) {
+        progressBar.apply {
+            applyWhite()
+            visibility = View.VISIBLE
+        }
+        rootConstraintLayout.visibility = View.INVISIBLE
+    }
 
     private fun observeData() {
         detailViewModel.postDetail.observe(this) { post ->
@@ -55,6 +66,7 @@ class DetailActivity : AppCompatActivity() {
                 bindDetailInformation(post)
                 bindCategoriesFromData(post.tags)
                 bindLanesFromData(post.laneMap)
+                showInformationView()
             } else {
                 Log.d("Error", "onCreate: 비 정상적인 로딩")
                 // 잘못된 게시글 로드시 에러처리 오류창 디자인 요청.
@@ -62,7 +74,7 @@ class DetailActivity : AppCompatActivity() {
         }
         detailViewModel.groupRole.observe(this) { role ->
             laneAdapter.powerUpdate(role)
-            showCloseButton(role)
+            showDeleteGroupButton(role)
             Log.d("DETAIL", "observeData: ${role}")
         }
     }
@@ -79,6 +91,8 @@ class DetailActivity : AppCompatActivity() {
         with(binding.tags) {
             adapter = categoryAdapter
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            removeItemDecoration(GroupTagItemDecoration)
+            addItemDecoration(GroupTagItemDecoration)
         }
         categoryAdapter.categoriesUpdate(tags)
     }
@@ -89,6 +103,11 @@ class DetailActivity : AppCompatActivity() {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         }
         laneAdapter.laneUpdate(lanes)
+    }
+
+    private fun showInformationView() = with(binding) {
+        progressBar.visibility = View.INVISIBLE
+        rootConstraintLayout.visibility = View.VISIBLE
     }
 
     private fun laneOnClick() {
@@ -146,7 +165,7 @@ class DetailActivity : AppCompatActivity() {
                     }
                 }
             }
-        ).show((this as FragmentActivity).supportFragmentManager, Dialog.TAG)
+        ).show(supportFragmentManager, Dialog.TAG)
 
         Log.d("test", "onExitClick: $message")
     }
@@ -168,7 +187,7 @@ class DetailActivity : AppCompatActivity() {
                     }
                 )
                 isProgressDialogDismissed = false
-                progressDialog!!.show((this as FragmentActivity).supportFragmentManager, Dialog.TAG)
+                progressDialog!!.show(supportFragmentManager, Dialog.TAG)
 
                 MyFirebaseMessagingService().sendJoinRequest(
                     targetUUID = ownerUniqueId,
@@ -186,33 +205,43 @@ class DetailActivity : AppCompatActivity() {
                                 title = "시간 초과",
                                 message = "잠시 후 다시 시도해주세요.",
                                 cancelButtonVisibility = View.GONE,
-                            ).show((this as FragmentActivity).supportFragmentManager, Dialog.TAG)
+                            ).show(supportFragmentManager, Dialog.TAG)
                         }
                     }
                 }, 25000)
             }
-        ).show((this as FragmentActivity).supportFragmentManager, Dialog.TAG)
+        ).show(supportFragmentManager, Dialog.TAG)
     }
 
-    private fun showCloseButton(role: Int) {
-        if (role == 1) {
-            binding.closeImageButton.visibility = View.VISIBLE
-        } else {
-            binding.closeImageButton.visibility = View.GONE
+    private fun registerCloseButton() {
+        binding.closeImageButton.setOnClickListenerWithCooldown {
+            finish()
         }
     }
 
-    private fun setOnClickCloseButton() {
-        binding.closeImageButton.setOnClickListenerWithCooldown(1000) {
-            Log.d("DETAIL", "setOnClickCloseButton: click!")
+    private fun showDeleteGroupButton(role: Int) = with(binding.deleteGroupTextView) {
+        visibility = if (role == 1) {
+            View.VISIBLE
+        } else {
+            View.GONE
+        }
+    }
+
+    private fun setOnClickDeleteGroupButton() = with(binding) {
+        deleteGroupTextView.setOnClickListenerWithCooldown(1000) {
+            Log.d("DETAIL", "setOnClickDeleteGroupButton: click!")
             Dialog(
                 title = "방 삭제",
                 message = "정말 방을 삭제하시겠습니까?",
                 onConfirmClick = {
-                    MyFirebaseMessagingService().sendDeleteGroupRequest(postUniqueId)
-                    finish()
+                    rootConstraintLayout.visibility = View.INVISIBLE
+                    progressBar.visibility = View.VISIBLE
+                    MyFirebaseMessagingService().sendDeleteGroupRequest(postUniqueId) {
+                        setResult(Code.SUCCESS_POST_TASK)
+                        finish()
+                    }
                 }
-            ).show((this as FragmentActivity).supportFragmentManager, Dialog.TAG)
+            ).show(supportFragmentManager, Dialog.TAG)
         }
     }
 

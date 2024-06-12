@@ -73,8 +73,7 @@ class GroupAdpater(
                 noticeMoreTagImageView.visibility = View.VISIBLE
             }
             groupTagRecyclerView.apply {
-                val groupTagAdapter = GroupTagAdapter(tags, isMaxGroup)
-                adapter = groupTagAdapter
+                adapter = GroupTagAdapter(tags, isMaxGroup)
                 removeItemDecoration(GroupTagItemDecoration)
                 addItemDecoration(GroupTagItemDecoration)
                 addOnScrollListener(TagScrollListener(noticeMoreTagImageView, isMaxTag))
