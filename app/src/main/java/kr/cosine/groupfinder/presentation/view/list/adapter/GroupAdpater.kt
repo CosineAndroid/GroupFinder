@@ -45,21 +45,28 @@ class GroupAdpater(
             val isMaxGroup = !post.isJoinedPeople(LocalAccountRegistry.uniqueId) &&
                     joinedPeopleCount == totalPeopleCount
 
-            fun TextView.applyColor(color: Int = R.color.group_full_text): TextView {
-                if (isMaxGroup) {
-                    val colorStateList = context.getColorStateList(color)
-                    setTextColor(colorStateList)
-                }
+            fun TextView.applyColor(defaultColor: Int, fullColor: Int): TextView {
+                val color = if (isMaxGroup) fullColor else defaultColor
+                val colorStateList = context.getColorStateList(color)
+                setTextColor(colorStateList)
                 return this
             }
 
-            groupTitleTextView.applyColor(R.color.group_full_title_text).text = post.title
+            groupTitleTextView.applyColor(
+                R.color.group_default_title,
+                R.color.group_full_title_text
+            ).text = post.title
+
             val owner = post.owner
-            groupTaggedNicknameTextView.applyColor().text = context.getString(
+            groupTaggedNicknameTextView.applyColor(
+                R.color.group_default_tagged_nickname,
+                R.color.group_full_text
+            ).text = context.getString(
                 R.string.tagged_nickname_format,
                 owner.nickname,
                 owner.tag
             )
+
             val tags = post.tags
             val isMaxTag = tags.size >= MAX_TAG
             if (isMaxTag) {
@@ -74,15 +81,24 @@ class GroupAdpater(
             }
             val laneMap = post.laneMap
             groupLaneRecyclerView.adapter = GroupLaneAdapter(laneMap, isMaxGroup)
-            groupPeopleTextView.applyColor().text = context.getString(
+
+            groupPeopleTextView.applyColor(
+                R.color.group_default_people_text,
+                R.color.group_full_text
+            ).text = context.getString(
                 R.string.group_people_format,
                 joinedPeopleCount,
                 totalPeopleCount
             )
-            groupTimeTextView.applyColor().text = context.getString(
+
+            groupTimeTextView.applyColor(
+                R.color.group_default_time_text,
+                R.color.group_full_text
+            ).text = context.getString(
                 R.string.group_time_format,
                 TimeUtil.getFormattedTime(post.time)
             )
+
             root.background = AppCompatResources.getDrawable(
                 context,
                 when {
