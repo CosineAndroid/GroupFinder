@@ -105,7 +105,6 @@ class DetailActivity : AppCompatActivity() {
         }
         detailViewModel.groupRole.observe(this) { role ->
             laneAdapter.powerUpdate(role)
-            //showDeleteGroupButton(role)
             Log.d("DETAIL", "observeData: ${role}")
         }
     }
@@ -251,14 +250,6 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
-    /*private fun showDeleteGroupButton(role: Int) = with(binding.deleteGroupTextView) {
-        visibility = if (role == 1) {
-            View.VISIBLE
-        } else {
-            View.GONE
-        }
-    }*/
-
     private fun showReportGroupDialog() {
         Dialog("방 신고하기", "정말 해당 방을 신고하시겠습니까?") {
             detailViewModel.reportGroup(postUniqueId)
@@ -336,7 +327,7 @@ class DetailActivity : AppCompatActivity() {
             onConfirmClick = {
                 finish()
             }
-        ).show((this as FragmentActivity).supportFragmentManager, Dialog.TAG)
+        ).show(supportFragmentManager, Dialog.TAG)
     }
 
     fun dismissProgressDialog() {
