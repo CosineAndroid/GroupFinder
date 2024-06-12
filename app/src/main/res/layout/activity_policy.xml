@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageButton
+        android:id="@+id/closeImageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        android:clickable="true"
+        android:onClick="onClick"
+        android:src="@drawable/ic_close"
+        android:background="@android:color/transparent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/titleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/policy_title"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleTextView"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <TextView
+            android:id="@+id/policyTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:text="&lt;띱&gt;은 이용자의 개인정보를 보호하고 이와 관련한 고충을 신속하고 원활하게 처리할 수 있도록 다음과 같이 개인정보 처리방침을 수립·공개하며, 본 개인정보 처리방침을 공개함으로써 이용자들이 용이하게 보실 수 있도록 조치하고 있습니다. 개인정보 처리방침은 정부의 법률 및 지침 변경이나 프로젝트의 내부 방침 변경 등으로 인하여 수시로 변경될 수 있고, 이에 따른 개인정보 처리방침의 지속적인 개선을 위하여 필요한 절차를 정하고 있습니다.\n
+&lt;띱&gt;의 개인정보 처리방침은 다음과 같은 내용을 담고 있습니다.\n
+\n
+제 1 조 (수집하는 개인정보의 항목 및 수집방법)\n
+가. 수집 항목\n
+&lt;띱&gt;은 이용자들이 회원서비스를 이용하기 위해 회원으로 가입하실 때 서비스 제공을 위한 필수/선택적인 정보들을 온라인상에서 입력 받고 있습니다.\n
+- 회원 가입 시에 받는 필수적인 정보 : 아이디, 비밀번호, 닉네임, 태그\n
+- 회원제 서비스 이용에 따른 본인 확인 절차에 이용 시 수집 정보 : 아이디, 비밀번호, 닉네임, 태그\n
+나. 수집 방법\n
+&lt;띱&gt;은 다음과 같은 방법으로 개인정보를 수집합니다.\n
+- 모바일기기\n
+- 생성정보 수집 툴을 통한 수집\n
+\n
+제 2 조 (개인정보의 수집 및 이용 목적)\n
+&lt;띱&gt;은 이용자의 사전 동의 없이는 이용자의 개인 정보를 수집하지 않으며, 수집된 정보는 아래와 같이 이용하고 있습니다.\n
+가. 신규 서비스의 개발\n
+이용자들이 제공한 개인정보를 바탕으로 보다 더 유용한 서비스를 개발할 수 있습니다. 프로젝트는 신규 서비스 개발이나 컨텐츠의 확충 시에 기존 이용자들이 프로젝트에 제공한 개인정보를 바탕으로 개발해야 할 서비스의 우선 순위를 보다 더 효율적으로 정하고, 프로젝트는 이용자들이 필요로 할 컨텐츠를 합리적으로 선택하여 제공할 수 있습니다.\n
+\n
+제 3 조 (수집하는 개인정보의 보유 및 이용기간)\n
+&lt;띱&gt;은 이용자의 개인정보를 원칙적으로 개인정보의 수집 및 이용목적이 달성되면 지체 없이 파기합니다. 단, 다음의 정보에 대해서는 아래의 이유로 명시한 기간 동안 보존합니다.\n
+가. 관련법령에 의한 정보보유 사유\n
+- 소비자의 불만 또는 분쟁처리에 관한 기록 : 3년 (전자상거래등에서의 소비자보호에 관한 법률)\n
+\n
+제 4 조 (개인정보의 파기 절차 및 방법)\n
+&lt;띱&gt;은 귀중한 회원의 개인정보를 안전하게 처리하며, 유출의 방지를 위하여 다음과 같은 방법을 통하여 개인정보를 파기합니다.\n
+가. 파기절차\n
+이용자가 서비스 이용 등을 위해 입력하신 정보는 목적이 달성된 후 별도의 DB로 옮겨져(종이의 경우 별도의 서류함) 내부 방침 및 기타 관련 법령에 의한 정보보호 사유에 따라(보유 및 이용기간 참조) 일정 기간 저장된 후 파기됩니다. 별도 DB로 옮겨진 개인정보는 법률에 의한 경우가 아니고서는 보유되어지는 이외의 다른 목적으로 이용되지 않습니다.\n
+나. 파기방법\n
+- 종이에 출력된 개인정보 : 분쇄기로 분쇄하거나 소각\n
+- 전자적 파일 형태로 저장된 개인정보 : 기록을 재생할 수 없는 기술적 방법을 사용하여 삭제\n
+\n
+제 5 조 (수집한 개인정보의 공유 및 제공)\n
+&lt;띱&gt;은 이용자들의 개인정보를 동의받은 범위 내에서 사용하며, 이용자의 사전 동의 없이는 동 범위를 초과하여 이용하거나 원칙적으로 이용자의 개인정보를 외부에 공유 및 제공하지 않습니다. 다만, 아래의 경우에는 예외로 합니다.\n
+- 이용자들이 사전에 공유 및 제공에 동의한 경우\n
+- 법령의 규정에 의거하거나, 수사 목적으로 법령에 정해진 절차와 방법에 따라 수사기관의 요구가 있는 경우\n
+\n
+제 6 조 (이용자 자신의 개인정보 관리(열람,정정,삭제 등)에 관한 사항)\n
+회원님이 원하실 경우 언제라도 당사에서 개인정보를 열람하실 수 있으며 보관된 필수 정보를 수정하실 수 있습니다. 또한 회원 가입 시 요구된 필수 정보 외의 추가 정보는 언제나 열람, 수정, 삭제할 수 있습니다.\n
+\n
+제 7 조 (개인정보 관련 의견수렴 및 불만처리에 관한 사항)\n
+&lt;띱&gt;은 개인정보보호와 관련하여 이용자 여러분들의 의견을 수렴하고 있으며 불만을 처리하기 위하여 모든 절차와 방법을 마련하고 있습니다. 이용자들은 하단에 명시한 &quot;11. 개인정보 관리책임자 및 담당자의 소속-성명 및 연락처&quot;항을 참고하여 전화나 메일을 통하여 불만사항을 신고할 수 있고, &lt;띱&gt;은 이용자들의 신고사항에 대하여 신속하고도 충분한 답변을 해 드릴 것입니다.\n
+\n
+제 8 조 (개인정보의 처리목적)\n
+&lt;개인정보처리자명&gt;은(는) 다음의 목적을 위하여 개인정보를 처리합니다. 처리하고 있는 개인정보는 다음의 목적 이외의 용도로는 이용되지 않으며, 이용 목적이 변경되는 경우에는 「개인정보 보호법」 제18 조에 따라 별도의 동의를 받는 등 필요한 조치를 이행할 예정입니다.\n
+가. 어플리케이션 회원 가입 및 관리\n
+- 회원 가입의사 확인, 회원제 서비스 제공에 따른 본인 식별·인증, 회원자격 유지관리, 각종 고지·통지, 고충처리 목적으로 개인정보를 처리 합니다.\n
+나. 고충처리\n
+- 민원인의 신원 확인, 민원사항 확인, 사실조사를 위한 연락·통지, 처리결과 통보의 목적으로 개인정보를 처리합니다.\n
+다. &lt;해당 개인정보처리자의 개인정보 처리업무&gt;\n
+- &lt;개인정보 처리업무에 따른 처리목적&gt;으로 개인정보를 처리합니다.\n
+\n
+제 9 조 (처리하는 개인정보의 항목)\n
+&lt;개인정보처리자명&gt;은(는) 다음의 개인정보 항목을 처리하고 있습니다.\n
+가. 어플리케이션 회원 가입 및 관리\n
+- 필수항목 : 아이디, 비밀번호, 닉네임, 태그\n
+나. 서비스 제공\n
+- 필수항목 : 아이디, 비밀번호, 닉네임, 태그\n
+다. &lt;개인정보 처리업무&gt;\n
+- 필수항목: &lt;처리항목&gt;\n
+\n
+제 10 조 (개인정보 처리방침의 변경에 관한 사항)\n
+가. 이 개인정보 처리방침은 2024년 6월 16일부터 적용됩니다.\n
+\n
+제 11 조 (개인정보 보호책임자 및 담당자의 소속-성명 및 연락처)\n
+&lt;띱&gt;은 개인정보 처리에 관한 업무를 총괄해서 책임지고, 개인정보 처리와 관련한 이용자의 불만처리 및 피해구제 등을 위하여 아래와 같이 개인정보보호 책임자를 지정하고 있습니다.\n
+이　름  :  공 지 훈\n
+E - M A I L  :  rhdwlgns0725@gmail.com\n
+\n
+제 12 조 (권익침해 구제방법)\n
+이용자는 아래의 기관에 대해 개인정보 침해에 대한 피해구제, 상담 등을 문의하실 수 있습니다.\n
+&lt;아래의 기관은 프로젝트와는 별개의 기관으로서, 프로젝트의 자체적인 개인정보 불만처리, 피해구제 결과에 만족하지 못하시거나 보다 자세한 도움이 필요하시면 문의하여 주시기 바랍니다&gt;\n
+▶ 개인정보 침해신고센터 (한국인터넷진흥원 운영)\n
+- 소관업무 : 개인정보 침해사실 신고, 상담 신청\n
+- 홈페이지 : privacy.kisa.or.kr\n
+- 전화 : (국번없이) 118\n
+- 주소 : (58324) 전남 나주시 진흥길 9(빛가람동 301-2) 3층 개인정보침해신고센터\n
+▶ 개인정보 분쟁조정위원회\n
+- 소관업무 : 개인정보 분쟁조정신청, 집단분쟁조정 (민사적 해결)\n
+- 홈페이지 : kopico.go.kr\n
+- 전화 : (국번없이) 1833-6972\n
+- 주소 : (03171)서울특별시 종로구 세종대로 209 정부서울청사 4층\n
+▶ 대검찰청 사이버수사과 : spo.go.kr\n
+▶ 경찰청 사이버안전국 : cyberbureau.police.go.kr\n
+\n
+제 13 조 (고지의 의무)\n
+현 개인정보처리방침의 내용은 정부의 정책 또는 보안기술의 변경에 따라 내용의 추가 삭제 및 수정이 있을 시에는 어플리케이션의 '공지사항'을 통해 고지할 것입니다.\n
+개인정보처리방침 시행일자: 2024년 6월 16일\n"
+            android:textColor="@color/white"
+            android:gravity="start"
+            android:textSize="13sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/titleTextView"
+            tools:gravity_layout="start" />
+
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
