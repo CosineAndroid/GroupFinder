@@ -56,4 +56,5 @@
     <string name="write_myLane">내 라인</string>
     <string name="write_addLane">필요한 라인</string>
     <string name="tagged_nickname_input_dialog_title">닉네임 및 태그 변경</string>
+    <string name="tagged_nickname_replacer">닉네임#태그</string>
 </resources>
