@@ -76,6 +76,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun replaceFragment(fragment: Fragment) {
+        binding.toolbar.title = when (fragment) {
+            is GroupFragment -> fragment.mode?.displayName ?: ALL_CATEGORY
+            is ProfileFragment -> PROFILE_CATEGORY
+            else -> EMPTY_CATEGORY
+        }
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, fragment)
             .commit()
@@ -92,5 +97,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
         }
         onBackPressedDispatcher.addCallback(this, backPressedCallback)
+    }
+
+    private companion object {
+        const val ALL_CATEGORY = "전체"
+        const val PROFILE_CATEGORY = "프로필"
+        const val EMPTY_CATEGORY = " "
     }
 }
