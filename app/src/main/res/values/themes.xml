@@ -9,8 +9,9 @@
     </style>
 
     <style name="navigationItemTextAppearance">
-        <item name="android:textColor">#C8CDDB</item>
+        <item name="android:textColor">@color/group_default_tagged_nickname</item>
         <item name="android:textSize">16sp</item>
+        <item name="fontFamily">@font/nanum_square_kr</item>
     </style>
 
     <style name="RoundCornerBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">

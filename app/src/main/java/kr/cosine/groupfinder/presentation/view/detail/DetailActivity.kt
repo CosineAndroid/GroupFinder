@@ -5,10 +5,9 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.View
-import android.widget.ProgressBar
 import androidx.activity.viewModels
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kr.cosine.groupfinder.data.registry.LocalAccountRegistry.uniqueId
@@ -20,6 +19,7 @@ import kr.cosine.groupfinder.enums.TestGlobalUserData.HOST
 import kr.cosine.groupfinder.enums.TestGlobalUserData.PARTICIPANT
 import kr.cosine.groupfinder.presentation.view.common.data.IntentKey
 import kr.cosine.groupfinder.presentation.view.common.extension.setOnClickListenerWithCooldown
+import kr.cosine.groupfinder.presentation.view.dialog.Dialog
 import kr.cosine.groupfinder.util.MyFirebaseMessagingService
 import java.util.UUID
 
@@ -34,16 +34,18 @@ class DetailActivity : AppCompatActivity() {
 
     private val laneAdapter by lazy { DetailLaneAdapter() }
 
-    private var progressDialog: AlertDialog? = null
+    private var progressDialog: Dialog? = null
     private var isProgressDialogDismissed = false
+    private lateinit var postUniqueId: UUID
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        val postUniqueId = intent.getSerializableExtra(IntentKey.POST_UNIQUE_ID) as UUID
+        postUniqueId = intent.getSerializableExtra(IntentKey.POST_UNIQUE_ID) as UUID
         observeData()
         detailViewModel.getPostDetail(postUniqueId)
         laneOnClick()
+        setOnClickCloseButton()
     }
 
 
@@ -60,6 +62,8 @@ class DetailActivity : AppCompatActivity() {
         }
         detailViewModel.groupRole.observe(this) { role ->
             laneAdapter.powerUpdate(role)
+            showCloseButton(role)
+            Log.d("DETAIL", "observeData: ${role}")
         }
     }
 
@@ -104,78 +108,112 @@ class DetailActivity : AppCompatActivity() {
                 }
             }
 
-
-            override fun onExitClick(view: View, lane: Lane, userUUID: UUID) {
-                when (detailViewModel.groupRole.value) {
-                    HOST -> {
-                        if (uniqueId == userUUID) {
-                            Log.d("test", "onExitClick: 방을 닫겠습니까?")
-                        } else {
-                            Log.d("test", "onExitClick: $userUUID 유저를 강퇴 하시겠습니까?")
-                        }
-                    }
-
-                    PARTICIPANT -> {
-                        Log.d("test", "onExitClick: 방을 나가겠습니까?")
-                    }
-
+            override fun onExitClick(
+                view: View,
+                lane: Lane,
+                userUUID: UUID,
+                userNickname: String,
+                userTag: String
+            ) {
+                val title = when (detailViewModel.groupRole.value) {
+                    HOST -> "강제 퇴장"
+                    PARTICIPANT -> "나가기"
                     else -> return
                 }
+                val message = when (detailViewModel.groupRole.value) {
+                    HOST -> "${userNickname}#${userTag} 유저를 추방 하시겠습니까?"
+                    PARTICIPANT -> "이 방에서 나가시겠습니까?"
+                    else -> return
+                }
+                handleExitClick(userUUID, title, message)
+            }
+        }
+    }
 
+
+    private fun handleExitClick(userUUID: UUID, title: String, message: String) {
+        Dialog(
+            title = title,
+            message = message,
+            onConfirmClick = {
                 detailViewModel.postDetail.value?.let { post ->
                     MyFirebaseMessagingService().sendLeaveGroupRequest(
                         postUUID = post.postUniqueId,
                         targetUUID = userUUID
                     )
+                    if (detailViewModel.groupRole.value == PARTICIPANT) {
+                        finish()
+                    }
                 }
             }
+        ).show((this as FragmentActivity).supportFragmentManager, Dialog.TAG)
 
+        Log.d("test", "onExitClick: $message")
+    }
+
+
+    private fun showJoinRequestDialog(ownerUniqueId: UUID, postUniqueId: UUID, lane: Lane) {
+        Dialog(
+            title = "참가 요청",
+            message = "${lane.displayName} 라인에 참가하시겠습니까?",
+            onConfirmClick = {
+                progressDialog = Dialog(
+                    title = "참가 요청 중...",
+                    message = "잠시만 기다려 주세요.",
+                    cancelButtonTitle = "요청 취소",
+                    confirmButtonVisibility = View.GONE,
+                    onCancelClick = {
+                        MyFirebaseMessagingService().cancelJoinRequest()
+                        dismissProgressDialog()
+                    }
+                )
+                isProgressDialogDismissed = false
+                progressDialog!!.show((this as FragmentActivity).supportFragmentManager, Dialog.TAG)
+
+                MyFirebaseMessagingService().sendJoinRequest(
+                    targetUUID = ownerUniqueId,
+                    senderUUID = uniqueId,
+                    lane = lane,
+                    postUUID = postUniqueId
+                )
+
+                val handler = Handler(Looper.getMainLooper())
+                handler.postDelayed({
+                    if (!isProgressDialogDismissed) {
+                        progressDialog!!.dismiss()
+                        if (!isFinishing && !isDestroyed) {
+                            Dialog(
+                                title = "시간 초과",
+                                message = "잠시 후 다시 시도해주세요.",
+                                cancelButtonVisibility = View.GONE,
+                            ).show((this as FragmentActivity).supportFragmentManager, Dialog.TAG)
+                        }
+                    }
+                }, 25000)
+            }
+        ).show((this as FragmentActivity).supportFragmentManager, Dialog.TAG)
+    }
+
+    private fun showCloseButton(role: Int) {
+        if (role == 1) {
+            binding.closeImageButton.visibility = View.VISIBLE
+        } else {
+            binding.closeImageButton.visibility = View.GONE
         }
     }
 
-    private fun showJoinRequestDialog(ownerUniqueId: UUID, postUniqueId: UUID, lane: Lane) {
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle("참가 요청")
-        builder.setMessage("${lane.displayName} 라인에 참가하시겠습니까?")
-        builder.setPositiveButton("예") { _, _ ->
-            val progressBar = ProgressBar(this)
-            progressDialog = AlertDialog.Builder(this)
-                .setTitle("참가 요청 중...")
-                .setView(progressBar)
-                .setCancelable(false)
-                .create()
-
-            isProgressDialogDismissed = false
-            progressDialog?.show()
-
-            MyFirebaseMessagingService().sendJoinRequest(
-                targetUUID = ownerUniqueId,
-                senderUUID = uniqueId,
-                lane = lane,
-                postUUID = postUniqueId
-            )
-
-            val handler = Handler(Looper.getMainLooper())
-            handler.postDelayed({
-                if (!isProgressDialogDismissed) {
-                    progressDialog?.dismiss()
-                    if(!isFinishing && !isDestroyed) { //중간에 다른 어플을 사용하다 온 경우 안전을 위함
-                        AlertDialog.Builder(this)
-                            .setTitle("시간 초과")
-                            .setMessage("잠시 후 다시 시도해주세요.")
-                            .setPositiveButton("확인") { dialog, _ ->
-                                dialog.dismiss()
-                            }
-                            .show()
-                    }
+    private fun setOnClickCloseButton() {
+        binding.closeImageButton.setOnClickListenerWithCooldown(1000) {
+            Log.d("DETAIL", "setOnClickCloseButton: click!")
+            Dialog(
+                title = "방 삭제",
+                message = "정말 방을 삭제하시겠습니까?",
+                onConfirmClick = {
+                    MyFirebaseMessagingService().sendDeleteGroupRequest(postUniqueId)
+                    finish()
                 }
-            }, 25000)
+            ).show((this as FragmentActivity).supportFragmentManager, Dialog.TAG)
         }
-        builder.setNegativeButton("아니오") { dialog, _ ->
-            dialog.dismiss()
-        }
-        val dialog: AlertDialog = builder.create()
-        dialog.show()
     }
 
     fun dismissProgressDialog() {
@@ -183,8 +221,8 @@ class DetailActivity : AppCompatActivity() {
         progressDialog?.dismiss()
     }
 
-    fun reFreshGroupDetail(postUniqueId: UUID) {
+    fun reFreshGroupDetail() {
         detailViewModel.getPostDetail(postUniqueId)
-
     }
+
 }
