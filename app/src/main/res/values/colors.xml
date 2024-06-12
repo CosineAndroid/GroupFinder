@@ -14,7 +14,8 @@
     <color name="group_default_time_text">#E5EAF7</color>
     <color name="group_full_title_text">#565960</color>
     <color name="group_full_text">#474A50</color>
-    <color name="navigation">#131517</color>
     <color name="group_tagged_nickname">#C8CDDB</color>
+    <color name="profile_horizontal_line">#1F2326</color>
+    <color name="navigation">#131517</color>
     <color name="setting">#FFFFFF</color>
 </resources>

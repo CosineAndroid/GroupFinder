@@ -110,7 +110,9 @@ class ProfileFragment : Fragment() {
                         uiState.tag
                     )
                     val postItem = uiState.groupItem
-                    if (postItem != null) {
+                    if (postItem == null) {
+                        groupRecyclerView.visibility = View.GONE
+                    } else {
                         groupAdpater.setPost(postItem)
                     }
                 }
