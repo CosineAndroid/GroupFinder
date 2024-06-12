@@ -116,7 +116,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
-                android:text="@string/register_tag_hint"
+                android:text="@string/tag_hint"
                 style="@style/textView_select"
                 app:layout_constraintStart_toStartOf="@+id/bodyEditTextView"
                 app:layout_constraintTop_toBottomOf="@+id/bodyEditTextView" />
