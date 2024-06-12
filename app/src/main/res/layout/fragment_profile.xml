@@ -32,11 +32,11 @@
                 android:layout_height="wrap_content"
                 android:text="@string/tagged_nickname_replacer"
                 android:textColor="@color/white"
-                android:textSize="18sp"
+                android:textSize="24sp"
                 android:textStyle="bold" />
 
             <Space
-                android:layout_width="4dp"
+                android:layout_width="8dp"
                 android:layout_height="wrap_content" />
 
             <ImageButton
