@@ -1,5 +1,6 @@
 package kr.cosine.groupfinder.presentation.view.profile
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,16 +18,19 @@ import kr.cosine.groupfinder.data.manager.LocalAccountManager
 import kr.cosine.groupfinder.data.registry.LocalAccountRegistry
 import kr.cosine.groupfinder.databinding.FragmentProfileBinding
 import kr.cosine.groupfinder.presentation.view.account.login.LoginActivity
-import kr.cosine.groupfinder.presentation.view.common.data.Interval
+import kr.cosine.groupfinder.presentation.view.common.data.IntentKey
 import kr.cosine.groupfinder.presentation.view.common.extension.applyWhite
 import kr.cosine.groupfinder.presentation.view.common.extension.setOnClickListenerWithCooldown
 import kr.cosine.groupfinder.presentation.view.common.extension.showToast
 import kr.cosine.groupfinder.presentation.view.common.util.ActivityUtil
+import kr.cosine.groupfinder.presentation.view.common.util.ActivityUtil.startActivity
+import kr.cosine.groupfinder.presentation.view.detail.DetailActivity
 import kr.cosine.groupfinder.presentation.view.dialog.Dialog
 import kr.cosine.groupfinder.presentation.view.list.adapter.GroupAdpater
 import kr.cosine.groupfinder.presentation.view.profile.event.ProfileEvent
 import kr.cosine.groupfinder.presentation.view.profile.model.ProfileViewModel
 import kr.cosine.groupfinder.presentation.view.profile.state.ProfileUiState
+import kotlin.reflect.KClass
 
 @AndroidEntryPoint
 class ProfileFragment : Fragment() {
@@ -52,8 +56,11 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         registerProgressBar()
         registerRecyclerView()
+        registerBlockedUserShowButton()
         registerLogoutButton()
         registerWithdrawButton()
+        registerTermsButton()
+        registerPolicyButton()
         registerViewModelEvent()
     }
 
@@ -63,15 +70,23 @@ class ProfileFragment : Fragment() {
 
     private fun registerRecyclerView() = with(binding.groupRecyclerView) {
         adapter = GroupAdpater(context) { post ->
-
+            requireContext.startActivity(DetailActivity::class) {
+                putExtra(IntentKey.POST_UNIQUE_ID, post.postUniqueId)
+            }
         }.apply {
             groupAdpater = this
         }
         suppressLayout(true)
     }
+    
+    private fun registerBlockedUserShowButton() {
+        binding.blockedUserShowButton.setOnClickListenerWithCooldown {
+            requireContext.startActivity(BlockUserActivity::class)
+        }
+    }
 
     private fun registerLogoutButton() {
-        binding.logoutButton.setOnClickListenerWithCooldown(Interval.OPEN_SCREEN) {
+        binding.logoutButton.setOnClickListenerWithCooldown {
             showDialog(getString(R.string.profile_logout_message)) {
                 resetLocalAccount()
                 ActivityUtil.startNewActivity(requireContext, LoginActivity::class)
@@ -80,7 +95,7 @@ class ProfileFragment : Fragment() {
     }
 
     private fun registerWithdrawButton() {
-        binding.withdrawButton.setOnClickListenerWithCooldown(Interval.OPEN_SCREEN) {
+        binding.withdrawButton.setOnClickListenerWithCooldown {
             showDialog(getString(R.string.profile_withdraw_message)) {
                 profileViewModel.withdraw(LocalAccountRegistry.uniqueId)
             }
@@ -94,6 +109,18 @@ class ProfileFragment : Fragment() {
         ).show(childFragmentManager, Dialog.TAG)
     }
 
+    private fun registerTermsButton() {
+        binding.termsButton.setOnClickListenerWithCooldown {
+            requireContext.startActivity(TermsActivity::class)
+        }
+    }
+    
+    private fun registerPolicyButton() {
+        binding.policyButton.setOnClickListenerWithCooldown {
+            requireContext.startActivity(PolicyActivity::class)
+        }
+    }
+
     private fun registerViewModelEvent() = with(binding) {
         profileViewModel.loadProfile(LocalAccountRegistry.uniqueId)
         lifecycleScope.launch {
@@ -105,7 +132,7 @@ class ProfileFragment : Fragment() {
 
                 if (uiState is ProfileUiState.Success) {
                     taggedNicknameTextView.text = getString(
-                        R.string.profile_tagged_nickname_format,
+                        R.string.tagged_nickname_format,
                         uiState.nickname,
                         uiState.tag
                     )

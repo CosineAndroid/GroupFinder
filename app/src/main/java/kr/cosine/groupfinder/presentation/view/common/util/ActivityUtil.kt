@@ -13,4 +13,9 @@ object ActivityUtil {
         }
         context.startActivity(intent)
     }
+
+    fun <T : Any> Context.startActivity(clazz: KClass<T>, intentScope: Intent.() -> Unit = {}) {
+        val intent = Intent(this, clazz.java).apply(intentScope)
+        startActivity(intent)
+    }
 }

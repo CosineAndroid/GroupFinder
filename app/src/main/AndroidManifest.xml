@@ -38,6 +38,15 @@
         <activity
             android:name=".presentation.view.record.RecordActivity"
             android:exported="true" />
+        <activity
+            android:name=".presentation.view.profile.BlockUserActivity"
+            android:exported="true" />
+        <activity
+            android:name=".presentation.view.profile.TermsActivity"
+            android:exported="true" />
+        <activity
+            android:name=".presentation.view.profile.PolicyActivity"
+            android:exported="true" />
         <service
             android:name=".util.MyFirebaseMessagingService"
             android:exported="false">

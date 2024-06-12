@@ -18,7 +18,6 @@ import kr.cosine.groupfinder.presentation.view.list.adapter.listener.TagScrollLi
 import kr.cosine.groupfinder.presentation.view.list.state.item.GroupItem
 import kr.cosine.groupfinder.presentation.view.list.state.item.extension.isJoinedPeople
 import kr.cosine.groupfinder.presentation.view.list.state.item.extension.joinedPeopleCount
-import kr.cosine.groupfinder.presentation.view.list.state.item.extension.tageedNickname
 import kr.cosine.groupfinder.presentation.view.list.state.item.extension.totalPeopleCount
 import kr.cosine.groupfinder.util.TimeUtil
 
@@ -54,7 +53,12 @@ class GroupAdpater(
             }
 
             groupTitleTextView.applyColor(R.color.group_full_title_text).text = post.title
-            groupTaggedNicknameTextView.applyColor().text = post.owner.tageedNickname
+            val owner = post.owner
+            groupTaggedNicknameTextView.applyColor().text = context.getString(
+                R.string.tagged_nickname_format,
+                owner.nickname,
+                owner.tag
+            )
             val tags = post.tags
             val isMaxTag = tags.size >= MAX_TAG
             if (isMaxTag) {
