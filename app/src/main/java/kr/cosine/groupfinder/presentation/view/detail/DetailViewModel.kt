@@ -9,11 +9,9 @@ import kotlinx.coroutines.launch
 import kr.cosine.groupfinder.data.registry.LocalAccountRegistry.uniqueId
 import kr.cosine.groupfinder.domain.model.GroupDetailEntity
 import kr.cosine.groupfinder.domain.usecase.GetGroupDetailUseCase
-import kr.cosine.groupfinder.enums.TestGlobalUserData.ANOTHER
 import kr.cosine.groupfinder.enums.TestGlobalUserData.HOST
 import kr.cosine.groupfinder.enums.TestGlobalUserData.NONE
 import kr.cosine.groupfinder.enums.TestGlobalUserData.PARTICIPANT
-import kr.cosine.groupfinder.enums.TestGlobalUserData.uuID
 import java.util.UUID
 import javax.inject.Inject
 
@@ -37,11 +35,9 @@ class DetailViewModel @Inject constructor(
 
     private fun checkRole() {
         _groupRole.value = when {
-            uuID == null -> NONE
-            postDetail.value?.postUniqueId != uuID -> ANOTHER
-            uuID == postDetail.value?.postUniqueId && uniqueId == postDetail.value?.owner?.uniqueId -> HOST
-            else -> PARTICIPANT
+            uniqueId == postDetail.value?.owner?.uniqueId -> HOST
+            postDetail.value?.laneMap?.values?.any { it?.uniqueId == uniqueId } == true -> PARTICIPANT
+            else -> NONE
         }
     }
-
 }
