@@ -71,7 +71,7 @@ class ProfileFragment : Fragment() {
     }
 
     private fun registerLogoutButton() {
-        binding.logoutTextView.setOnClickListenerWithCooldown(Interval.OPEN_SCREEN) {
+        binding.logoutButton.setOnClickListenerWithCooldown(Interval.OPEN_SCREEN) {
             showDialog(getString(R.string.profile_logout_message)) {
                 resetLocalAccount()
                 ActivityUtil.startNewActivity(requireContext, LoginActivity::class)
@@ -80,7 +80,7 @@ class ProfileFragment : Fragment() {
     }
 
     private fun registerWithdrawButton() {
-        binding.withdrawTextView.setOnClickListenerWithCooldown(Interval.OPEN_SCREEN) {
+        binding.withdrawButton.setOnClickListenerWithCooldown(Interval.OPEN_SCREEN) {
             showDialog(getString(R.string.profile_withdraw_message)) {
                 profileViewModel.withdraw(LocalAccountRegistry.uniqueId)
             }
