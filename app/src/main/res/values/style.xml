@@ -59,6 +59,4 @@
         <item name="android:textColor">@color/write_text_title</item>
         <item name="android:textStyle">bold</item>
     </style>
-
-        
 </resources>

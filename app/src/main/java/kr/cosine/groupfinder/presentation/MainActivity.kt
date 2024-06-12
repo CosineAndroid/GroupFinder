@@ -51,22 +51,22 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.syncState()
 
         replaceFragment(GroupFragment())
-        navigationView.setCheckedItem(R.id.navigationAll)
+        navigationView.setCheckedItem(R.id.all)
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         val fragment = when (item.itemId) {
-            R.id.navigationAll -> GroupFragment()
+            R.id.all -> GroupFragment()
 
-            R.id.navigationNormal -> GroupFragment(Mode.NORMAL)
+            R.id.normal -> GroupFragment(Mode.NORMAL)
 
-            R.id.navigationAram -> GroupFragment(Mode.ARAM)
+            R.id.aram -> GroupFragment(Mode.ARAM)
 
-            R.id.navigationDuoRank -> GroupFragment(Mode.DUO_RANK)
+            R.id.duo_rank -> GroupFragment(Mode.DUO_RANK)
 
-            R.id.navigationFlexRank -> GroupFragment(Mode.FLEX_RANK)
+            R.id.flex_rank -> GroupFragment(Mode.FLEX_RANK)
 
-            R.id.navigationProfile -> ProfileFragment()
+            R.id.profile -> ProfileFragment()
 
             else -> null
         } ?: return false

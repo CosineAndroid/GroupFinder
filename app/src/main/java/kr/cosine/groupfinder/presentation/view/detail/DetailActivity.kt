@@ -5,10 +5,17 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.View
+import android.widget.PopupMenu
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
+import kr.cosine.groupfinder.R
 import kr.cosine.groupfinder.data.registry.LocalAccountRegistry.uniqueId
 import kr.cosine.groupfinder.databinding.ActivityDetailBinding
 import kr.cosine.groupfinder.domain.model.GroupDetailEntity
@@ -20,6 +27,8 @@ import kr.cosine.groupfinder.presentation.view.common.data.Code
 import kr.cosine.groupfinder.presentation.view.common.data.IntentKey
 import kr.cosine.groupfinder.presentation.view.common.extension.applyWhite
 import kr.cosine.groupfinder.presentation.view.common.extension.setOnClickListenerWithCooldown
+import kr.cosine.groupfinder.presentation.view.common.extension.showToast
+import kr.cosine.groupfinder.presentation.view.detail.event.DetailEvent
 import kr.cosine.groupfinder.presentation.view.dialog.Dialog
 import kr.cosine.groupfinder.presentation.view.list.adapter.decoration.GroupTagItemDecoration
 import kr.cosine.groupfinder.util.MyFirebaseMessagingService
@@ -40,24 +49,46 @@ class DetailActivity : AppCompatActivity() {
     private var isProgressDialogDismissed = false
     private lateinit var postUniqueId: UUID
 
+    private lateinit var backPressedCallback: OnBackPressedCallback
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         postUniqueId = intent.getSerializableExtra(IntentKey.POST_UNIQUE_ID) as UUID
         registerProgressBar()
+        registerMenuButton()
         registerCloseButton()
         observeData()
+        registerViewModelEvent()
+        showProgressBar()
         detailViewModel.getPostDetail(postUniqueId)
         laneOnClick()
-        setOnClickDeleteGroupButton()
+        registerBackPressedCallback()
     }
 
-    private fun registerProgressBar() = with(binding) {
-        progressBar.apply {
-            applyWhite()
-            visibility = View.VISIBLE
+    private fun registerProgressBar() {
+        binding.progressBar.applyWhite()
+    }
+
+    private fun registerMenuButton() {
+        binding.menuImageButton.setOnClickListener {
+            val popupMenu = PopupMenu(this, it)
+            menuInflater.inflate(R.menu.post_menu, popupMenu.menu)
+            popupMenu.show()
+            popupMenu.setOnMenuItemClickListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.report_group -> showReportGroupDialog()
+
+                    R.id.report_user -> showReportUserDialog()
+
+                    R.id.block_user -> showBlockUserDialog()
+
+                    R.id.delete_post -> showDeletePostDialog()
+                }
+                return@setOnMenuItemClickListener true
+            }
         }
-        rootConstraintLayout.visibility = View.INVISIBLE
+        registerForContextMenu(binding.menuImageButton)
     }
 
     private fun observeData() {
@@ -74,7 +105,7 @@ class DetailActivity : AppCompatActivity() {
         }
         detailViewModel.groupRole.observe(this) { role ->
             laneAdapter.powerUpdate(role)
-            showDeleteGroupButton(role)
+            //showDeleteGroupButton(role)
             Log.d("DETAIL", "observeData: ${role}")
         }
     }
@@ -161,6 +192,7 @@ class DetailActivity : AppCompatActivity() {
                         targetUUID = userUUID
                     )
                     if (detailViewModel.groupRole.value == PARTICIPANT) {
+                        setResult(Code.SUCCESS_POST_TASK)
                         finish()
                     }
                 }
@@ -219,30 +251,81 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun showDeleteGroupButton(role: Int) = with(binding.deleteGroupTextView) {
+    /*private fun showDeleteGroupButton(role: Int) = with(binding.deleteGroupTextView) {
         visibility = if (role == 1) {
             View.VISIBLE
         } else {
             View.GONE
         }
+    }*/
+
+    private fun showReportGroupDialog() {
+        Dialog("방 신고하기", "정말 해당 방을 신고하시겠습니까?") {
+            detailViewModel.reportGroup(postUniqueId)
+        }.show(supportFragmentManager, Dialog.TAG)
     }
 
-    private fun setOnClickDeleteGroupButton() = with(binding) {
-        deleteGroupTextView.setOnClickListenerWithCooldown(1000) {
-            Log.d("DETAIL", "setOnClickDeleteGroupButton: click!")
-            Dialog(
-                title = "방 삭제",
-                message = "정말 방을 삭제하시겠습니까?",
-                onConfirmClick = {
-                    rootConstraintLayout.visibility = View.INVISIBLE
-                    progressBar.visibility = View.VISIBLE
-                    MyFirebaseMessagingService().sendDeleteGroupRequest(postUniqueId) {
+    private fun showReportUserDialog() {
+        getOwnerUniqueId {
+            Dialog("작성자 신고하기", "정말 해당 작성자를 신고하시겠습니까?") {
+                detailViewModel.reportUser(it)
+            }.show(supportFragmentManager, Dialog.TAG)
+        }
+    }
+
+    private fun showBlockUserDialog() {
+        getOwnerUniqueId {
+            Dialog("작성자 차단하기", "정말 해당 작성자를 차단하시겠습니까?") {
+                detailViewModel.blockUser(it)
+            }.show(supportFragmentManager, Dialog.TAG)
+        }
+    }
+
+    private fun getOwnerUniqueId(ownerUniqueIdScope: (UUID) -> Unit) {
+        val ownerUniqueId = detailViewModel.postDetail.value?.owner?.uniqueId ?: run {
+            showToast("작성자 데이터를 불러오지 못했습니다.")
+            return
+        }
+        ownerUniqueIdScope(ownerUniqueId)
+    }
+
+    private fun showDeletePostDialog() = with(binding) {
+        val role = detailViewModel.groupRole.value ?: return@with
+        if (role != HOST) {
+            showToast("권한이 없습니다.")
+            return@with
+        }
+        Log.d("DETAIL", "showDeletePostDialog: click!")
+        Dialog(
+            title = "방 삭제",
+            message = "정말 방을 삭제하시겠습니까?",
+            onConfirmClick = {
+                showProgressBar()
+                MyFirebaseMessagingService().sendDeleteGroupRequest(postUniqueId) {
+                    setResult(Code.SUCCESS_POST_TASK)
+                    finish()
+                }
+            }
+        ).show(supportFragmentManager, Dialog.TAG)
+    }
+
+    private fun registerViewModelEvent() {
+        lifecycleScope.launch {
+            detailViewModel.event.flowWithLifecycle(lifecycle).collectLatest { event ->
+                if (event is DetailEvent.Notice) {
+                    if (event is DetailEvent.Success && event !is DetailEvent.ReportUserSuccess) {
                         setResult(Code.SUCCESS_POST_TASK)
                         finish()
                     }
+                    showToast(event.message)
                 }
-            ).show(supportFragmentManager, Dialog.TAG)
+            }
         }
+    }
+
+    private fun showProgressBar() = with(binding) {
+        rootConstraintLayout.visibility = View.INVISIBLE
+        progressBar.visibility = View.VISIBLE
     }
 
     fun dismissProgressDialog() {
@@ -254,4 +337,14 @@ class DetailActivity : AppCompatActivity() {
         detailViewModel.getPostDetail(postUniqueId)
     }
 
+    private fun registerBackPressedCallback() {
+        backPressedCallback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (binding.progressBar.visibility != View.VISIBLE) {
+                    finish()
+                }
+            }
+        }
+        onBackPressedDispatcher.addCallback(this, backPressedCallback)
+    }
 }

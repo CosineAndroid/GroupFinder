@@ -27,8 +27,9 @@ class GetGroupsUseCase @Inject constructor(
             val accountUniqueId = LocalAccountRegistry.uniqueId
             val account = accountRepository.getAccountByUniqueId(accountUniqueId)
             var groups = groupRepository.getGroupList().groups.filterNot {
-                account.reportedPostUniqueIds.contains(it.postUniqueId) ||
-                        account.blockedUserUniqueIds.contains(it.owner.uniqueId)
+                !it.isJoinedPeople(LocalAccountRegistry.uniqueId) &&
+                        (account.reportedPostUniqueIds.contains(it.postUniqueId) ||
+                        account.blockedUserUniqueIds.contains(it.owner.uniqueId))
             }.filter {
                 it.isJoinedPeople(LocalAccountRegistry.uniqueId) || it.tags.containsAll(tags)
             }.map(GroupItemResponse::toEntity)
