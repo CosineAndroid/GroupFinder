@@ -30,9 +30,9 @@ class PostRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getPosts(tags: Set<String>): List<PostResponse> {
-        return getDocumentSnapshots().mapNotNull { documentSnapshot ->
-            documentSnapshot.toObject(PostResponse::class.java)?.takeIf {
-                it.isJoinedPeople(LocalAccountRegistry.uniqueId) || it.tags.containsAll(tags)
+        return reference.whereArrayContains(TAGS_FIELD, tags).get().await().mapNotNull { documentSnapshot ->
+            documentSnapshot.toObject(PostResponse::class.java).takeIf {
+                it.isJoinedPeople(LocalAccountRegistry.uniqueId)
             }
         }
     }
@@ -46,5 +46,6 @@ class PostRepositoryImpl @Inject constructor(
 
     private companion object {
         const val COLLECTION_PATH = "posts"
+        const val TAGS_FIELD = "tags"
     }
 }
