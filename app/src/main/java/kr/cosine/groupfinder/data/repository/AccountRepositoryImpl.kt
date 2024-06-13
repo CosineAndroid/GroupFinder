@@ -18,17 +18,13 @@ class AccountRepositoryImpl @Inject constructor(
         get() = firebaseDataSource.firestore.collection("accounts")
 
     override suspend fun isAccount(id: String): Boolean {
-        return getDocumentSnapshots().any { documentSnapshot ->
-            val accountResponse = documentSnapshot.toObject(AccountResponse::class.java) ?: return@any false
-            accountResponse.id.lowercase() == id.lowercase()
-        }
+        return !reference.whereEqualTo("id", id).get().await().isEmpty
     }
 
     override suspend fun isAccount(nickname: String, tag: String): Boolean {
-        return getDocumentSnapshots().any { documentSnapshot ->
-            val accountResponse = documentSnapshot.toObject(AccountResponse::class.java) ?: return@any false
-            accountResponse.nickname == nickname && accountResponse.tag == tag
-        }
+        return !reference.whereEqualTo("nickname", nickname)
+            .whereEqualTo("tag", tag)
+            .get().await().isEmpty
     }
 
     override suspend fun createAccount(accountResponse: AccountResponse) {
