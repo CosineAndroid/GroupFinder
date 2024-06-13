@@ -52,11 +52,10 @@ class AccountRepositoryImpl @Inject constructor(
         id: String,
         password: String
     ): AccountResponse? {
-        getDocumentSnapshots().forEach { documentSnapshot ->
-            val accountResponse = documentSnapshot.toObject(AccountResponse::class.java) ?: return@forEach
-            if (accountResponse.id == id && BCrypt.checkpw(password, accountResponse.password)) {
-                return accountResponse
-            }
+        val documentSnapshot = reference.whereEqualTo(ID_FIELD, id).get().await().firstOrNull() ?: return null
+        val accountResponse = documentSnapshot.toObject(AccountResponse::class.java)
+        if (BCrypt.checkpw(password, accountResponse.password)) {
+            return accountResponse
         }
         return null
     }
