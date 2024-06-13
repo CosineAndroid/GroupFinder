@@ -6,8 +6,10 @@
     <color name="button_background">#5534BE</color>
     <color name="tag_background">#B2EAEAEA</color>
     <color name="text_hint">#9498A5</color>
+
     <color name="profile_logout_button_background">#D4D4D4</color>
     <color name="profile_withdraw_button_background">#FF8078</color>
+
     <color name="group_default_background">#2E3034</color>
     <color name="group_join_background">#6E4BDC</color>
     <color name="group_full_background">#131517</color>
@@ -22,5 +24,7 @@
     <color name="navigation">#131517</color>
     <color name="setting">#FFFFFF</color>
     <color name="button_main">#9685E6</color>
+    <color name="selected_tag">#958BE8</color>
+
     <color name="write_text_title">#C8CDDB</color>
 </resources>
