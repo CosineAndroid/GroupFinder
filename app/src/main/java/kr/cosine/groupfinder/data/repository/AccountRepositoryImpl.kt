@@ -15,15 +15,15 @@ class AccountRepositoryImpl @Inject constructor(
 ) : AccountRepository {
 
     override val reference: CollectionReference
-        get() = firebaseDataSource.firestore.collection("accounts")
+        get() = firebaseDataSource.firestore.collection(COLLECTION_PATH)
 
     override suspend fun isAccount(id: String): Boolean {
-        return !reference.whereEqualTo("id", id).get().await().isEmpty
+        return !reference.whereEqualTo(ID_FIELD, id).get().await().isEmpty
     }
 
     override suspend fun isAccount(nickname: String, tag: String): Boolean {
-        return !reference.whereEqualTo("nickname", nickname)
-            .whereEqualTo("tag", tag)
+        return !reference.whereEqualTo(NICKNAME_FIELD, nickname)
+            .whereEqualTo(TAG_FIELD, tag)
             .get().await().isEmpty
     }
 
@@ -59,5 +59,12 @@ class AccountRepositoryImpl @Inject constructor(
             }
         }
         return null
+    }
+
+    private companion object {
+        const val COLLECTION_PATH = "accounts"
+        const val ID_FIELD = "id"
+        const val NICKNAME_FIELD = "nickname"
+        const val TAG_FIELD = "tag"
     }
 }

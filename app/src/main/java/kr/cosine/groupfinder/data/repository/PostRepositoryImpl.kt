@@ -15,7 +15,7 @@ class PostRepositoryImpl @Inject constructor(
 ) : PostRepository {
 
     override val reference: CollectionReference
-        get() = firebaseDataSource.firestore.collection("posts")
+        get() = firebaseDataSource.firestore.collection(COLLECTION_PATH)
 
     override suspend fun createPost(postResponse: PostResponse) {
         reference.document(postResponse.postUniqueId).set(postResponse).await()
@@ -48,5 +48,9 @@ class PostRepositoryImpl @Inject constructor(
         return getDocumentSnapshots().any { documentSnapshot ->
             documentSnapshot.toObject(PostResponse::class.java)?.isJoinedPeople(uniqueId) == true
         }
+    }
+
+    private companion object {
+        const val COLLECTION_PATH = "posts"
     }
 }
