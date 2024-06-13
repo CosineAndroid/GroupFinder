@@ -61,7 +61,6 @@ class ProfileFragment : Fragment() {
         registerBlockedUserShowButton()
         registerLogoutButton()
         registerWithdrawButton()
-        registerTermsButton()
         registerPolicyButton()
         registerViewModelEvent()
         policy()
@@ -117,12 +116,6 @@ class ProfileFragment : Fragment() {
             message = message,
             onConfirmClick = onConfirmClick
         ).show(childFragmentManager, Dialog.TAG)
-    }
-
-    private fun registerTermsButton() {
-//        binding.termsButton.setOnClickListenerWithCooldown {
-//            requireContext.startActivity(TermsActivity::class)
-//        }
     }
 
     private fun registerPolicyButton() {

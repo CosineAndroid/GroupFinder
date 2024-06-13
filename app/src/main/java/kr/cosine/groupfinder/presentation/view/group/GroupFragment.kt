@@ -115,11 +115,15 @@ class GroupFragment(
             tagViewModel.clearTags()
         }
         showAllTagImageButton.setOnClickListenerWithCooldown(Interval.OPEN_SCREEN) {
-            TagBottomSheetFragment.show(childFragmentManager)
+            showTagBottomSheetFragment()
         }
         searchImageButton.setOnClickListener {
             search()
         }
+    }
+
+    private fun showTagBottomSheetFragment() {
+        TagBottomSheetFragment.show(childFragmentManager)
     }
 
     private fun registerWriteButton() = with(binding.writeImageButton) {
@@ -144,6 +148,7 @@ class GroupFragment(
                 searchImageButton.isEnabled = !isLoading
                 clearTagImageButton.isEnabled = !isLoading
                 showAllTagImageButton.isEnabled = !isLoading
+                swipeRefreshLayout.isEnabled = !isLoading
 
                 when (uiState) {
                     is GroupUiState.Success -> groupAdpater.setPosts(uiState.posts)
