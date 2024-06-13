@@ -15,6 +15,7 @@ import kotlinx.coroutines.launch
 import kr.cosine.groupfinder.domain.exception.IdBlankException
 import kr.cosine.groupfinder.domain.exception.PasswordBlankException
 import kr.cosine.groupfinder.domain.usecase.GetAccountUseCase
+import kr.cosine.groupfinder.domain.usecase.RefreshLastLoginTimeUseCase
 import kr.cosine.groupfinder.presentation.view.account.login.event.LoginEvent
 import kr.cosine.groupfinder.presentation.view.account.login.state.LoginUiState
 import java.util.UUID
@@ -22,7 +23,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val getAccountUseCase: GetAccountUseCase
+    private val getAccountUseCase: GetAccountUseCase,
+    private val refreshLastLoginTimeUseCase: RefreshLastLoginTimeUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(LoginUiState.newInstance())
@@ -83,5 +85,9 @@ class LoginViewModel @Inject constructor(
             val event = LoginEvent.Unknown
            _event.emit(event)
        }
+    }
+
+    fun refreshLastLogin() = viewModelScope.launch(Dispatchers.IO) {
+        refreshLastLoginTimeUseCase()
     }
 }

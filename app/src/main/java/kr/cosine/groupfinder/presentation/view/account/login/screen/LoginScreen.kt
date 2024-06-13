@@ -179,6 +179,7 @@ private suspend fun onLoginEvent(
                 val uniqueId = event.accountEntity.uniqueId
                 LocalAccountRegistry.setUniqueId(uniqueId)
                 localAccountManager.setUniqueId(uniqueId)
+                loginViewModel.refreshLastLogin()
 
                 FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
                     val token = task.result
