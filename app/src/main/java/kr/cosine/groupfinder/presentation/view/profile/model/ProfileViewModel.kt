@@ -24,7 +24,6 @@ import kr.cosine.groupfinder.presentation.view.group.state.item.extension.isJoin
 import kr.cosine.groupfinder.presentation.view.profile.event.ProfileChangeEvent
 import kr.cosine.groupfinder.presentation.view.profile.event.ProfileEvent
 import kr.cosine.groupfinder.presentation.view.profile.state.ProfileUiState
-import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
@@ -61,11 +60,8 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
-    fun setTaggedNickname(
-        nickname: String,
-        tag: String
-    ) = viewModelScope.launch(Dispatchers.IO) {
-        setTaggedNicknameUseCase(nickname, tag).onSuccess {
+    fun setTaggedNickname(nickname: String, tag: String) = viewModelScope.launch(Dispatchers.IO) {
+        setTaggedNicknameUseCase(LocalAccountRegistry.uniqueId, nickname, tag).onSuccess {
             val event = ProfileChangeEvent.Success(nickname, tag)
             _changeEvent.emit(event)
         }.onFailure { throwable ->
@@ -79,8 +75,8 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
-    fun withdraw(uniqueId: UUID) = viewModelScope.launch(Dispatchers.IO) {
-        withdrawAccountUseCase(uniqueId).onSuccess {
+    fun withdraw() = viewModelScope.launch(Dispatchers.IO) {
+        withdrawAccountUseCase(LocalAccountRegistry.uniqueId).onSuccess {
             val event = ProfileEvent.Success
             _event.emit(event)
         }.onFailure { throwable ->

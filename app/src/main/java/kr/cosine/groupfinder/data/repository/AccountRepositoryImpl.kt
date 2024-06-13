@@ -61,6 +61,10 @@ class AccountRepositoryImpl @Inject constructor(
         return null
     }
 
+    override suspend fun isJoinedGroup(uniqueId: UUID): Boolean {
+        return findAccountByUniqueId(uniqueId)?.groupUniqueId != null
+    }
+
     private companion object {
         const val COLLECTION_PATH = "accounts"
         const val ID_FIELD = "id"

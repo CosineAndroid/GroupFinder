@@ -14,6 +14,4 @@ interface PostRepository : FirebaseRepository {
     suspend fun getPosts(tags: Set<String> = emptySet()): List<PostResponse>
 
     suspend fun findPostByUniqueId(uniqueId: UUID): PostResponse?
-
-    suspend fun isJoined(uniqueId: UUID): Boolean
 }

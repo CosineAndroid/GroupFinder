@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kr.cosine.groupfinder.data.registry.LocalAccountRegistry
 import kr.cosine.groupfinder.domain.exception.IdBlankException
 import kr.cosine.groupfinder.domain.exception.PasswordBlankException
 import kr.cosine.groupfinder.domain.usecase.GetAccountUseCase
@@ -88,6 +89,6 @@ class LoginViewModel @Inject constructor(
     }
 
     fun refreshLastLogin() = viewModelScope.launch(Dispatchers.IO) {
-        refreshLastLoginTimeUseCase()
+        refreshLastLoginTimeUseCase(LocalAccountRegistry.uniqueId)
     }
 }

@@ -44,12 +44,6 @@ class PostRepositoryImpl @Inject constructor(
         }.getOrNull() // 예외가 발생한 경우 null 반환
     }
 
-    override suspend fun isJoined(uniqueId: UUID): Boolean {
-        return getDocumentSnapshots().any { documentSnapshot ->
-            documentSnapshot.toObject(PostResponse::class.java)?.isJoinedPeople(uniqueId) == true
-        }
-    }
-
     private companion object {
         const val COLLECTION_PATH = "posts"
     }

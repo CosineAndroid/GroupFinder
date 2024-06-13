@@ -7,6 +7,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
+import kr.cosine.groupfinder.data.registry.LocalAccountRegistry
 import kr.cosine.groupfinder.domain.exception.AlreadyJoinException
 import kr.cosine.groupfinder.domain.usecase.CreatePostUseCase
 import kr.cosine.groupfinder.domain.usecase.SetGroupUniqueIdToAccountUseCase
@@ -35,6 +36,7 @@ class WriteViewModel @Inject constructor(
     ) = viewModelScope.launch(Dispatchers.IO) {
         createPostUseCase(mode, title, body, ownerUniqueId, tags, lanes).onSuccess { postEntity ->
             setGroupUniqueIdToAccountUseCase(
+                LocalAccountRegistry.uniqueId,
                 postEntity.postUniqueId
             ).onSuccess {
                 val event = WriteEvent.Success(postEntity)

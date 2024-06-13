@@ -10,8 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 import kr.cosine.groupfinder.R
 import kr.cosine.groupfinder.data.registry.LocalAccountRegistry
 import kr.cosine.groupfinder.databinding.ItemGroupBinding
-import kr.cosine.groupfinder.presentation.view.common.extension.setOnClickListenerWithCooldown
 import kr.cosine.groupfinder.presentation.view.common.data.Interval
+import kr.cosine.groupfinder.presentation.view.common.extension.setOnClickListenerWithCooldown
 import kr.cosine.groupfinder.presentation.view.group.adapter.decoration.GroupTagItemDecoration
 import kr.cosine.groupfinder.presentation.view.group.adapter.listener.TagScrollListener
 import kr.cosine.groupfinder.presentation.view.group.state.item.GroupItem

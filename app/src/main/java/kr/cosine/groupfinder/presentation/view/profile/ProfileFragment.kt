@@ -107,7 +107,7 @@ class ProfileFragment : Fragment() {
     private fun registerWithdrawButton() {
         binding.withdrawButton.setOnClickListenerWithCooldown {
             showDialog(getString(R.string.profile_withdraw_message)) {
-                profileViewModel.withdraw(LocalAccountRegistry.uniqueId)
+                profileViewModel.withdraw()
             }
         }
     }

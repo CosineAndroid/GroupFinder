@@ -16,8 +16,8 @@ import kr.cosine.groupfinder.domain.exception.IdAlreadyExistsException
 import kr.cosine.groupfinder.domain.exception.TaggedNicknameAlreadyExistsException
 import kr.cosine.groupfinder.domain.usecase.RegisterAccountUseCase
 import kr.cosine.groupfinder.presentation.view.account.register.event.RegisterEvent
-import kr.cosine.groupfinder.presentation.view.account.register.state.RegisterUiState
 import kr.cosine.groupfinder.presentation.view.account.register.state.RegisterErrorUiState
+import kr.cosine.groupfinder.presentation.view.account.register.state.RegisterUiState
 import kr.cosine.groupfinder.presentation.view.common.extension.containsBlank
 import javax.inject.Inject
 
