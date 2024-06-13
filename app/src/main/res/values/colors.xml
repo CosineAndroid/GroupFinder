@@ -23,6 +23,7 @@
     <color name="navigation">#131517</color>
     <color name="setting">#FFFFFF</color>
     <color name="button_main">#9685E6</color>
+    <color name="selected_tag">#958BE8</color>
 
     <color name="write_text_title">#C8CDDB</color>
 </resources>
