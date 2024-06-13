@@ -81,7 +81,7 @@ class GroupFragment(
         activityResultLauncher = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()
         ) { result ->
-            if (result.resultCode != Code.SUCCESS_POST_TASK) return@registerForActivityResult
+            if (result.resultCode != Code.REFRESH) return@registerForActivityResult
             search()
         }
     }
