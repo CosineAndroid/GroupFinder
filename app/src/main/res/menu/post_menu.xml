@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/report_group"
+        android:title="@string/post_menu_report_post" />
+    <item
+        android:id="@+id/report_user"
+        android:title="@string/post_menu_report_user" />
+    <item
+        android:id="@+id/block_user"
+        android:title="@string/post_menu_block_user" />
+    <item
+        android:id="@+id/delete_post"
+        android:title="@string/post_menu_delete_post" />
+</menu>
