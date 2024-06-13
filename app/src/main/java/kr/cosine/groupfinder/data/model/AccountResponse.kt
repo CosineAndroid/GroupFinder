@@ -11,7 +11,10 @@ data class AccountResponse(
     val nickname: String,
     val tag: String,
     val token: String?,
-    val groupUniqueId: String?
+    val groupUniqueId: String?,
+    val blockedUserUniqueIds: List<String>,
+    val reportedUserUniqueIds: List<String>,
+    val reportedPostUniqueIds: List<String>
 ) {
 
     constructor() : this(
@@ -22,7 +25,10 @@ data class AccountResponse(
         "",
         "",
         null,
-        null
+        null,
+        emptyList(),
+        emptyList(),
+        emptyList()
     )
 
     constructor(
@@ -38,6 +44,9 @@ data class AccountResponse(
         nickname,
         tag,
         null,
-        null
+        null,
+        emptyList(),
+        emptyList(),
+        emptyList()
     )
 }

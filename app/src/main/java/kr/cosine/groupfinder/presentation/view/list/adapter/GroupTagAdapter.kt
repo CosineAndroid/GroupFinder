@@ -16,9 +16,12 @@ class GroupTagAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
 
         init {
-            if (isMaxGroup) {
-                binding.root.setBackgroundResource(R.drawable.tag_full_group_background)
+            val drawable = if (isMaxGroup) {
+                R.drawable.tag_full_group_background
+            } else {
+                R.drawable.tag_background
             }
+            binding.root.setBackgroundResource(drawable)
         }
 
         fun bind(tag: String) {

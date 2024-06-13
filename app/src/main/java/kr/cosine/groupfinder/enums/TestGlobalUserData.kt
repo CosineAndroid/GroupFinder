@@ -3,8 +3,11 @@ package kr.cosine.groupfinder.enums
 
 object TestGlobalUserData {
 
-    val HOST = 1
-    val PARTICIPANT = 2
-    val NONE = 3
-    val ANOTHER = 4
+    const val HOST = 1
+
+    const val PARTICIPANT = 2
+
+    const val NONE = 3
+
+    const val ANOTHER = 4
 }

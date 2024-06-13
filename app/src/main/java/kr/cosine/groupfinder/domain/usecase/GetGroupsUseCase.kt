@@ -9,6 +9,7 @@ import kr.cosine.groupfinder.domain.extension.joinedPeopleCount
 import kr.cosine.groupfinder.domain.extension.totalPeopleCount
 import kr.cosine.groupfinder.domain.mapper.toEntity
 import kr.cosine.groupfinder.domain.model.GroupItemEntity
+import kr.cosine.groupfinder.domain.repository.AccountRepository
 import kr.cosine.groupfinder.domain.repository.GroupRepository
 import kr.cosine.groupfinder.enums.Mode
 import kr.cosine.groupfinder.presentation.view.list.state.item.OwnerItem
@@ -17,12 +18,19 @@ import javax.inject.Inject
 
 @ViewModelScoped
 class GetGroupsUseCase @Inject constructor(
+    private val accountRepository: AccountRepository,
     private val groupRepository: GroupRepository
 ) {
 
     suspend operator fun invoke(mode: Mode?, tags: Set<String>): Result<List<GroupItem>> {
         return runCatching {
-            var groups = groupRepository.getGroupList().groups.filter {
+            val accountUniqueId = LocalAccountRegistry.uniqueId
+            val account = accountRepository.getAccountByUniqueId(accountUniqueId)
+            var groups = groupRepository.getGroupList().groups.filterNot {
+                !it.isJoinedPeople(LocalAccountRegistry.uniqueId) &&
+                        (account.reportedPostUniqueIds.contains(it.postUniqueId) ||
+                        account.blockedUserUniqueIds.contains(it.owner.uniqueId))
+            }.filter {
                 it.isJoinedPeople(LocalAccountRegistry.uniqueId) || it.tags.containsAll(tags)
             }.map(GroupItemResponse::toEntity)
             groups = if (mode == null) {
@@ -38,7 +46,7 @@ class GetGroupsUseCase @Inject constructor(
             }
             groups.sortedWith(
                 compareByDescending<GroupItemEntity> {
-                    it.isJoinedPeople(LocalAccountRegistry.uniqueId)
+                    it.isJoinedPeople(accountUniqueId)
                 }.thenBy {
                     it.joinedPeopleCount == it.totalPeopleCount
                 }.thenByDescending {

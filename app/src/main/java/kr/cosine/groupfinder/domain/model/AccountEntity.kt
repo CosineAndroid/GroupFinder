@@ -11,5 +11,8 @@ data class AccountEntity(
     val nickname: String,
     val tag: String,
     val token: String?,
-    val groupUniqueId: UUID?
+    val groupUniqueId: UUID?,
+    val blockedUserUniqueIds: List<UUID>,
+    val reportedUserUniqueIds: List<UUID>,
+    val reportedPostUniqueIds: List<UUID>
 )
