@@ -30,7 +30,7 @@ import kr.cosine.groupfinder.presentation.view.common.extension.setOnClickListen
 import kr.cosine.groupfinder.presentation.view.common.extension.showToast
 import kr.cosine.groupfinder.presentation.view.detail.event.DetailEvent
 import kr.cosine.groupfinder.presentation.view.dialog.Dialog
-import kr.cosine.groupfinder.presentation.view.list.adapter.decoration.GroupTagItemDecoration
+import kr.cosine.groupfinder.presentation.view.group.adapter.decoration.GroupTagItemDecoration
 import kr.cosine.groupfinder.util.MyFirebaseMessagingService
 import java.util.UUID
 

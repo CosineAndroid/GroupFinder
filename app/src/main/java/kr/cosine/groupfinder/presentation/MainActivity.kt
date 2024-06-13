@@ -13,7 +13,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kr.cosine.groupfinder.R
 import kr.cosine.groupfinder.databinding.ActivityMainBinding
 import kr.cosine.groupfinder.enums.Mode
-import kr.cosine.groupfinder.presentation.view.list.GroupFragment
+import kr.cosine.groupfinder.presentation.view.group.GroupFragment
 import kr.cosine.groupfinder.presentation.view.profile.ProfileFragment
 
 @AndroidEntryPoint

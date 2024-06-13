@@ -12,8 +12,8 @@ import kr.cosine.groupfinder.domain.model.GroupItemEntity
 import kr.cosine.groupfinder.domain.repository.AccountRepository
 import kr.cosine.groupfinder.domain.repository.GroupRepository
 import kr.cosine.groupfinder.enums.Mode
-import kr.cosine.groupfinder.presentation.view.list.state.item.OwnerItem
-import kr.cosine.groupfinder.presentation.view.list.state.item.GroupItem
+import kr.cosine.groupfinder.presentation.view.group.state.item.OwnerItem
+import kr.cosine.groupfinder.presentation.view.group.state.item.GroupItem
 import javax.inject.Inject
 
 @ViewModelScoped

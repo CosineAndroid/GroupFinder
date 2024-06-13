@@ -1,4 +1,4 @@
-package kr.cosine.groupfinder.presentation.view.list.adapter
+package kr.cosine.groupfinder.presentation.view.group.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

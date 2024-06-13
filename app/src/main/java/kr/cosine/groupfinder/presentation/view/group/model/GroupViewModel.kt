@@ -1,4 +1,4 @@
-package kr.cosine.groupfinder.presentation.view.list.model
+package kr.cosine.groupfinder.presentation.view.group.model
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kr.cosine.groupfinder.domain.usecase.GetGroupsUseCase
 import kr.cosine.groupfinder.enums.Mode
-import kr.cosine.groupfinder.presentation.view.list.state.GroupUiState
+import kr.cosine.groupfinder.presentation.view.group.state.GroupUiState
 import javax.inject.Inject
 
 @HiltViewModel

@@ -1,4 +1,4 @@
-package kr.cosine.groupfinder.presentation.view.list.adapter.listener
+package kr.cosine.groupfinder.presentation.view.group.adapter.listener
 
 import android.view.View
 import android.view.animation.AlphaAnimation

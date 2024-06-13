@@ -12,7 +12,6 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kr.cosine.groupfinder.data.registry.LocalAccountRegistry
-import kr.cosine.groupfinder.domain.exception.IdBlankException
 import kr.cosine.groupfinder.domain.exception.NicknameBlankException
 import kr.cosine.groupfinder.domain.exception.TagBlankException
 import kr.cosine.groupfinder.domain.exception.TaggedNicknameAlreadyExistsException
@@ -21,7 +20,7 @@ import kr.cosine.groupfinder.domain.usecase.GetAccountUseCase
 import kr.cosine.groupfinder.domain.usecase.GetGroupsUseCase
 import kr.cosine.groupfinder.domain.usecase.SetTaggedNicknameUseCase
 import kr.cosine.groupfinder.domain.usecase.WithdrawAccountUseCase
-import kr.cosine.groupfinder.presentation.view.list.state.item.extension.isJoinedPeople
+import kr.cosine.groupfinder.presentation.view.group.state.item.extension.isJoinedPeople
 import kr.cosine.groupfinder.presentation.view.profile.event.ProfileChangeEvent
 import kr.cosine.groupfinder.presentation.view.profile.event.ProfileEvent
 import kr.cosine.groupfinder.presentation.view.profile.state.ProfileUiState

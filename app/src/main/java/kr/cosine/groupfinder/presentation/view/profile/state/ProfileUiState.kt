@@ -1,6 +1,6 @@
 package kr.cosine.groupfinder.presentation.view.profile.state
 
-import kr.cosine.groupfinder.presentation.view.list.state.item.GroupItem
+import kr.cosine.groupfinder.presentation.view.group.state.item.GroupItem
 
 sealed interface ProfileUiState {
 

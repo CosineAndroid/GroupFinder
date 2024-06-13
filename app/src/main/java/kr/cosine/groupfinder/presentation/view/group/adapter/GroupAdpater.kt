@@ -1,4 +1,4 @@
-package kr.cosine.groupfinder.presentation.view.list.adapter
+package kr.cosine.groupfinder.presentation.view.group.adapter
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -12,12 +12,12 @@ import kr.cosine.groupfinder.data.registry.LocalAccountRegistry
 import kr.cosine.groupfinder.databinding.ItemGroupBinding
 import kr.cosine.groupfinder.presentation.view.common.extension.setOnClickListenerWithCooldown
 import kr.cosine.groupfinder.presentation.view.common.data.Interval
-import kr.cosine.groupfinder.presentation.view.list.adapter.decoration.GroupTagItemDecoration
-import kr.cosine.groupfinder.presentation.view.list.adapter.listener.TagScrollListener
-import kr.cosine.groupfinder.presentation.view.list.state.item.GroupItem
-import kr.cosine.groupfinder.presentation.view.list.state.item.extension.isJoinedPeople
-import kr.cosine.groupfinder.presentation.view.list.state.item.extension.joinedPeopleCount
-import kr.cosine.groupfinder.presentation.view.list.state.item.extension.totalPeopleCount
+import kr.cosine.groupfinder.presentation.view.group.adapter.decoration.GroupTagItemDecoration
+import kr.cosine.groupfinder.presentation.view.group.adapter.listener.TagScrollListener
+import kr.cosine.groupfinder.presentation.view.group.state.item.GroupItem
+import kr.cosine.groupfinder.presentation.view.group.state.item.extension.isJoinedPeople
+import kr.cosine.groupfinder.presentation.view.group.state.item.extension.joinedPeopleCount
+import kr.cosine.groupfinder.presentation.view.group.state.item.extension.totalPeopleCount
 import kr.cosine.groupfinder.util.TimeUtil
 
 class GroupAdpater(

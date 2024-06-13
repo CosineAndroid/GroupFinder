@@ -1,6 +1,6 @@
-package kr.cosine.groupfinder.presentation.view.list.state.item.extension
+package kr.cosine.groupfinder.presentation.view.group.state.item.extension
 
-import kr.cosine.groupfinder.presentation.view.list.state.item.GroupItem
+import kr.cosine.groupfinder.presentation.view.group.state.item.GroupItem
 import java.util.UUID
 
 val GroupItem.totalPeopleCount get() = laneMap.size

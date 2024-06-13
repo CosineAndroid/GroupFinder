@@ -27,7 +27,7 @@ import kr.cosine.groupfinder.presentation.view.common.util.ActivityUtil.startAct
 import kr.cosine.groupfinder.presentation.view.detail.DetailActivity
 import kr.cosine.groupfinder.presentation.view.dialog.Dialog
 import kr.cosine.groupfinder.presentation.view.dialog.TaggedNicknameInputDialog
-import kr.cosine.groupfinder.presentation.view.list.adapter.GroupAdpater
+import kr.cosine.groupfinder.presentation.view.group.adapter.GroupAdpater
 import kr.cosine.groupfinder.presentation.view.profile.event.ProfileChangeEvent
 import kr.cosine.groupfinder.presentation.view.profile.event.ProfileEvent
 import kr.cosine.groupfinder.presentation.view.profile.model.ProfileViewModel

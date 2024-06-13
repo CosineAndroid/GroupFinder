@@ -1,4 +1,4 @@
-package kr.cosine.groupfinder.presentation.view.list.state.item
+package kr.cosine.groupfinder.presentation.view.group.state.item
 
 import java.util.UUID
 

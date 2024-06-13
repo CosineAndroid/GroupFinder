@@ -1,4 +1,4 @@
-package kr.cosine.groupfinder.presentation.view.list.adapter.decoration
+package kr.cosine.groupfinder.presentation.view.group.adapter.decoration
 
 import kr.cosine.groupfinder.presentation.view.tag.decoration.TagItemDecoration
 
