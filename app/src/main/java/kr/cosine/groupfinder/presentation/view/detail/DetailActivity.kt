@@ -252,14 +252,24 @@ class DetailActivity : AppCompatActivity() {
 
     private fun showReportGroupDialog() {
         Dialog("방 신고하기", "정말 해당 방을 신고하시겠습니까?") {
-            detailViewModel.reportGroup(postUniqueId)
+            getOwnerUniqueId {
+                if (it != uniqueId) {
+                    detailViewModel.reportGroup(postUniqueId)
+                } else {
+                    showToast("자기 자신을요?")
+                }
+            }
         }.show(supportFragmentManager, Dialog.TAG)
     }
 
     private fun showReportUserDialog() {
         getOwnerUniqueId {
             Dialog("작성자 신고하기", "정말 해당 작성자를 신고하시겠습니까?") {
-                detailViewModel.reportUser(it)
+                if(it != uniqueId) {
+                    detailViewModel.reportUser(it)
+                } else {
+                    showToast("자기 자신을요?")
+                }
             }.show(supportFragmentManager, Dialog.TAG)
         }
     }
@@ -267,7 +277,11 @@ class DetailActivity : AppCompatActivity() {
     private fun showBlockUserDialog() {
         getOwnerUniqueId {
             Dialog("작성자 차단하기", "정말 해당 작성자를 차단하시겠습니까?") {
-                detailViewModel.blockUser(it)
+                if (it != uniqueId) {
+                    detailViewModel.blockUser(it)
+                } else {
+                    showToast("자기 자신을요?")
+                }
             }.show(supportFragmentManager, Dialog.TAG)
         }
     }
