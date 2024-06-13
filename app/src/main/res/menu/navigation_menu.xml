@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <item
+        android:id="@+id/all"
+        android:title="@string/navigation_menu_all" />
+    <item
+        android:id="@+id/normal"
+        android:title="@string/navigation_menu_normal" />
+    <item
+        android:id="@+id/aram"
+        android:title="@string/navigation_menu_aram" />
+    <item
+        android:id="@+id/duo_rank"
+        android:title="@string/navigation_menu_duo_rank" />
+    <item
+        android:id="@+id/flex_rank"
+        android:title="@string/navigation_menu_flex_rank" />
+    <item
+        android:id="@+id/profile"
+        android:title="@string/navigation_menu_profile" />
+</menu>
