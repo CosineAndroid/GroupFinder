@@ -1,5 +1,6 @@
 package kr.cosine.groupfinder.presentation.view.profile
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -63,6 +64,7 @@ class ProfileFragment : Fragment() {
         registerTermsButton()
         registerPolicyButton()
         registerViewModelEvent()
+        policy()
     }
 
     private fun registerProgressBar() {
@@ -118,9 +120,9 @@ class ProfileFragment : Fragment() {
     }
 
     private fun registerTermsButton() {
-        binding.termsButton.setOnClickListenerWithCooldown {
-            requireContext.startActivity(TermsActivity::class)
-        }
+//        binding.termsButton.setOnClickListenerWithCooldown {
+//            requireContext.startActivity(TermsActivity::class)
+//        }
     }
 
     private fun registerPolicyButton() {
@@ -185,6 +187,13 @@ class ProfileFragment : Fragment() {
         LocalAccountRegistry.isLogout = true
         LocalAccountRegistry.resetUniqueId()
         LocalAccountManager(requireContext).reset()
+    }
+
+    private fun policy() {
+        binding.policyButton.setOnClickListener {
+            val intent = Intent(context, PolicyActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     override fun onDestroyView() {
