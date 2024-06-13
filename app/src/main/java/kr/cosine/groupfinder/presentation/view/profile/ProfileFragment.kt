@@ -20,6 +20,7 @@ import kr.cosine.groupfinder.databinding.FragmentProfileBinding
 import kr.cosine.groupfinder.presentation.view.account.login.LoginActivity
 import kr.cosine.groupfinder.presentation.view.common.data.IntentKey
 import kr.cosine.groupfinder.presentation.view.common.extension.applyWhite
+import kr.cosine.groupfinder.presentation.view.common.extension.requireContext
 import kr.cosine.groupfinder.presentation.view.common.extension.setOnClickListenerWithCooldown
 import kr.cosine.groupfinder.presentation.view.common.extension.showToast
 import kr.cosine.groupfinder.presentation.view.common.util.ActivityUtil
@@ -42,8 +43,6 @@ class ProfileFragment : Fragment() {
     private val profileViewModel by viewModels<ProfileViewModel>()
 
     private lateinit var groupAdpater: GroupAdpater
-
-    private val requireContext get() = requireContext()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -139,7 +138,7 @@ class ProfileFragment : Fragment() {
                     if (postItem == null) {
                         groupRecyclerView.visibility = View.GONE
                     } else {
-                        groupAdpater.setPost(postItem)
+                        groupAdpater.setGroup(postItem)
                     }
                 }
             }

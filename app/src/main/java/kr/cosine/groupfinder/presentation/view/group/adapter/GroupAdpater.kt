@@ -21,7 +21,6 @@ import kr.cosine.groupfinder.presentation.view.group.state.item.extension.totalP
 import kr.cosine.groupfinder.util.TimeUtil
 
 class GroupAdpater(
-    private val posts: MutableList<GroupItem> = mutableListOf(),
     private val onItemClick: (GroupItem) -> Unit = {}
 ) : RecyclerView.Adapter<GroupAdpater.GroupViewHolder>() {
 
@@ -33,16 +32,16 @@ class GroupAdpater(
 
         init {
             binding.root.setOnClickListenerWithCooldown(Interval.OPEN_SCREEN) {
-                val post = posts[bindingAdapterPosition]
-                onItemClick(post)
+                val group = groups[bindingAdapterPosition]
+                onItemClick(group)
             }
         }
 
-        fun bind(post: GroupItem) = with(binding) {
-            val joinedPeopleCount = post.joinedPeopleCount
-            val totalPeopleCount = post.totalPeopleCount
+        fun bind(group: GroupItem) = with(binding) {
+            val joinedPeopleCount = group.joinedPeopleCount
+            val totalPeopleCount = group.totalPeopleCount
 
-            val isMaxGroup = !post.isJoinedPeople(LocalAccountRegistry.uniqueId) &&
+            val isMaxGroup = !group.isJoinedPeople(LocalAccountRegistry.uniqueId) &&
                     joinedPeopleCount == totalPeopleCount
 
             fun TextView.applyColor(defaultColor: Int, fullColor: Int): TextView {
@@ -55,9 +54,9 @@ class GroupAdpater(
             groupTitleTextView.applyColor(
                 R.color.group_default_title,
                 R.color.group_full_title_text
-            ).text = post.title
+            ).text = group.title
 
-            val owner = post.owner
+            val owner = group.owner
             groupTaggedNicknameTextView.applyColor(
                 R.color.group_default_tagged_nickname,
                 R.color.group_full_text
@@ -67,7 +66,7 @@ class GroupAdpater(
                 owner.tag
             )
 
-            val tags = post.tags
+            val tags = group.tags
             val isMaxTag = tags.size >= MAX_TAG
             if (isMaxTag) {
                 noticeMoreTagImageView.visibility = View.VISIBLE
@@ -78,7 +77,7 @@ class GroupAdpater(
                 addItemDecoration(GroupTagItemDecoration)
                 addOnScrollListener(TagScrollListener(noticeMoreTagImageView, isMaxTag))
             }
-            val laneMap = post.laneMap
+            val laneMap = group.laneMap
             groupLaneRecyclerView.adapter = GroupLaneAdapter(laneMap, isMaxGroup)
 
             groupPeopleTextView.applyColor(
@@ -95,7 +94,7 @@ class GroupAdpater(
                 R.color.group_full_text
             ).text = context.getString(
                 R.string.group_time_format,
-                TimeUtil.getFormattedTime(post.time)
+                TimeUtil.getFormattedTime(group.time)
             )
 
             root.background = AppCompatResources.getDrawable(
@@ -109,33 +108,35 @@ class GroupAdpater(
         }
     }
 
+    private val groups = mutableListOf<GroupItem>()
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GroupViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = ItemGroupBinding.inflate(layoutInflater, parent, false)
         return GroupViewHolder(binding)
     }
 
-    override fun getItemCount(): Int = posts.size
+    override fun getItemCount(): Int = groups.size
 
     override fun onBindViewHolder(holder: GroupViewHolder, position: Int) {
-        holder.bind(posts[position])
+        holder.bind(groups[position])
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setPosts(posts: List<GroupItem>) {
-        this.posts.apply {
+    fun setGroups(groups: List<GroupItem>) {
+        this.groups.apply {
             clear()
-            addAll(posts)
+            addAll(groups)
         }
         notifyDataSetChanged()
     }
 
-    fun setPost(post: GroupItem) {
-        setPosts(listOf(post))
+    fun setGroup(group: GroupItem) {
+        setGroups(listOf(group))
     }
 
-    fun clearPosts() {
-        setPosts(emptyList())
+    fun clearGroups() {
+        setGroups(emptyList())
     }
 
     private companion object {

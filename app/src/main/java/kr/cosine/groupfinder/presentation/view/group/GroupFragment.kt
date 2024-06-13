@@ -16,6 +16,7 @@ import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import kr.cosine.groupfinder.R
 import kr.cosine.groupfinder.databinding.FragmentGroupBinding
 import kr.cosine.groupfinder.enums.Mode
 import kr.cosine.groupfinder.presentation.view.group.adapter.GroupAdpater
@@ -29,9 +30,13 @@ import kr.cosine.groupfinder.presentation.view.group.model.GroupViewModel
 import kr.cosine.groupfinder.presentation.view.tag.model.TagViewModel
 import kr.cosine.groupfinder.presentation.view.common.data.Interval
 import kr.cosine.groupfinder.presentation.view.common.extension.applyWhite
+import kr.cosine.groupfinder.presentation.view.common.extension.requireContext
+import kr.cosine.groupfinder.presentation.view.common.extension.setOnRefreshListenerWithCooldown
+import kr.cosine.groupfinder.presentation.view.common.extension.showToast
 import kr.cosine.groupfinder.presentation.view.common.util.ActivityUtil.launch
 import kr.cosine.groupfinder.presentation.view.detail.DetailActivity
 import kr.cosine.groupfinder.presentation.view.group.state.GroupUiState
+import kr.cosine.groupfinder.presentation.view.group.state.item.GroupItem
 import kr.cosine.groupfinder.presentation.view.tag.sheet.TagBottomSheetFragment
 import kr.cosine.groupfinder.presentation.view.write.WriteActivity
 
@@ -86,20 +91,25 @@ class GroupFragment(
         }
     }
 
-    private fun registerSwipeRefreshLayout() = with(binding.swipeRefreshLayout) {
-        setOnRefreshListener {
-            isRefreshing = false
+    private fun registerSwipeRefreshLayout() {
+        binding.swipeRefreshLayout.setOnRefreshListenerWithCooldown(
+            fail = {
+                requireContext.showToast(R.string.group_refresh_cooldown_message, it)
+            }
+        ) {
             search()
         }
     }
 
-    private fun registerGroupRecyclerView() = with(binding.groupRecyclerView) {
-        adapter = GroupAdpater { post ->
-            activityResultLauncher.launch(context, DetailActivity::class) {
-                putExtra(IntentKey.POST_UNIQUE_ID, post.postUniqueId)
-            }
-        }.apply {
+    private fun registerGroupRecyclerView() {
+        binding.groupRecyclerView.adapter = GroupAdpater(this::openDetailActivity).apply {
             groupAdpater = this
+        }
+    }
+
+    private fun openDetailActivity(group: GroupItem) {
+        activityResultLauncher.launch(requireContext, DetailActivity::class) {
+            putExtra(IntentKey.POST_UNIQUE_ID, group.postUniqueId)
         }
     }
 
@@ -126,9 +136,9 @@ class GroupFragment(
         TagBottomSheetFragment.show(childFragmentManager)
     }
 
-    private fun registerWriteButton() = with(binding.writeImageButton) {
-        setOnClickListener {
-            activityResultLauncher.launch(context, WriteActivity::class) {
+    private fun registerWriteButton() {
+        binding.writeImageButton.setOnClickListener {
+            activityResultLauncher.launch(requireContext, WriteActivity::class) {
                 putExtra(IntentKey.MODE, mode ?: Mode.NORMAL)
             }
         }
@@ -151,11 +161,11 @@ class GroupFragment(
                 swipeRefreshLayout.isEnabled = !isLoading
 
                 when (uiState) {
-                    is GroupUiState.Success -> groupAdpater.setPosts(uiState.posts)
+                    is GroupUiState.Success -> groupAdpater.setGroups(uiState.posts)
 
                     is GroupUiState.Notice -> {
                         if (uiState is GroupUiState.Empty) {
-                            groupAdpater.clearPosts()
+                            groupAdpater.clearGroups()
                         }
                         searchResultNoticeTextView.text = uiState.message
                     }
