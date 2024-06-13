@@ -32,6 +32,7 @@ class RegisterViewModel @Inject constructor(
     private val _event = MutableSharedFlow<RegisterEvent>()
     val event: SharedFlow<RegisterEvent> get() = _event.asSharedFlow()
 
+    private val idRegex = Regex("^[a-zA-Z0-9]+$")
     private val passwordRegex = Regex("^.*(?=^.{8,20}\$)(?=.*\\d)(?=.*[a-zA-Z])(?=.*[!*@#\$%^&+=]).*\$")
 
     private val RegisterErrorUiState.text get() = (this as RegisterErrorUiState.Valid).text
@@ -43,6 +44,7 @@ class RegisterViewModel @Inject constructor(
                     id.isBlank() -> RegisterErrorUiState.Blank
                     id.containsBlank() -> RegisterErrorUiState.ContainBlank
                     id.length < ID_MIN_LENGTH -> RegisterErrorUiState.Length
+                    !idRegex.matches(id) -> RegisterErrorUiState.Id
                     else -> RegisterErrorUiState.Valid(id)
                 }
             )
