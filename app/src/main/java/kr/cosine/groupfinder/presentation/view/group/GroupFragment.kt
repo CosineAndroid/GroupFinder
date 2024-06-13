@@ -62,6 +62,7 @@ class GroupFragment(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        resetTagViewModel()
         registerProgressBar()
         registerWriteActivityResultLauncher()
         registerSwipeRefreshLayout()
@@ -71,6 +72,10 @@ class GroupFragment(
         registerWriteButton()
         registerGroupViewModelEvent()
         registerTagViewModel()
+    }
+
+    private fun resetTagViewModel() {
+        tagViewModel.clearTags()
     }
 
     private fun registerProgressBar() {
