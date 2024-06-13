@@ -1,6 +1,7 @@
 package kr.cosine.groupfinder.presentation.view.write
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.Toast
@@ -77,6 +78,8 @@ class WriteActivity : AppCompatActivity() {
         addTagsButton()
         registerViewModelEvent()
         setGameModeSpinner()
+        Log.d("require",  "${requireLaneRecyclerViewAdapter.itemCount}")
+        binding.addLaneCardView.visibility  =  if (requireLaneRecyclerViewAdapter.itemCount < 3 ) View.VISIBLE else View.INVISIBLE
     }
 
 
@@ -156,13 +159,19 @@ class WriteActivity : AppCompatActivity() {
 
     //라인 더하는 기능
     private fun setOnAddLaneButtonListener() {
-        binding.addLaneCardView.setOnClickListener {
+        val addLaneBtn = binding.addLaneCardView
+        addLaneBtn.setOnClickListener {
             if (requireLaneRecyclerViewAdapter.itemCount >= 4) {
                 Toast.makeText(this, "더 이상 라인을 추가할 수 없습니다", Toast.LENGTH_SHORT).show()
             } else {
                 requireLaneRecyclerViewAdapter.addLane("1")
+                updateAddLaneButtonVisibility()
             }
         }
+    }
+
+    private fun updateAddLaneButtonVisibility() {
+        binding.addLaneCardView.visibility = if (requireLaneRecyclerViewAdapter.itemCount < 4) View.VISIBLE else View.INVISIBLE
     }
 
     //생성하기 버튼

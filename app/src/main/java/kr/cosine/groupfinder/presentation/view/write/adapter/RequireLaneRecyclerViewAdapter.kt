@@ -37,6 +37,7 @@ class RequireLaneRecyclerViewAdapter(
         init {
             binding.removeImageView.setOnClickListener {
                 removeLane(bindingAdapterPosition)
+
             }
         }
 
