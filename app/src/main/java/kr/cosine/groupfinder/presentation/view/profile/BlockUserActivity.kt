@@ -20,7 +20,6 @@ import kr.cosine.groupfinder.presentation.view.common.extension.showToast
 import kr.cosine.groupfinder.presentation.view.profile.adapter.BlockUserAdapter
 import kr.cosine.groupfinder.presentation.view.profile.model.BlockUserViewModel
 import kr.cosine.groupfinder.presentation.view.profile.state.BlockUserUiState
-import kr.cosine.groupfinder.presentation.view.profile.state.item.BlockUserItem
 
 @AndroidEntryPoint
 class BlockUserActivity : AppCompatActivity() {

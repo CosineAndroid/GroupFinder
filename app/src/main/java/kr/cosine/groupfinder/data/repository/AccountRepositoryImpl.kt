@@ -15,20 +15,16 @@ class AccountRepositoryImpl @Inject constructor(
 ) : AccountRepository {
 
     override val reference: CollectionReference
-        get() = firebaseDataSource.firestore.collection("accounts")
+        get() = firebaseDataSource.firestore.collection(COLLECTION_PATH)
 
     override suspend fun isAccount(id: String): Boolean {
-        return getDocumentSnapshots().any { documentSnapshot ->
-            val accountResponse = documentSnapshot.toObject(AccountResponse::class.java) ?: return@any false
-            accountResponse.id.lowercase() == id.lowercase()
-        }
+        return !reference.whereEqualTo(ID_FIELD, id).get().await().isEmpty
     }
 
     override suspend fun isAccount(nickname: String, tag: String): Boolean {
-        return getDocumentSnapshots().any { documentSnapshot ->
-            val accountResponse = documentSnapshot.toObject(AccountResponse::class.java) ?: return@any false
-            accountResponse.nickname == nickname && accountResponse.tag == tag
-        }
+        return !reference.whereEqualTo(NICKNAME_FIELD, nickname)
+            .whereEqualTo(TAG_FIELD, tag)
+            .get().await().isEmpty
     }
 
     override suspend fun createAccount(accountResponse: AccountResponse) {
@@ -56,12 +52,22 @@ class AccountRepositoryImpl @Inject constructor(
         id: String,
         password: String
     ): AccountResponse? {
-        getDocumentSnapshots().forEach { documentSnapshot ->
-            val accountResponse = documentSnapshot.toObject(AccountResponse::class.java) ?: return@forEach
-            if (accountResponse.id == id && BCrypt.checkpw(password, accountResponse.password)) {
-                return accountResponse
-            }
+        val documentSnapshot = reference.whereEqualTo(ID_FIELD, id).get().await().firstOrNull() ?: return null
+        val accountResponse = documentSnapshot.toObject(AccountResponse::class.java)
+        if (BCrypt.checkpw(password, accountResponse.password)) {
+            return accountResponse
         }
         return null
+    }
+
+    override suspend fun isJoinedGroup(uniqueId: UUID): Boolean {
+        return findAccountByUniqueId(uniqueId)?.groupUniqueId != null
+    }
+
+    private companion object {
+        const val COLLECTION_PATH = "accounts"
+        const val ID_FIELD = "id"
+        const val NICKNAME_FIELD = "nickname"
+        const val TAG_FIELD = "tag"
     }
 }

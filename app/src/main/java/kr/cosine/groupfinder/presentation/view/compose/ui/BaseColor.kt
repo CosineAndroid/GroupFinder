@@ -10,13 +10,14 @@ object BaseColor {
     val AccountTextFieldBackground = Color(0xFF2B2B2B)
     val AccountTextFieldHint = Color(0xFF929292)
     val AccountTextFieldContent = Color(0xFFFFFFFF)
+    val AccountTextFieldCursor = Color(0xFFB9B9B9)
     val AccountLoginButtonBackground = Color(0xFF5534BE)
     val AccountEnableButtonBackground = Color(0xFF2E3034)
     val AccountDisableButtonBackground = Color(0xFF1E1F20)
     val AccountDisableButtonText = Color(0xFF5A5A5A)
 
     // Register
-    val RegisterEmptyBorder = Color(0xFF202020)
+    val RegisterEmptyBorder = Color(0xFF505050)
     val RegisterValidBorder = Color(0xFF5534BE)
     val RegisterInvalidBorder = Color(0xFF920F3B)
 

@@ -12,6 +12,8 @@ data class AccountResponse(
     val tag: String,
     val token: String?,
     val groupUniqueId: String?,
+    val createTime: Long,
+    val lastLoginTime: Long,
     val blockedUserUniqueIds: List<String>,
     val reportedUserUniqueIds: List<String>,
     val reportedPostUniqueIds: List<String>
@@ -26,6 +28,8 @@ data class AccountResponse(
         "",
         null,
         null,
+        0,
+        0,
         emptyList(),
         emptyList(),
         emptyList()
@@ -45,6 +49,8 @@ data class AccountResponse(
         tag,
         null,
         null,
+        System.currentTimeMillis(),
+        System.currentTimeMillis(),
         emptyList(),
         emptyList(),
         emptyList()

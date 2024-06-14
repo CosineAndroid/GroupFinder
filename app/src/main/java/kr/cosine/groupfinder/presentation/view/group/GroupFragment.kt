@@ -19,23 +19,23 @@ import kotlinx.coroutines.launch
 import kr.cosine.groupfinder.R
 import kr.cosine.groupfinder.databinding.FragmentGroupBinding
 import kr.cosine.groupfinder.enums.Mode
-import kr.cosine.groupfinder.presentation.view.group.adapter.GroupAdpater
-import kr.cosine.groupfinder.presentation.view.tag.adapter.TagAdapter
 import kr.cosine.groupfinder.presentation.view.common.data.Code
-import kr.cosine.groupfinder.presentation.view.common.extension.setOnClickListenerWithCooldown
 import kr.cosine.groupfinder.presentation.view.common.data.IntentKey
-import kr.cosine.groupfinder.presentation.view.group.adapter.decoration.GroupTagItemDecoration
-import kr.cosine.groupfinder.presentation.view.tag.event.TagEvent
-import kr.cosine.groupfinder.presentation.view.group.model.GroupViewModel
-import kr.cosine.groupfinder.presentation.view.tag.model.TagViewModel
 import kr.cosine.groupfinder.presentation.view.common.data.Interval
 import kr.cosine.groupfinder.presentation.view.common.extension.applyWhite
+import kr.cosine.groupfinder.presentation.view.common.extension.setOnClickListenerWithCooldown
 import kr.cosine.groupfinder.presentation.view.common.extension.requireContext
 import kr.cosine.groupfinder.presentation.view.common.extension.setOnRefreshListenerWithCooldown
 import kr.cosine.groupfinder.presentation.view.common.extension.showToast
 import kr.cosine.groupfinder.presentation.view.common.util.ActivityUtil.launch
 import kr.cosine.groupfinder.presentation.view.detail.DetailActivity
+import kr.cosine.groupfinder.presentation.view.group.adapter.GroupAdpater
+import kr.cosine.groupfinder.presentation.view.group.adapter.decoration.GroupTagItemDecoration
+import kr.cosine.groupfinder.presentation.view.group.model.GroupViewModel
 import kr.cosine.groupfinder.presentation.view.group.state.GroupUiState
+import kr.cosine.groupfinder.presentation.view.tag.adapter.TagAdapter
+import kr.cosine.groupfinder.presentation.view.tag.event.TagEvent
+import kr.cosine.groupfinder.presentation.view.tag.model.TagViewModel
 import kr.cosine.groupfinder.presentation.view.group.state.item.GroupItem
 import kr.cosine.groupfinder.presentation.view.tag.sheet.TagBottomSheetFragment
 import kr.cosine.groupfinder.presentation.view.write.WriteActivity
@@ -67,6 +67,7 @@ class GroupFragment(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        resetTagViewModel()
         registerProgressBar()
         registerWriteActivityResultLauncher()
         registerSwipeRefreshLayout()
@@ -76,6 +77,10 @@ class GroupFragment(
         registerWriteButton()
         registerGroupViewModelEvent()
         registerTagViewModel()
+    }
+
+    private fun resetTagViewModel() {
+        tagViewModel.clearTags()
     }
 
     private fun registerProgressBar() {
