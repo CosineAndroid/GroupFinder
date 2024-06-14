@@ -12,6 +12,8 @@ data class AccountEntity(
     val tag: String,
     val token: String?,
     val groupUniqueId: UUID?,
+    val createTime: Long,
+    val lastLoginTime: Long,
     val blockedUserUniqueIds: List<UUID>,
     val reportedUserUniqueIds: List<UUID>,
     val reportedPostUniqueIds: List<UUID>

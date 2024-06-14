@@ -3,7 +3,6 @@ package kr.cosine.groupfinder.presentation.view.common.util
 import android.content.Context
 import android.content.Intent
 import androidx.activity.result.ActivityResultLauncher
-import kr.cosine.groupfinder.presentation.view.common.util.ActivityUtil.startActivity
 import kotlin.reflect.KClass
 
 object ActivityUtil {

@@ -15,7 +15,7 @@ class PostRepositoryImpl @Inject constructor(
 ) : PostRepository {
 
     override val reference: CollectionReference
-        get() = firebaseDataSource.firestore.collection("posts")
+        get() = firebaseDataSource.firestore.collection(COLLECTION_PATH)
 
     override suspend fun createPost(postResponse: PostResponse) {
         reference.document(postResponse.postUniqueId).set(postResponse).await()
@@ -30,9 +30,9 @@ class PostRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getPosts(tags: Set<String>): List<PostResponse> {
-        return getDocumentSnapshots().mapNotNull { documentSnapshot ->
-            documentSnapshot.toObject(PostResponse::class.java)?.takeIf {
-                it.isJoinedPeople(LocalAccountRegistry.uniqueId) || it.tags.containsAll(tags)
+        return reference.whereArrayContains(TAGS_FIELD, tags).get().await().mapNotNull { documentSnapshot ->
+            documentSnapshot.toObject(PostResponse::class.java).takeIf {
+                it.isJoinedPeople(LocalAccountRegistry.uniqueId)
             }
         }
     }
@@ -44,9 +44,8 @@ class PostRepositoryImpl @Inject constructor(
         }.getOrNull() // 예외가 발생한 경우 null 반환
     }
 
-    override suspend fun isJoined(uniqueId: UUID): Boolean {
-        return getDocumentSnapshots().any { documentSnapshot ->
-            documentSnapshot.toObject(PostResponse::class.java)?.isJoinedPeople(uniqueId) == true
-        }
+    private companion object {
+        const val COLLECTION_PATH = "posts"
+        const val TAGS_FIELD = "tags"
     }
 }

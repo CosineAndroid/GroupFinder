@@ -22,20 +22,20 @@ import kr.cosine.groupfinder.data.registry.LocalAccountRegistry
 import kr.cosine.groupfinder.databinding.ActivityWriteBinding
 import kr.cosine.groupfinder.enums.Lane
 import kr.cosine.groupfinder.enums.Mode
-import kr.cosine.groupfinder.presentation.view.tag.adapter.TagAdapter
 import kr.cosine.groupfinder.presentation.view.common.data.Code
-import kr.cosine.groupfinder.presentation.view.common.extension.setOnClickListenerWithCooldown
 import kr.cosine.groupfinder.presentation.view.common.data.IntentKey
-import kr.cosine.groupfinder.presentation.view.tag.model.TagViewModel
 import kr.cosine.groupfinder.presentation.view.common.data.Interval
+import kr.cosine.groupfinder.presentation.view.common.extension.setOnClickListenerWithCooldown
 import kr.cosine.groupfinder.presentation.view.common.extension.showToast
-import kr.cosine.groupfinder.presentation.view.tag.event.TagEvent
-import kr.cosine.groupfinder.presentation.view.tag.sheet.TagBottomSheetFragment
-import kr.cosine.groupfinder.presentation.view.write.adapter.RequireLaneRecyclerViewAdapter
-import kr.cosine.groupfinder.presentation.view.write.adapter.SpinnerAdapter
 import kr.cosine.groupfinder.presentation.view.common.flexbox.decoration.FlexboxItemDecoration
 import kr.cosine.groupfinder.presentation.view.common.flexbox.manager.FlexboxLayoutManager
+import kr.cosine.groupfinder.presentation.view.tag.adapter.TagAdapter
+import kr.cosine.groupfinder.presentation.view.tag.event.TagEvent
+import kr.cosine.groupfinder.presentation.view.tag.model.TagViewModel
+import kr.cosine.groupfinder.presentation.view.tag.sheet.TagBottomSheetFragment
 import kr.cosine.groupfinder.presentation.view.write.adapter.GameModeSpinnerAdapter
+import kr.cosine.groupfinder.presentation.view.write.adapter.RequireLaneRecyclerViewAdapter
+import kr.cosine.groupfinder.presentation.view.write.adapter.SpinnerAdapter
 import kr.cosine.groupfinder.presentation.view.write.event.WriteEvent
 import kr.cosine.groupfinder.presentation.view.write.model.WriteViewModel
 import java.util.UUID
@@ -254,7 +254,7 @@ class WriteActivity : AppCompatActivity() {
                 when (writeEvent) {
                     is WriteEvent.Success -> {
                         showToast("생성이 완료되었습니다")
-                        setResult(Code.SUCCESS_POST_TASK)
+                        setResult(Code.REFRESH)
                         finish()
                     }
 

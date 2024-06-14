@@ -16,22 +16,27 @@ import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import kr.cosine.groupfinder.R
 import kr.cosine.groupfinder.databinding.FragmentGroupBinding
 import kr.cosine.groupfinder.enums.Mode
-import kr.cosine.groupfinder.presentation.view.group.adapter.GroupAdpater
-import kr.cosine.groupfinder.presentation.view.tag.adapter.TagAdapter
 import kr.cosine.groupfinder.presentation.view.common.data.Code
-import kr.cosine.groupfinder.presentation.view.common.extension.setOnClickListenerWithCooldown
 import kr.cosine.groupfinder.presentation.view.common.data.IntentKey
-import kr.cosine.groupfinder.presentation.view.group.adapter.decoration.GroupTagItemDecoration
-import kr.cosine.groupfinder.presentation.view.tag.event.TagEvent
-import kr.cosine.groupfinder.presentation.view.group.model.GroupViewModel
-import kr.cosine.groupfinder.presentation.view.tag.model.TagViewModel
 import kr.cosine.groupfinder.presentation.view.common.data.Interval
 import kr.cosine.groupfinder.presentation.view.common.extension.applyWhite
+import kr.cosine.groupfinder.presentation.view.common.extension.setOnClickListenerWithCooldown
+import kr.cosine.groupfinder.presentation.view.common.extension.requireContext
+import kr.cosine.groupfinder.presentation.view.common.extension.setOnRefreshListenerWithCooldown
+import kr.cosine.groupfinder.presentation.view.common.extension.showToast
 import kr.cosine.groupfinder.presentation.view.common.util.ActivityUtil.launch
 import kr.cosine.groupfinder.presentation.view.detail.DetailActivity
+import kr.cosine.groupfinder.presentation.view.group.adapter.GroupAdpater
+import kr.cosine.groupfinder.presentation.view.group.adapter.decoration.GroupTagItemDecoration
+import kr.cosine.groupfinder.presentation.view.group.model.GroupViewModel
 import kr.cosine.groupfinder.presentation.view.group.state.GroupUiState
+import kr.cosine.groupfinder.presentation.view.tag.adapter.TagAdapter
+import kr.cosine.groupfinder.presentation.view.tag.event.TagEvent
+import kr.cosine.groupfinder.presentation.view.tag.model.TagViewModel
+import kr.cosine.groupfinder.presentation.view.group.state.item.GroupItem
 import kr.cosine.groupfinder.presentation.view.tag.sheet.TagBottomSheetFragment
 import kr.cosine.groupfinder.presentation.view.write.WriteActivity
 
@@ -62,6 +67,7 @@ class GroupFragment(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        resetTagViewModel()
         registerProgressBar()
         registerWriteActivityResultLauncher()
         registerSwipeRefreshLayout()
@@ -73,6 +79,10 @@ class GroupFragment(
         registerTagViewModel()
     }
 
+    private fun resetTagViewModel() {
+        tagViewModel.clearTags()
+    }
+
     private fun registerProgressBar() {
         binding.progressBar.applyWhite()
     }
@@ -81,25 +91,30 @@ class GroupFragment(
         activityResultLauncher = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()
         ) { result ->
-            if (result.resultCode != Code.SUCCESS_POST_TASK) return@registerForActivityResult
+            if (result.resultCode != Code.REFRESH) return@registerForActivityResult
             search()
         }
     }
 
-    private fun registerSwipeRefreshLayout() = with(binding.swipeRefreshLayout) {
-        setOnRefreshListener {
-            isRefreshing = false
-            search()
-        }
-    }
-
-    private fun registerGroupRecyclerView() = with(binding.groupRecyclerView) {
-        adapter = GroupAdpater { post ->
-            activityResultLauncher.launch(context, DetailActivity::class) {
-                putExtra(IntentKey.POST_UNIQUE_ID, post.postUniqueId)
+    private fun registerSwipeRefreshLayout() {
+        binding.swipeRefreshLayout.setOnRefreshListenerWithCooldown(
+            fail = {
+                requireContext.showToast(R.string.group_refresh_cooldown_message, it)
             }
-        }.apply {
+        ) {
+            search()
+        }
+    }
+
+    private fun registerGroupRecyclerView() {
+        binding.groupRecyclerView.adapter = GroupAdpater(this::openDetailActivity).apply {
             groupAdpater = this
+        }
+    }
+
+    private fun openDetailActivity(group: GroupItem) {
+        activityResultLauncher.launch(requireContext, DetailActivity::class) {
+            putExtra(IntentKey.POST_UNIQUE_ID, group.postUniqueId)
         }
     }
 
@@ -115,16 +130,20 @@ class GroupFragment(
             tagViewModel.clearTags()
         }
         showAllTagImageButton.setOnClickListenerWithCooldown(Interval.OPEN_SCREEN) {
-            TagBottomSheetFragment.show(childFragmentManager)
+            showTagBottomSheetFragment()
         }
         searchImageButton.setOnClickListener {
             search()
         }
     }
 
-    private fun registerWriteButton() = with(binding.writeImageButton) {
-        setOnClickListener {
-            activityResultLauncher.launch(context, WriteActivity::class) {
+    private fun showTagBottomSheetFragment() {
+        TagBottomSheetFragment.show(childFragmentManager)
+    }
+
+    private fun registerWriteButton() {
+        binding.writeImageButton.setOnClickListener {
+            activityResultLauncher.launch(requireContext, WriteActivity::class) {
                 putExtra(IntentKey.MODE, mode ?: Mode.NORMAL)
             }
         }
@@ -144,13 +163,14 @@ class GroupFragment(
                 searchImageButton.isEnabled = !isLoading
                 clearTagImageButton.isEnabled = !isLoading
                 showAllTagImageButton.isEnabled = !isLoading
+                swipeRefreshLayout.isEnabled = !isLoading
 
                 when (uiState) {
-                    is GroupUiState.Success -> groupAdpater.setPosts(uiState.posts)
+                    is GroupUiState.Success -> groupAdpater.setGroups(uiState.posts)
 
                     is GroupUiState.Notice -> {
                         if (uiState is GroupUiState.Empty) {
-                            groupAdpater.clearPosts()
+                            groupAdpater.clearGroups()
                         }
                         searchResultNoticeTextView.text = uiState.message
                     }

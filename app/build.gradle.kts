@@ -25,7 +25,7 @@ android {
         versionCode = 1
         versionName = "1.0.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField("String", "LOL_API_KEY", properties["LOL_API_KEY"].toString())
+        buildConfigField("String", "RIOT_API_KEY", properties["RIOT_API_KEY"].toString())
     }
 
     buildTypes {

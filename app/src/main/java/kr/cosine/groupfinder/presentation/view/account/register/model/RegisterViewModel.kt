@@ -16,8 +16,8 @@ import kr.cosine.groupfinder.domain.exception.IdAlreadyExistsException
 import kr.cosine.groupfinder.domain.exception.TaggedNicknameAlreadyExistsException
 import kr.cosine.groupfinder.domain.usecase.RegisterAccountUseCase
 import kr.cosine.groupfinder.presentation.view.account.register.event.RegisterEvent
-import kr.cosine.groupfinder.presentation.view.account.register.state.RegisterUiState
 import kr.cosine.groupfinder.presentation.view.account.register.state.RegisterErrorUiState
+import kr.cosine.groupfinder.presentation.view.account.register.state.RegisterUiState
 import kr.cosine.groupfinder.presentation.view.common.extension.containsBlank
 import javax.inject.Inject
 
@@ -32,6 +32,7 @@ class RegisterViewModel @Inject constructor(
     private val _event = MutableSharedFlow<RegisterEvent>()
     val event: SharedFlow<RegisterEvent> get() = _event.asSharedFlow()
 
+    private val idRegex = Regex("^[a-z0-9]+$")
     private val passwordRegex = Regex("^.*(?=^.{8,20}\$)(?=.*\\d)(?=.*[a-zA-Z])(?=.*[!*@#\$%^&+=]).*\$")
 
     private val RegisterErrorUiState.text get() = (this as RegisterErrorUiState.Valid).text
@@ -43,6 +44,7 @@ class RegisterViewModel @Inject constructor(
                     id.isBlank() -> RegisterErrorUiState.Blank
                     id.containsBlank() -> RegisterErrorUiState.ContainBlank
                     id.length < ID_MIN_LENGTH -> RegisterErrorUiState.Length
+                    !idRegex.matches(id) -> RegisterErrorUiState.Id
                     else -> RegisterErrorUiState.Valid(id)
                 }
             )

@@ -20,4 +20,6 @@ interface AccountRepository : FirebaseRepository {
     suspend fun getAccountByUniqueId(uniqueId: UUID): AccountResponse
 
     suspend fun findAccountByIdAndPassword(id: String, password: String): AccountResponse?
+
+    suspend fun isJoinedGroup(uniqueId: UUID): Boolean
 }
