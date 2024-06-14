@@ -191,8 +191,7 @@ class DetailActivity : AppCompatActivity() {
                         targetUUID = userUUID
                     )
                     if (detailViewModel.groupRole.value == PARTICIPANT) {
-                        setResult(Code.SUCCESS_POST_TASK)
-                        finish()
+                        finishWithResult()
                     }
                 }
             }
@@ -246,7 +245,7 @@ class DetailActivity : AppCompatActivity() {
 
     private fun registerCloseButton() {
         binding.closeImageButton.setOnClickListenerWithCooldown {
-            finish()
+            finishWithResult()
         }
     }
 
@@ -293,8 +292,7 @@ class DetailActivity : AppCompatActivity() {
             onConfirmClick = {
                 showProgressBar()
                 MyFirebaseMessagingService().sendDeleteGroupRequest(postUniqueId) {
-                    setResult(Code.SUCCESS_POST_TASK)
-                    finish()
+                    finishWithResult()
                 }
             }
         ).show(supportFragmentManager, Dialog.TAG)
@@ -305,8 +303,7 @@ class DetailActivity : AppCompatActivity() {
             detailViewModel.event.flowWithLifecycle(lifecycle).collectLatest { event ->
                 if (event is DetailEvent.Notice) {
                     if (event is DetailEvent.Success && event !is DetailEvent.ReportUserSuccess) {
-                        setResult(Code.SUCCESS_POST_TASK)
-                        finish()
+                        finishWithResult()
                     }
                     showToast(event.message)
                 }
@@ -325,7 +322,7 @@ class DetailActivity : AppCompatActivity() {
             message = "강제 퇴장되었습니다.",
             cancelButtonVisibility = View.GONE,
             onConfirmClick = {
-                finish()
+                finishWithResult()
             }
         ).show(supportFragmentManager, Dialog.TAG)
     }
@@ -343,10 +340,15 @@ class DetailActivity : AppCompatActivity() {
         backPressedCallback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 if (binding.progressBar.visibility != View.VISIBLE) {
-                    finish()
+                    finishWithResult()
                 }
             }
         }
         onBackPressedDispatcher.addCallback(this, backPressedCallback)
+    }
+
+    private fun finishWithResult() {
+        setResult(Code.REFRESH)
+        finish()
     }
 }

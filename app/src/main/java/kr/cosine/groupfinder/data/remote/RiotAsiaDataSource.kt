@@ -13,12 +13,12 @@ interface RiotAsiaDataSource {
     suspend fun getAccount(
         @Path("gameName") gameName: String,
         @Path("tagLine") tagLine: String,
-        @Query("api_key") apiKey: String = BuildConfig.LOL_API_KEY
+        @Query("api_key") apiKey: String = BuildConfig.RIOT_API_KEY
     ): RiotAccountResponse
 
     @GET("/lol/match/v5/matches/{matchId}")
     suspend fun getMatch(
         @Path("matchId") matchId: String,
-        @Query("api_key") apiKey: String = BuildConfig.LOL_API_KEY
+        @Query("api_key") apiKey: String = BuildConfig.RIOT_API_KEY
     ): RiotMatchResponse
 }

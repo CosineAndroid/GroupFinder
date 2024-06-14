@@ -13,6 +13,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kr.cosine.groupfinder.R
 import kr.cosine.groupfinder.databinding.ActivityMainBinding
 import kr.cosine.groupfinder.enums.Mode
+import kr.cosine.groupfinder.presentation.view.dialog.Dialog
 import kr.cosine.groupfinder.presentation.view.group.GroupFragment
 import kr.cosine.groupfinder.presentation.view.profile.ProfileFragment
 
@@ -77,9 +78,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private fun replaceFragment(fragment: Fragment) {
         binding.toolbar.title = when (fragment) {
-            is GroupFragment -> fragment.mode?.displayName ?: ALL_CATEGORY
-            is ProfileFragment -> PROFILE_CATEGORY
-            else -> EMPTY_CATEGORY
+            is GroupFragment -> fragment.mode?.displayName ?: getString(R.string.group_all_category)
+            is ProfileFragment -> getString(R.string.group_profile_category)
+            else -> getString(R.string.group_unknown_category)
         }
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, fragment)
@@ -92,16 +93,23 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
                     drawerLayout.closeDrawer(GravityCompat.START)
                 } else {
-                    finish()
+                    val fragments = supportFragmentManager.fragments
+                    if (fragments.isEmpty() || fragments.last().let { it is GroupFragment && it.mode == null }) {
+                        showExitDialog()
+                    } else {
+                        replaceFragment(GroupFragment())
+                    }
                 }
             }
         }
         onBackPressedDispatcher.addCallback(this, backPressedCallback)
     }
 
-    private companion object {
-        const val ALL_CATEGORY = "전체"
-        const val PROFILE_CATEGORY = "프로필"
-        const val EMPTY_CATEGORY = " "
+    private fun showExitDialog() {
+        Dialog(
+            message = getString(R.string.group_exit_message),
+        ) {
+            finish()
+        }.show(supportFragmentManager, Dialog.TAG)
     }
 }
