@@ -1,11 +1,16 @@
 package kr.cosine.groupfinder.presentation.view.write
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.MotionEvent
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
+import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -81,11 +86,11 @@ class WriteActivity : AppCompatActivity() {
         registerViewModelEvent()
         setGameModeSpinner()
         checkBodyMaxLength()
-    }
+}
 
 
     private fun checkBodyMaxLength() {
-        binding.bodyEditTextView.addTextChangedListener(object  : TextWatcher {
+        binding.bodyEditTextView.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
 
@@ -94,12 +99,13 @@ class WriteActivity : AppCompatActivity() {
                     val lines = it.split("\n")
                     if (lines.size > 3) {
                         binding.bodyEditTextView.removeTextChangedListener(this)
-                        binding.bodyEditTextView.setText(it.subSequence(0,start))
+                        binding.bodyEditTextView.setText(it.subSequence(0, start))
                         binding.bodyEditTextView.setSelection(binding.bodyEditTextView.length())
                         binding.bodyEditTextView.addTextChangedListener(this)
                     }
                 }
             }
+
             override fun afterTextChanged(s: Editable?) {
             }
         })
@@ -112,9 +118,15 @@ class WriteActivity : AppCompatActivity() {
         gameModeSpinner.adapter = gameModeSpinnerAdapter
 
         gameModeSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
                 mode = Mode.entries.toTypedArray()[position]
             }
+
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
     }
@@ -149,9 +161,11 @@ class WriteActivity : AppCompatActivity() {
 
     //리싸이클러뷰 어댑터
     private fun setupRequireLaneRecyclerViewAdapter() {
-        requireLaneRecyclerViewAdapter = RequireLaneRecyclerViewAdapter(requireLaneList, onLaneCountChanged = {
-            binding.addLaneCardView.visibility = if (requireLaneRecyclerViewAdapter.itemCount < 4) View.VISIBLE else View.INVISIBLE
-        })
+        requireLaneRecyclerViewAdapter =
+            RequireLaneRecyclerViewAdapter(requireLaneList, onLaneCountChanged = {
+                binding.addLaneCardView.visibility =
+                    if (requireLaneRecyclerViewAdapter.itemCount < 4) View.VISIBLE else View.INVISIBLE
+            })
         binding.requireLanesRecyclerView.apply {
             adapter = requireLaneRecyclerViewAdapter
             itemAnimator = null
@@ -189,13 +203,8 @@ class WriteActivity : AppCompatActivity() {
                 Toast.makeText(this, "더 이상 라인을 추가할 수 없습니다", Toast.LENGTH_SHORT).show()
             } else {
                 requireLaneRecyclerViewAdapter.addLane("1")
-                updateAddLaneButtonVisibility()
             }
         }
-    }
-
-    private fun updateAddLaneButtonVisibility() {
-        binding.addLaneCardView.visibility = if (requireLaneRecyclerViewAdapter.itemCount < 4) View.VISIBLE else View.INVISIBLE
     }
 
     //생성하기 버튼
@@ -265,4 +274,12 @@ class WriteActivity : AppCompatActivity() {
             }
         }
     }
+
+    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+        val imm: InputMethodManager =
+            getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
+        return super.dispatchTouchEvent(ev)
+    }
+
 }
