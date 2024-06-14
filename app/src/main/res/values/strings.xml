@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">GroupFinder</string>
+    <string name="app_name">띱</string>
     <string name="group_all_category">전체</string>
     <string name="group_profile_category">프로필</string>
     <string name="group_unknown_category"> </string>
