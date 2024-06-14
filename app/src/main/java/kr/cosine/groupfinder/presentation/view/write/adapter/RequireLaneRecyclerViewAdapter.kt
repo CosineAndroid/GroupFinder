@@ -10,13 +10,10 @@ import kr.cosine.groupfinder.presentation.view.write.LaneSpinnerItem
 import kr.cosine.groupfinder.presentation.view.write.RequireLane
 
 class RequireLaneRecyclerViewAdapter(
-    private val lanes: MutableList<RequireLane>
+    private val lanes: MutableList<RequireLane>,
+    private val onLaneCountChanged: () -> Unit
 ) : RecyclerView.Adapter<RequireLaneRecyclerViewAdapter.ViewHolder>() {
-//    private var newLanes = emptyList<RequireLane>()
-//    fun submitList(lanes:List<RequireLane>){
-//        this.newLanes = lanes
-//        notifyDataSetChanged()
-//    } 튜터님한테 물어보기 -> 어케하는지 모르겟음
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemSelectlaneBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
@@ -69,13 +66,22 @@ class RequireLaneRecyclerViewAdapter(
             lanes.removeAt(position)
             notifyItemRemoved(position)
             notifyItemRangeChanged(position, lanes.size)
+            updateAddLaneButtonVisibility()
+            onLaneCountChanged()
+        }
+    }
+
+    private fun updateAddLaneButtonVisibility() {
+        if (lanes.size < 4) {
+            onLaneCountChanged()
         }
     }
 
     fun addLane(newLane: String) {
-        //val newIndex = lanes.size
         val newRequireLane = RequireLane(newLane)
         lanes.add(newRequireLane)
         notifyItemInserted(lanes.size - 1)
+        updateAddLaneButtonVisibility()
+        onLaneCountChanged()
     }
 }

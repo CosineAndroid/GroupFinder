@@ -149,7 +149,9 @@ class WriteActivity : AppCompatActivity() {
 
     //리싸이클러뷰 어댑터
     private fun setupRequireLaneRecyclerViewAdapter() {
-        requireLaneRecyclerViewAdapter = RequireLaneRecyclerViewAdapter(requireLaneList)
+        requireLaneRecyclerViewAdapter = RequireLaneRecyclerViewAdapter(requireLaneList, onLaneCountChanged = {
+            binding.addLaneCardView.visibility = if (requireLaneRecyclerViewAdapter.itemCount < 4) View.VISIBLE else View.INVISIBLE
+        })
         binding.requireLanesRecyclerView.apply {
             adapter = requireLaneRecyclerViewAdapter
             itemAnimator = null
