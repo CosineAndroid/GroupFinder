@@ -1,20 +1,15 @@
 package kr.cosine.groupfinder.presentation.view.write
 
-import android.annotation.SuppressLint
-import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
-import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.flowWithLifecycle
@@ -27,6 +22,7 @@ import kr.cosine.groupfinder.data.registry.LocalAccountRegistry
 import kr.cosine.groupfinder.databinding.ActivityWriteBinding
 import kr.cosine.groupfinder.enums.Lane
 import kr.cosine.groupfinder.enums.Mode
+import kr.cosine.groupfinder.presentation.view.common.GroupFinderActivity
 import kr.cosine.groupfinder.presentation.view.common.data.Code
 import kr.cosine.groupfinder.presentation.view.common.data.IntentKey
 import kr.cosine.groupfinder.presentation.view.common.data.Interval
@@ -46,7 +42,7 @@ import kr.cosine.groupfinder.presentation.view.write.model.WriteViewModel
 import java.util.UUID
 
 @AndroidEntryPoint
-class WriteActivity : AppCompatActivity() {
+class WriteActivity : GroupFinderActivity() {
 
     private lateinit var binding: ActivityWriteBinding
 

@@ -21,5 +21,7 @@ interface AccountRepository : FirebaseRepository {
 
     suspend fun findAccountByIdAndPassword(id: String, password: String): AccountResponse?
 
+    suspend fun getAccountByIdAndPassword(id: String, password: String): AccountResponse
+
     suspend fun isJoinedGroup(uniqueId: UUID): Boolean
 }
