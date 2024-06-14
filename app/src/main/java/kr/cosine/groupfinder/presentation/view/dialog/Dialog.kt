@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.FragmentActivity
 import kr.cosine.groupfinder.databinding.DialogBinding
 import kr.cosine.groupfinder.presentation.view.common.data.Interval
 import kr.cosine.groupfinder.presentation.view.common.extension.setOnClickListenerWithCooldown
@@ -93,6 +94,10 @@ class Dialog(
     }
 
     companion object {
-        const val TAG = "Dialog"
+        const val TAG = "GroupFinderDialog"
+
+        fun dismiss(fragmentActivity: FragmentActivity) {
+            (fragmentActivity.supportFragmentManager.findFragmentByTag(TAG) as? Dialog)?.dismiss()
+        }
     }
 }
