@@ -15,6 +15,8 @@ fun AccountResponse.toEntity(): AccountEntity {
         tag = tag,
         token = token,
         groupUniqueId = groupUniqueId?.run(UUID::fromString),
+        createTime = createTime,
+        lastLoginTime = lastLoginTime,
         blockedUserUniqueIds = blockedUserUniqueIds.map(UUID::fromString),
         reportedUserUniqueIds = reportedUserUniqueIds.map(UUID::fromString),
         reportedPostUniqueIds = reportedPostUniqueIds.map(UUID::fromString)

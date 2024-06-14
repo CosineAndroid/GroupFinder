@@ -22,8 +22,7 @@ class RiotRepositoryImpl @Inject constructor(
 ) : RiotRepository, FirebaseRepository {
 
     override val reference: CollectionReference
-        get() = firebaseDataSource.firestore
-            .collection("riot_champions")
+        get() = firebaseDataSource.firestore.collection(COLLECTION_PATH)
 
     override suspend fun getAccount(gameName: String, tagLine: String): RiotAccountResponse {
         return riotAsiaDataSource.getAccount(gameName, tagLine)
@@ -48,5 +47,9 @@ class RiotRepositoryImpl @Inject constructor(
     override suspend fun findChampion(championId: Int): RiotChampionResponse? {
         return reference.document(championId.toString()).get().await()
             .toObject(RiotChampionResponse::class.java)
+    }
+
+    private companion object {
+        const val COLLECTION_PATH = "riot_champions"
     }
 }

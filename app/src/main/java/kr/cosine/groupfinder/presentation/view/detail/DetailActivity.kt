@@ -191,8 +191,7 @@ class DetailActivity : AppCompatActivity() {
                         targetUUID = userUUID
                     )
                     if (detailViewModel.groupRole.value == PARTICIPANT) {
-                        setResult(Code.SUCCESS_POST_TASK)
-                        finish()
+                        finishWithResult()
                     }
                 }
             }
@@ -246,20 +245,30 @@ class DetailActivity : AppCompatActivity() {
 
     private fun registerCloseButton() {
         binding.closeImageButton.setOnClickListenerWithCooldown {
-            finish()
+            finishWithResult()
         }
     }
 
     private fun showReportGroupDialog() {
         Dialog("방 신고하기", "정말 해당 방을 신고하시겠습니까?") {
-            detailViewModel.reportGroup(postUniqueId)
+            getOwnerUniqueId {
+                if (it != uniqueId) {
+                    detailViewModel.reportGroup(postUniqueId)
+                } else {
+                    showToast("자기 자신을요?")
+                }
+            }
         }.show(supportFragmentManager, Dialog.TAG)
     }
 
     private fun showReportUserDialog() {
         getOwnerUniqueId {
             Dialog("작성자 신고하기", "정말 해당 작성자를 신고하시겠습니까?") {
-                detailViewModel.reportUser(it)
+                if(it != uniqueId) {
+                    detailViewModel.reportUser(it)
+                } else {
+                    showToast("자기 자신을요?")
+                }
             }.show(supportFragmentManager, Dialog.TAG)
         }
     }
@@ -267,7 +276,11 @@ class DetailActivity : AppCompatActivity() {
     private fun showBlockUserDialog() {
         getOwnerUniqueId {
             Dialog("작성자 차단하기", "정말 해당 작성자를 차단하시겠습니까?") {
-                detailViewModel.blockUser(it)
+                if (it != uniqueId) {
+                    detailViewModel.blockUser(it)
+                } else {
+                    showToast("자기 자신을요?")
+                }
             }.show(supportFragmentManager, Dialog.TAG)
         }
     }
@@ -293,8 +306,7 @@ class DetailActivity : AppCompatActivity() {
             onConfirmClick = {
                 showProgressBar()
                 MyFirebaseMessagingService().sendDeleteGroupRequest(postUniqueId) {
-                    setResult(Code.SUCCESS_POST_TASK)
-                    finish()
+                    finishWithResult()
                 }
             }
         ).show(supportFragmentManager, Dialog.TAG)
@@ -305,8 +317,7 @@ class DetailActivity : AppCompatActivity() {
             detailViewModel.event.flowWithLifecycle(lifecycle).collectLatest { event ->
                 if (event is DetailEvent.Notice) {
                     if (event is DetailEvent.Success && event !is DetailEvent.ReportUserSuccess) {
-                        setResult(Code.SUCCESS_POST_TASK)
-                        finish()
+                        finishWithResult()
                     }
                     showToast(event.message)
                 }
@@ -325,7 +336,7 @@ class DetailActivity : AppCompatActivity() {
             message = "강제 퇴장되었습니다.",
             cancelButtonVisibility = View.GONE,
             onConfirmClick = {
-                finish()
+                finishWithResult()
             }
         ).show(supportFragmentManager, Dialog.TAG)
     }
@@ -343,10 +354,15 @@ class DetailActivity : AppCompatActivity() {
         backPressedCallback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 if (binding.progressBar.visibility != View.VISIBLE) {
-                    finish()
+                    finishWithResult()
                 }
             }
         }
         onBackPressedDispatcher.addCallback(this, backPressedCallback)
+    }
+
+    private fun finishWithResult() {
+        setResult(Code.REFRESH)
+        finish()
     }
 }

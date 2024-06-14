@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kr.cosine.groupfinder.data.registry.LocalAccountRegistry
 import kr.cosine.groupfinder.domain.exception.AccountNotExistsException
 import kr.cosine.groupfinder.domain.usecase.GetBlockUserUseCase
 import kr.cosine.groupfinder.domain.usecase.UnblockUserUseCase
@@ -25,7 +26,7 @@ class BlockUserViewModel @Inject constructor(
     val uiState: StateFlow<BlockUserUiState> get() = _uiState
 
     fun loadBlockUser() = viewModelScope.launch(Dispatchers.IO) {
-        getBlockUserUseCase().onSuccess { blockUserItems ->
+        getBlockUserUseCase(LocalAccountRegistry.uniqueId).onSuccess { blockUserItems ->
             _uiState.update {
                 if (blockUserItems.isEmpty()) {
                     BlockUserUiState.Empty
@@ -44,6 +45,6 @@ class BlockUserViewModel @Inject constructor(
     }
 
     fun unblock(blockedUserUniqueId: UUID) = viewModelScope.launch(Dispatchers.IO) {
-        unblockUserUseCase(blockedUserUniqueId)
+        unblockUserUseCase(LocalAccountRegistry.uniqueId, blockedUserUniqueId)
     }
 }

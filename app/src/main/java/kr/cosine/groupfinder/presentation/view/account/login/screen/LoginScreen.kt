@@ -1,7 +1,6 @@
 package kr.cosine.groupfinder.presentation.view.account.login.screen
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import androidx.activity.ComponentActivity
@@ -35,26 +34,25 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.flow.collectLatest
 import kr.cosine.groupfinder.R
 import kr.cosine.groupfinder.data.manager.LocalAccountManager
 import kr.cosine.groupfinder.data.registry.LocalAccountRegistry
 import kr.cosine.groupfinder.presentation.MainActivity
+import kr.cosine.groupfinder.presentation.view.account.login.event.LoginEvent
+import kr.cosine.groupfinder.presentation.view.account.login.model.LoginViewModel
+import kr.cosine.groupfinder.presentation.view.account.register.RegisterActivity
+import kr.cosine.groupfinder.presentation.view.common.data.Code
+import kr.cosine.groupfinder.presentation.view.common.data.IntentKey
+import kr.cosine.groupfinder.presentation.view.common.util.ActivityUtil
 import kr.cosine.groupfinder.presentation.view.compose.component.BaseButton
 import kr.cosine.groupfinder.presentation.view.compose.component.BaseScaffold
 import kr.cosine.groupfinder.presentation.view.compose.component.BaseText
 import kr.cosine.groupfinder.presentation.view.compose.component.BaseTextField
 import kr.cosine.groupfinder.presentation.view.compose.component.LoadingScreen
 import kr.cosine.groupfinder.presentation.view.compose.component.Space
-import kr.cosine.groupfinder.presentation.view.account.login.event.LoginEvent
-import kr.cosine.groupfinder.presentation.view.account.login.model.LoginViewModel
 import kr.cosine.groupfinder.presentation.view.compose.model.LoadingViewModel
-import kr.cosine.groupfinder.presentation.view.account.register.RegisterActivity
-import kr.cosine.groupfinder.presentation.view.common.data.Code
-import kr.cosine.groupfinder.presentation.view.common.data.IntentKey
-import kr.cosine.groupfinder.presentation.view.common.util.ActivityUtil
 import kr.cosine.groupfinder.presentation.view.compose.ui.BaseColor
 import kr.cosine.groupfinder.util.MyFirebaseMessagingService
 
@@ -179,6 +177,7 @@ private suspend fun onLoginEvent(
                 val uniqueId = event.accountEntity.uniqueId
                 LocalAccountRegistry.setUniqueId(uniqueId)
                 localAccountManager.setUniqueId(uniqueId)
+                loginViewModel.refreshLastLogin()
 
                 FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
                     val token = task.result
