@@ -20,6 +20,7 @@ import kr.cosine.groupfinder.databinding.FragmentProfileBinding
 import kr.cosine.groupfinder.presentation.view.account.login.LoginActivity
 import kr.cosine.groupfinder.presentation.view.common.data.IntentKey
 import kr.cosine.groupfinder.presentation.view.common.extension.applyWhite
+import kr.cosine.groupfinder.presentation.view.common.extension.requireContext
 import kr.cosine.groupfinder.presentation.view.common.extension.setOnClickListenerWithCooldown
 import kr.cosine.groupfinder.presentation.view.common.extension.showToast
 import kr.cosine.groupfinder.presentation.view.common.util.ActivityUtil
@@ -43,8 +44,6 @@ class ProfileFragment : Fragment() {
 
     private lateinit var groupAdpater: GroupAdpater
 
-    private val requireContext get() = requireContext()
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -61,7 +60,6 @@ class ProfileFragment : Fragment() {
         registerBlockedUserShowButton()
         registerLogoutButton()
         registerWithdrawButton()
-        registerTermsButton()
         registerPolicyButton()
         registerViewModelEvent()
         policy()
@@ -119,12 +117,6 @@ class ProfileFragment : Fragment() {
         ).show(childFragmentManager, Dialog.TAG)
     }
 
-    private fun registerTermsButton() {
-//        binding.termsButton.setOnClickListenerWithCooldown {
-//            requireContext.startActivity(TermsActivity::class)
-//        }
-    }
-
     private fun registerPolicyButton() {
         binding.policyButton.setOnClickListenerWithCooldown {
             requireContext.startActivity(PolicyActivity::class)
@@ -146,7 +138,7 @@ class ProfileFragment : Fragment() {
                     if (postItem == null) {
                         groupRecyclerView.visibility = View.GONE
                     } else {
-                        groupAdpater.setPost(postItem)
+                        groupAdpater.setGroup(postItem)
                     }
                 }
             }

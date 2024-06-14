@@ -93,9 +93,9 @@
         android:background="@drawable/group_write_button_background"
         android:elevation="3dp"
         android:src="@drawable/ic_app_plus"
-        app:tint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:tint="@color/white" />
 
     <TextView
         android:id="@+id/searchResultNoticeTextView"
