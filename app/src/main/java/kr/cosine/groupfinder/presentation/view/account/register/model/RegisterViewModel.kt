@@ -43,7 +43,7 @@ class RegisterViewModel @Inject constructor(
                 id = when {
                     id.isBlank() -> RegisterErrorUiState.Blank
                     id.containsBlank() -> RegisterErrorUiState.ContainBlank
-                    id.length < ID_MIN_LENGTH -> RegisterErrorUiState.Length
+                    id.length !in idLengthRange -> RegisterErrorUiState.Length
                     !idRegex.matches(id) -> RegisterErrorUiState.Id
                     else -> RegisterErrorUiState.Valid(id)
                 }
@@ -125,7 +125,7 @@ class RegisterViewModel @Inject constructor(
     }
 
     private companion object {
-        const val ID_MIN_LENGTH = 5
+        val idLengthRange = 5..15
         const val INFO_MAX_LENGTH = 16
     }
 }
