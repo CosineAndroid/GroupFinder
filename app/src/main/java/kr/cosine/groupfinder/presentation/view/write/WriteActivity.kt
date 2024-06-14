@@ -1,6 +1,8 @@
 package kr.cosine.groupfinder.presentation.view.write
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
@@ -78,10 +80,30 @@ class WriteActivity : AppCompatActivity() {
         addTagsButton()
         registerViewModelEvent()
         setGameModeSpinner()
-        Log.d("require",  "${requireLaneRecyclerViewAdapter.itemCount}")
-        binding.addLaneCardView.visibility  =  if (requireLaneRecyclerViewAdapter.itemCount < 3 ) View.VISIBLE else View.INVISIBLE
+        checkBodyMaxLength()
     }
 
+
+    private fun checkBodyMaxLength() {
+        binding.bodyEditTextView.addTextChangedListener(object  : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                s?.let {
+                    val lines = it.split("\n")
+                    if (lines.size > 3) {
+                        binding.bodyEditTextView.removeTextChangedListener(this)
+                        binding.bodyEditTextView.setText(it.subSequence(0,start))
+                        binding.bodyEditTextView.setSelection(binding.bodyEditTextView.length())
+                        binding.bodyEditTextView.addTextChangedListener(this)
+                    }
+                }
+            }
+            override fun afterTextChanged(s: Editable?) {
+            }
+        })
+    }
 
     private fun setGameModeSpinner() {
         val gameModeSpinner = binding.gameModeSpinner
