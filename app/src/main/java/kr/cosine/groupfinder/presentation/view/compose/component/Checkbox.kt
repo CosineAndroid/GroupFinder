@@ -7,6 +7,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -24,6 +28,7 @@ fun BaseCheckbox(
     onTextClick: () -> Unit = {},
     onCheckedChange: (Boolean) -> Unit
 ) {
+    var check by rememberSaveable { mutableStateOf(isChecked) }
     Row(
         horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically,
@@ -33,8 +38,11 @@ fun BaseCheckbox(
             )
     ) {
         Checkbox(
-            checked = isChecked,
-            onCheckedChange = onCheckedChange,
+            checked = check,
+            onCheckedChange = {
+                check = it
+                onCheckedChange(it)
+            },
             colors = CheckboxDefaults.colors().copy(
                 checkedBoxColor = BaseColor.AccountCheckboxBackground,
                 checkedBorderColor = BaseColor.AccountCheckboxBackground

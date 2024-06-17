@@ -1,6 +1,8 @@
 package kr.cosine.groupfinder.presentation.view.account.register.screen
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.layout.Arrangement
@@ -120,23 +122,17 @@ fun RegisterScreen(
             }
             BaseCheckbox(
                 isChecked = false,
-                text = "(필수) 만 14세 이상입니다."
-            ) {
-
-            }
+                text = stringResource(R.string.register_age_agreement_title),
+                onCheckedChange = registerViewModel::checkAgeCheckbox
+            )
             BaseCheckbox(
                 isChecked = false,
-                text = "(필수) 개인정보 수집이용 동의",
+                text = stringResource(R.string.register_policy_agreement_title),
                 underline = true,
                 isTextClickEnabled = true,
-                onTextClick = {
-                    activity.startActivity(PolicyActivity::class) {
-                        putExtra(IntentKey.USE_LOGIN_SESSION, false)
-                    }
-                }
-            ) {
-
-            }
+                onTextClick = activity::startPolicyActivity,
+                onCheckedChange = registerViewModel::checkPolicyCheckbox
+            )
             HeightSpace()
             registerViewModel.checkButtonEnable()
             BaseButton(
@@ -179,5 +175,11 @@ private suspend fun onRegisterEvent(
                 snackbarHostState.showSnackbar(event.message)
             }
         }
+    }
+}
+
+private fun Context.startPolicyActivity() {
+    startActivity(PolicyActivity::class) {
+        putExtra(IntentKey.USE_LOGIN_SESSION, false)
     }
 }

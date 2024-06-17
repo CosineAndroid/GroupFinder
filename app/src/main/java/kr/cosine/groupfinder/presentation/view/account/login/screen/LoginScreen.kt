@@ -110,14 +110,11 @@ fun LoginScreen(
                 visualTransformation = PasswordVisualTransformation(),
                 onValueChange = loginViewModel::setPassword
             )
-            var isAutoLogin by rememberSaveable { mutableStateOf(localAccountManager.isAutoLogin()) }
             BaseCheckbox(
-                isChecked = isAutoLogin,
-                text = stringResource(R.string.login_auto_login_title)
-            ) {
-                localAccountManager.setAutoLogin(it)
-                isAutoLogin = it
-            }
+                isChecked = localAccountManager.isAutoLogin(),
+                text = stringResource(R.string.login_auto_login_title),
+                onCheckedChange = localAccountManager::setAutoLogin
+            )
             Space(
                 height = 10.dp
             )

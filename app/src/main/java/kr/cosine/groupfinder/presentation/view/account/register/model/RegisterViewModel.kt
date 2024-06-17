@@ -91,6 +91,30 @@ class RegisterViewModel @Inject constructor(
         }
     }
 
+    fun checkAgeCheckbox(isChecked: Boolean) {
+        _uiState.update { prevUiState ->
+            prevUiState.copy(
+                ageCheckbox = if (isChecked) {
+                    RegisterErrorUiState.Valid()
+                } else {
+                    RegisterErrorUiState.Blank
+                }
+            )
+        }
+    }
+
+    fun checkPolicyCheckbox(isChecked: Boolean) {
+        _uiState.update { prevUiState ->
+            prevUiState.copy(
+                policyCheckbox = if (isChecked) {
+                    RegisterErrorUiState.Valid()
+                } else {
+                    RegisterErrorUiState.Blank
+                }
+            )
+        }
+    }
+
     fun checkButtonEnable() {
         _uiState.update { prevUiState ->
             prevUiState.copy(
@@ -98,6 +122,8 @@ class RegisterViewModel @Inject constructor(
                         && prevUiState.password is RegisterErrorUiState.Valid
                         && prevUiState.nickname is RegisterErrorUiState.Valid
                         && prevUiState.tag is RegisterErrorUiState.Valid
+                        && prevUiState.ageCheckbox is RegisterErrorUiState.Valid
+                        && prevUiState.policyCheckbox is RegisterErrorUiState.Valid
             )
         }
     }
