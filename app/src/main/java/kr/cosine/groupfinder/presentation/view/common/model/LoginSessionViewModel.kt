@@ -18,11 +18,15 @@ class LoginSessionViewModel @Inject constructor(
 ) : ViewModel() {
 
     fun addLoginSession() = viewModelScope.launch(Dispatchers.IO) {
-        loginSessionRepository.addLoginSession(LocalAccountRegistry.uniqueId)
+        LocalAccountRegistry.findUniqueId()?.let {
+            loginSessionRepository.addLoginSession(it)
+        }
     }
 
     fun removeLoginSession() = viewModelScope.launch(Dispatchers.IO) {
-        loginSessionRepository.removeLoginSession(LocalAccountRegistry.uniqueId)
+        LocalAccountRegistry.findUniqueId()?.let {
+            loginSessionRepository.removeLoginSession(it)
+        }
     }
 
     fun registerLoginSessionListener(activity: Activity, onDuplicatedLogin: () -> Unit) {

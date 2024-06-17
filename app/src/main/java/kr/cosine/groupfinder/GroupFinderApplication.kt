@@ -6,10 +6,14 @@ import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import dagger.hilt.android.HiltAndroidApp
+import kr.cosine.groupfinder.data.manager.LocalAccountManager
+import kr.cosine.groupfinder.data.registry.LocalAccountRegistry
+import kr.cosine.groupfinder.presentation.view.account.AccountActivity
 
 @HiltAndroidApp
 class GroupFinderApplication : Application() {
-    private var _isForeground = false
+
+    private var isForeground = false
     private lateinit var currentActivity: Context
 
     override fun onCreate() {
@@ -17,36 +21,36 @@ class GroupFinderApplication : Application() {
 
         registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacks {
             override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
+                if (activity !is AccountActivity && LocalAccountRegistry.findUniqueId() == null) {
+                    LocalAccountManager(activity).findUniqueId()
+                        ?.let(LocalAccountRegistry::setUniqueId)
+                }
             }
 
-            override fun onActivityStarted(activity: Activity) {
-            }
+            override fun onActivityStarted(activity: Activity) {}
 
             override fun onActivityResumed(activity: Activity) {
-                _isForeground = true
+                isForeground = true
                 currentActivity = activity
-                Log.d("lifecycle", "onActivityResumed: ${_isForeground}, ${currentActivity}")
+                Log.d("lifecycle", "onActivityResumed: $isForeground, $currentActivity")
             }
 
             override fun onActivityPaused(activity: Activity) {
-                _isForeground = false
-                Log.d("lifecycle", "onActivityResumed: ${_isForeground}")
+                isForeground = false
+                Log.d("lifecycle", "onActivityResumed: $isForeground")
             }
 
-            override fun onActivityStopped(activity: Activity) {
-            }
+            override fun onActivityStopped(activity: Activity) {}
 
-            override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {
-            }
+            override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {}
 
-            override fun onActivityDestroyed(activity: Activity) {
-            }
-
+            override fun onActivityDestroyed(activity: Activity) {}
         })
 
     }
+
     fun isForeground(): Boolean {
-        return _isForeground
+        return isForeground
     }
 
     fun getCurrentActivity(): Context {

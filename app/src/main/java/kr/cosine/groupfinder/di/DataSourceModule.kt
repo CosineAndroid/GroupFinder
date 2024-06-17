@@ -1,11 +1,14 @@
 package kr.cosine.groupfinder.di
 
+import android.content.Context
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import kr.cosine.groupfinder.data.manager.LocalAccountManager
 import kr.cosine.groupfinder.data.remote.CloudFunctionDataSource
 import kr.cosine.groupfinder.data.remote.FirebaseDataSource
 import kr.cosine.groupfinder.data.remote.RiotAsiaDataSource
@@ -91,5 +94,12 @@ class DataSourceModule {
         retrofit: Retrofit,
     ): CloudFunctionDataSource {
         return retrofit.create(CloudFunctionDataSource::class.java)
+    }
+
+    @Provides
+    fun provideLocalAccountManager(
+        @ApplicationContext context: Context
+    ) : LocalAccountManager {
+        return LocalAccountManager(context)
     }
 }

@@ -7,13 +7,10 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -23,13 +20,14 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
@@ -40,6 +38,7 @@ import kr.cosine.groupfinder.R
 import kr.cosine.groupfinder.data.manager.LocalAccountManager
 import kr.cosine.groupfinder.data.registry.LocalAccountRegistry
 import kr.cosine.groupfinder.presentation.MainActivity
+import kr.cosine.groupfinder.presentation.view.account.component.AccountScaffold
 import kr.cosine.groupfinder.presentation.view.account.login.event.LoginEvent
 import kr.cosine.groupfinder.presentation.view.account.login.model.LoginViewModel
 import kr.cosine.groupfinder.presentation.view.account.register.RegisterActivity
@@ -48,8 +47,7 @@ import kr.cosine.groupfinder.presentation.view.common.data.IntentKey
 import kr.cosine.groupfinder.presentation.view.common.model.LoginSessionViewModel
 import kr.cosine.groupfinder.presentation.view.common.util.ActivityUtil
 import kr.cosine.groupfinder.presentation.view.compose.component.BaseButton
-import kr.cosine.groupfinder.presentation.view.compose.component.BaseScaffold
-import kr.cosine.groupfinder.presentation.view.compose.component.BaseText
+import kr.cosine.groupfinder.presentation.view.compose.component.BaseCheckbox
 import kr.cosine.groupfinder.presentation.view.compose.component.BaseTextField
 import kr.cosine.groupfinder.presentation.view.compose.component.LoadingScreen
 import kr.cosine.groupfinder.presentation.view.compose.component.Space
@@ -60,8 +58,8 @@ import kr.cosine.groupfinder.util.MyFirebaseMessagingService
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun LoginScreen(
-    loginViewModel: LoginViewModel = viewModel(),
-    logionSessionViewModel: LoginSessionViewModel = viewModel(),
+    loginViewModel: LoginViewModel = hiltViewModel(),
+    logionSessionViewModel: LoginSessionViewModel = hiltViewModel(),
     loadingViewModel: LoadingViewModel = viewModel()
 ) {
     val activity = LocalContext.current as ComponentActivity
@@ -78,7 +76,7 @@ fun LoginScreen(
         }
     }
     val lifecycle = LocalLifecycleOwner.current.lifecycle
-    BaseScaffold(
+    AccountScaffold(
         prevBody = { snackbarHostState ->
             LaunchedEffect(
                 key1 = Unit
@@ -96,8 +94,9 @@ fun LoginScreen(
         }
     ) {
         Column(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Center
+            verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically),
+            modifier = Modifier
+                .fillMaxSize()
         ) {
             val uiState by loginViewModel.uiState.collectAsStateWithLifecycle()
             BaseTextField(
@@ -105,37 +104,23 @@ fun LoginScreen(
                 hint = stringResource(R.string.login_id_hint),
                 onValueChange = loginViewModel::setId
             )
-            HeightSpace()
             BaseTextField(
                 text = uiState.password,
                 hint = stringResource(R.string.login_password_hint),
                 visualTransformation = PasswordVisualTransformation(),
                 onValueChange = loginViewModel::setPassword
             )
-            Row(
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .padding(
-                        start = 25.dp
-                    )
+            var isAutoLogin by rememberSaveable { mutableStateOf(localAccountManager.isAutoLogin()) }
+            BaseCheckbox(
+                isChecked = isAutoLogin,
+                text = stringResource(R.string.login_auto_login_title)
             ) {
-                var isAutoLogin by rememberSaveable { mutableStateOf(localAccountManager.isAutoLogin()) }
-                Checkbox(
-                    checked = isAutoLogin,
-                    onCheckedChange = {
-                        localAccountManager.setAutoLogin(it)
-                        isAutoLogin = it
-                    },
-                    modifier = Modifier
-                        .size(40.dp)
-                )
-                BaseText(
-                    text = "자동 로그인",
-                    fontSize = 15.sp
-                )
+                localAccountManager.setAutoLogin(it)
+                isAutoLogin = it
             }
-            HeightSpace(20.dp)
+            Space(
+                height = 10.dp
+            )
             BaseButton(
                 text = stringResource(R.string.login),
                 containerColor = BaseColor.AccountLoginButtonBackground
@@ -143,7 +128,6 @@ fun LoginScreen(
                 loadingViewModel.show()
                 loginViewModel.loginByInput()
             }
-            HeightSpace()
             val context = LocalContext.current
             val registerResultLauncher = getRegisterResultLanuncher()
             BaseButton(
@@ -155,13 +139,6 @@ fun LoginScreen(
             }
         }
     }
-}
-
-@Composable
-private fun HeightSpace(height: Dp = 10.dp) {
-    Space(
-        height = height
-    )
 }
 
 private suspend fun onLoginEvent(
