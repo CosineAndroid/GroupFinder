@@ -33,7 +33,6 @@ fun DefaultTextField(
     modifier: Modifier = Modifier,
     hint: String = "",
     visualTransformation: VisualTransformation = VisualTransformation.None,
-    backgroundHorizontalPadding: Dp = 30.dp,
     borderColor: Color? = null,
     onValueChange: (String) -> Unit = {}
 ) {
@@ -43,7 +42,6 @@ fun DefaultTextField(
         input,
         hint,
         visualTransformation,
-        backgroundHorizontalPadding,
         borderColor
     ) {
         input = it
@@ -57,7 +55,6 @@ fun BaseTextField(
     text: String = "",
     hint: String = "",
     visualTransformation: VisualTransformation = VisualTransformation.None,
-    backgroundHorizontalPadding: Dp = 30.dp,
     borderColor: Color? = null,
     onValueChange: (String) -> Unit = {}
 ) {
@@ -65,9 +62,6 @@ fun BaseTextField(
         modifier = modifier
             .fillMaxWidth()
             .height(50.dp)
-            .padding(
-                horizontal = backgroundHorizontalPadding
-            )
             .background(
                 color = BaseColor.AccountTextFieldBackground,
                 shape = RoundedCornerShape(8.dp)

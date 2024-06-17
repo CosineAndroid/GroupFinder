@@ -177,7 +177,6 @@ class ProfileFragment : Fragment() {
 
     private fun resetLocalAccount() {
         LocalAccountRegistry.isLogout = true
-        LocalAccountRegistry.resetUniqueId()
         LocalAccountManager(requireContext).reset()
     }
 

@@ -17,10 +17,13 @@
     <string name="register">회원가입</string>
     <string name="login_id_hint">아이디</string>
     <string name="login_password_hint">비밀번호</string>
+    <string name="login_auto_login_title">자동 로그인</string>
     <string name="register_id_hint">아이디 (5글자 이상)</string>
     <string name="register_password_hint">비밀번호 (8글자 이상, 숫자/특수문자 포함)</string>
     <string name="nickname_hint">닉네임</string>
     <string name="tag_hint">태그</string>
+    <string name="register_age_agreement_title">(필수) 만 14세 이상입니다.</string>
+    <string name="register_policy_agreement_title">(필수) 개인정보 수집이용 동의</string>
     <string name="dialog_cancel">취소</string>
     <string name="dialog_confirm">확인</string>
     <string name="profile_logout_message">로그아웃 하시겠습니까?</string>

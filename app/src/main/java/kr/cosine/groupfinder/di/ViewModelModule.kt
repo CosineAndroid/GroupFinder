@@ -1,4 +1,4 @@
-package kr.cosine.groupfinder.presentation.di
+package kr.cosine.groupfinder.di
 
 import dagger.Binds
 import dagger.Module
