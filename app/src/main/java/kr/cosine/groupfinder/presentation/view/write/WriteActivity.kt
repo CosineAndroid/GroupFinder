@@ -60,7 +60,6 @@ class WriteActivity : GroupFinderActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         binding = ActivityWriteBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
