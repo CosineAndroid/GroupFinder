@@ -15,6 +15,7 @@ object BaseColor {
     val AccountEnableButtonBackground = Color(0xFF2E3034)
     val AccountDisableButtonBackground = Color(0xFF1E1F20)
     val AccountDisableButtonText = Color(0xFF5A5A5A)
+    val AccountCheckboxBackground = AccountLoginButtonBackground
 
     // Register
     val RegisterEmptyBorder = Color(0xFF505050)

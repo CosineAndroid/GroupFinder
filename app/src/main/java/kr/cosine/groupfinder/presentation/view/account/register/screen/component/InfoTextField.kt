@@ -15,7 +15,6 @@ fun RowScope.InfoTextField(
 ) {
     DefaultTextField(
         hint = text,
-        backgroundHorizontalPadding = 0.dp,
         borderColor = borderColor,
         onValueChange = onValueChange,
         modifier = Modifier.weight(1f)

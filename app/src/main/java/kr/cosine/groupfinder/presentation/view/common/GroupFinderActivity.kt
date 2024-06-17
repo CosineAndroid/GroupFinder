@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import kr.cosine.groupfinder.presentation.view.common.data.IntentKey
 import kr.cosine.groupfinder.presentation.view.common.model.LoginSessionViewModel
 import kr.cosine.groupfinder.presentation.view.dialog.Dialog
 
@@ -11,15 +12,22 @@ abstract class GroupFinderActivity : AppCompatActivity() {
 
     private val loginSessionViewModel by viewModels<LoginSessionViewModel>()
 
+    private var useLoginSession = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        loginSessionViewModel.removeLoginSession()
+        useLoginSession = intent.getBooleanExtra(IntentKey.USE_LOGIN_SESSION, true)
+        if (useLoginSession) {
+            loginSessionViewModel.removeLoginSession()
+        }
     }
 
     override fun onResume() {
         super.onResume()
-        loginSessionViewModel.registerLoginSessionListener(this) {
-            showDuplicationLoginDialog()
+        if (useLoginSession) {
+            loginSessionViewModel.registerLoginSessionListener(this) {
+                showDuplicationLoginDialog()
+            }
         }
     }
 
