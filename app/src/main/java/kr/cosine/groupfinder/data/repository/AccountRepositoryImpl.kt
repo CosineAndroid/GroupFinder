@@ -60,6 +60,10 @@ class AccountRepositoryImpl @Inject constructor(
         return null
     }
 
+    override suspend fun getAccountByIdAndPassword(id: String, password: String): AccountResponse {
+        return findAccountByIdAndPassword(id, password) ?: throw AccountNotExistsException()
+    }
+
     override suspend fun isJoinedGroup(uniqueId: UUID): Boolean {
         return findAccountByUniqueId(uniqueId)?.groupUniqueId != null
     }
