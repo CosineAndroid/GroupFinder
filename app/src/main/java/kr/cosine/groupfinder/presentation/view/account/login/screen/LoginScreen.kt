@@ -45,6 +45,7 @@ import kr.cosine.groupfinder.presentation.view.account.login.model.LoginViewMode
 import kr.cosine.groupfinder.presentation.view.account.register.RegisterActivity
 import kr.cosine.groupfinder.presentation.view.common.data.Code
 import kr.cosine.groupfinder.presentation.view.common.data.IntentKey
+import kr.cosine.groupfinder.presentation.view.common.model.LoginSessionViewModel
 import kr.cosine.groupfinder.presentation.view.common.util.ActivityUtil
 import kr.cosine.groupfinder.presentation.view.compose.component.BaseButton
 import kr.cosine.groupfinder.presentation.view.compose.component.BaseScaffold
@@ -60,6 +61,7 @@ import kr.cosine.groupfinder.util.MyFirebaseMessagingService
 @Composable
 fun LoginScreen(
     loginViewModel: LoginViewModel = viewModel(),
+    logionSessionViewModel: LoginSessionViewModel = viewModel(),
     loadingViewModel: LoadingViewModel = viewModel()
 ) {
     val activity = LocalContext.current as ComponentActivity
@@ -87,6 +89,7 @@ fun LoginScreen(
                     lifecycle,
                     snackbarHostState,
                     loginViewModel,
+                    logionSessionViewModel,
                     loadingViewModel
                 )
             }
@@ -167,6 +170,7 @@ private suspend fun onLoginEvent(
     lifecycle: Lifecycle,
     snackbarHostState: SnackbarHostState,
     loginViewModel: LoginViewModel,
+    logionSessionViewModel: LoginSessionViewModel,
     loadingViewModel: LoadingViewModel
 ) {
     loginViewModel.event.flowWithLifecycle(lifecycle).collectLatest { event ->
@@ -178,6 +182,7 @@ private suspend fun onLoginEvent(
                 LocalAccountRegistry.setUniqueId(uniqueId)
                 localAccountManager.setUniqueId(uniqueId)
                 loginViewModel.refreshLastLogin()
+                logionSessionViewModel.addLoginSession()
 
                 FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
                     val token = task.result
