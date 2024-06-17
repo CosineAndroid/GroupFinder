@@ -92,31 +92,30 @@
             android:id="@+id/logoutButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginEnd="24dp"
             android:background="@color/background"
             android:gravity="center"
             android:minHeight="48dp"
             android:text="@string/profile_logout_title"
-            android:textColor="@color/white"
+            android:textColor="@color/profile_hide_button"
             android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/blockedUserShowButton" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/withdrawButton"/>
 
         <TextView
             android:id="@+id/withdrawButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="24dp"
             android:background="@color/background"
             android:gravity="center"
             android:minHeight="48dp"
             android:text="@string/profile_withdraw_title"
-            android:textColor="@color/white"
+            android:textColor="@color/profile_hide_button"
             android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/logoutButton" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
         <TextView
             android:id="@+id/policyButton"
@@ -128,7 +127,7 @@
             android:minHeight="48dp"
             android:text="@string/policy_title"
             android:textColor="@color/white"
-            android:textSize="13sp"
+            android:textSize="11sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />

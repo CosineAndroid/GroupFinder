@@ -7,8 +7,7 @@
     <color name="tag_background">#B2EAEAEA</color>
     <color name="text_hint">#9498A5</color>
 
-    <color name="profile_logout_button_background">#D4D4D4</color>
-    <color name="profile_withdraw_button_background">#FF8078</color>
+    <color name="profile_hide_button">#474A50</color>
 
     <color name="group_default_background">#2E3034</color>
     <color name="group_join_background">#6E4BDC</color>
