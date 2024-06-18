@@ -23,7 +23,7 @@ class GroupFinderApplication : Application() {
             override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
                 if (activity !is AccountActivity && LocalAccountRegistry.findUniqueId() == null) {
                     LocalAccountManager(activity).findUniqueId()
-                        ?.let(LocalAccountRegistry::setUniqueId)
+                        .let(LocalAccountRegistry::setUniqueId)
                 }
             }
 

@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -21,12 +22,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.PlatformImeOptions
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kr.cosine.groupfinder.presentation.view.compose.ui.BaseColor
 import kr.cosine.groupfinder.presentation.view.compose.ui.Font
+
+private const val DEFAULT_ENGLISH_KEYBOARD = "defaultInputmode=english;"
 
 @Composable
 fun DefaultTextField(
@@ -98,6 +101,9 @@ fun BaseTextField(
                 fontFamily = Font.sansFontFamily,
                 fontWeight = FontWeight.Normal,
                 color = BaseColor.AccountTextFieldContent
+            ),
+            keyboardOptions = KeyboardOptions.Default.copy(
+                platformImeOptions = PlatformImeOptions(DEFAULT_ENGLISH_KEYBOARD)
             ),
             singleLine = true,
             decorationBox = { innerTextField ->

@@ -1,12 +1,10 @@
 package kr.cosine.groupfinder.presentation.view.profile
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -18,6 +16,7 @@ import kr.cosine.groupfinder.data.manager.LocalAccountManager
 import kr.cosine.groupfinder.data.registry.LocalAccountRegistry
 import kr.cosine.groupfinder.databinding.FragmentProfileBinding
 import kr.cosine.groupfinder.presentation.view.account.login.LoginActivity
+import kr.cosine.groupfinder.presentation.view.common.RefreshableFragment
 import kr.cosine.groupfinder.presentation.view.common.data.IntentKey
 import kr.cosine.groupfinder.presentation.view.common.extension.applyWhite
 import kr.cosine.groupfinder.presentation.view.common.extension.requireContext
@@ -35,7 +34,7 @@ import kr.cosine.groupfinder.presentation.view.profile.model.ProfileViewModel
 import kr.cosine.groupfinder.presentation.view.profile.state.ProfileUiState
 
 @AndroidEntryPoint
-class ProfileFragment : Fragment() {
+class ProfileFragment : RefreshableFragment() {
 
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
@@ -62,7 +61,10 @@ class ProfileFragment : Fragment() {
         registerWithdrawButton()
         registerPolicyButton()
         registerViewModelEvent()
-        policy()
+    }
+
+    override fun refresh() {
+        profileViewModel.loadProfile()
     }
 
     private fun registerProgressBar() {
@@ -73,13 +75,13 @@ class ProfileFragment : Fragment() {
         changeTaggedNicknameImageButton.setOnClickListenerWithCooldown {
             val split = taggedNicknameTextView.text.toString().split("#", limit = 2)
             TaggedNicknameInputDialog(split[0], split[1], profileViewModel::setTaggedNickname)
-                .show(childFragmentManager, TaggedNicknameInputDialog.TAG)
+                .show(parentFragmentManager, TaggedNicknameInputDialog.TAG)
         }
     }
 
-    private fun registerRecyclerView() = with(binding.groupRecyclerView) {
-        adapter = GroupAdpater { post ->
-            requireContext.startActivity(DetailActivity::class) {
+    private fun registerRecyclerView() {
+        binding.groupRecyclerView.adapter = GroupAdpater { post ->
+            launch(DetailActivity::class) {
                 putExtra(IntentKey.POST_UNIQUE_ID, post.postUniqueId)
             }
         }.apply {
@@ -114,7 +116,7 @@ class ProfileFragment : Fragment() {
         Dialog(
             message = message,
             onConfirmClick = onConfirmClick
-        ).show(childFragmentManager, Dialog.TAG)
+        ).show(parentFragmentManager, Dialog.TAG)
     }
 
     private fun registerPolicyButton() {
@@ -124,7 +126,7 @@ class ProfileFragment : Fragment() {
     }
 
     private fun registerViewModelEvent() = with(binding) {
-        profileViewModel.loadProfile()
+        refresh()
         lifecycleScope.launch {
             profileViewModel.uiState.flowWithLifecycle(lifecycle).collectLatest { uiState ->
                 val isLoading = uiState is ProfileUiState.Loading
@@ -177,14 +179,8 @@ class ProfileFragment : Fragment() {
 
     private fun resetLocalAccount() {
         LocalAccountRegistry.isLogout = true
+        LocalAccountRegistry.resetUniqueId()
         LocalAccountManager(requireContext).reset()
-    }
-
-    private fun policy() {
-        binding.policyButton.setOnClickListener {
-            val intent = Intent(context, PolicyActivity::class.java)
-            startActivity(intent)
-        }
     }
 
     override fun onDestroyView() {
