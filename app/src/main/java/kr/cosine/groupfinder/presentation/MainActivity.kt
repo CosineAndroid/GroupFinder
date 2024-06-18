@@ -2,6 +2,7 @@ package kr.cosine.groupfinder.presentation
 
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
@@ -112,5 +113,23 @@ class MainActivity : GroupFinderActivity(), NavigationView.OnNavigationItemSelec
         ) {
             finish()
         }.show(supportFragmentManager, Dialog.TAG)
+    }
+
+    private fun getCurrentFragment(): Fragment? {
+        return supportFragmentManager.findFragmentById(R.id.fragment_container)
+    }
+
+    fun showForceExitDialog() {
+        Dialog(
+            title = "강제 퇴장",
+            message = "강제 퇴장되었습니다.",
+            cancelButtonVisibility = View.GONE,
+            onConfirmClick = {
+                val currentFragment = getCurrentFragment()
+                if (currentFragment is GroupFragment) {
+                    currentFragment.doRefresh()
+                }
+            }
+        ).show(supportFragmentManager, Dialog.TAG)
     }
 }

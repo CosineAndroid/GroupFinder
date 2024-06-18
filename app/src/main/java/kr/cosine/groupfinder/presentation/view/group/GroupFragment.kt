@@ -184,4 +184,8 @@ class GroupFragment(
         super.onDestroyView()
         _binding = null
     }
+
+    fun doRefresh() {
+        refresh()
+    }
 }
