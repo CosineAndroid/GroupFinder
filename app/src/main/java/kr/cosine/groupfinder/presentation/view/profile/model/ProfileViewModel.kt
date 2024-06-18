@@ -44,9 +44,9 @@ class ProfileViewModel @Inject constructor(
     val changeEvent: SharedFlow<ProfileChangeEvent> get() = _changeEvent.asSharedFlow()
 
     fun loadProfile() = viewModelScope.launch(Dispatchers.IO) {
+        setLoading()
         val uniqueId = LocalAccountRegistry.uniqueId
         getAccountUseCase(uniqueId).onSuccess { accountEntity ->
-            if (accountEntity == null) return@onSuccess
             val groupItems = (getGroupsUseCase(null, emptySet()).getOrNull() ?: emptyList()).firstOrNull {
                 it.isJoinedPeople(uniqueId)
             }
@@ -57,6 +57,12 @@ class ProfileViewModel @Inject constructor(
                     groupItem = groupItems
                 )
             }
+        }
+    }
+
+    private fun setLoading() {
+        _uiState.update {
+            ProfileUiState.Loading
         }
     }
 
