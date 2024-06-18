@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.DialogFragment
 import kr.cosine.groupfinder.presentation.view.common.data.IntentKey
 import kr.cosine.groupfinder.presentation.view.common.model.LoginSessionViewModel
 import kr.cosine.groupfinder.presentation.view.dialog.Dialog
@@ -32,7 +33,9 @@ abstract class GroupFinderActivity : AppCompatActivity() {
     }
 
     private fun showDuplicationLoginDialog() {
-        Dialog.dismiss(this) // 안됨, 고쳐야 함
+        supportFragmentManager.fragments.forEach {
+            (it as? DialogFragment)?.dismiss()
+        }
         Dialog(
             message = "다른 위치에서 로그인하였습니다.",
             cancelButtonVisibility = View.GONE

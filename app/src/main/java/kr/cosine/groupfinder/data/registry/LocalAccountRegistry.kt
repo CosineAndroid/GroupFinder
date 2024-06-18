@@ -11,7 +11,11 @@ object LocalAccountRegistry {
 
     fun findUniqueId(): UUID? = _uniqueId
 
-    fun setUniqueId(uniqueId: UUID) {
+    fun setUniqueId(uniqueId: UUID?) {
         _uniqueId = uniqueId
+    }
+
+    fun resetUniqueId() {
+        _uniqueId = null
     }
 }

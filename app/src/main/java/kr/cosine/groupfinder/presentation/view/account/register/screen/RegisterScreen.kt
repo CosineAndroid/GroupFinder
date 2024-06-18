@@ -1,7 +1,6 @@
 package kr.cosine.groupfinder.presentation.view.account.register.screen
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import androidx.activity.ComponentActivity
@@ -33,9 +32,9 @@ import kr.cosine.groupfinder.R
 import kr.cosine.groupfinder.data.manager.LocalAccountManager
 import kr.cosine.groupfinder.presentation.view.account.component.AccountScaffold
 import kr.cosine.groupfinder.presentation.view.account.login.LoginActivity
-import kr.cosine.groupfinder.presentation.view.account.register.screen.component.HeightSpace
 import kr.cosine.groupfinder.presentation.view.account.register.event.RegisterEvent
 import kr.cosine.groupfinder.presentation.view.account.register.model.RegisterViewModel
+import kr.cosine.groupfinder.presentation.view.account.register.screen.component.HeightSpace
 import kr.cosine.groupfinder.presentation.view.account.register.screen.component.InfoTextField
 import kr.cosine.groupfinder.presentation.view.account.register.state.RegisterErrorUiState
 import kr.cosine.groupfinder.presentation.view.common.data.Code
