@@ -3,6 +3,7 @@ package kr.cosine.groupfinder.presentation.view.dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,7 @@ import kr.cosine.groupfinder.presentation.view.common.data.Interval
 import kr.cosine.groupfinder.presentation.view.common.extension.setOnClickListenerWithCooldown
 
 class Dialog(
+    private val isCancelable: Boolean = true,
     private val title: String = "",
     private val message: String = "",
     private val cancelButtonTitle: String = "",
@@ -42,6 +44,25 @@ class Dialog(
         registerMessageTextView()
         registerCancelButton()
         registerConfirmButton()
+    }
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): android.app.Dialog {
+        val dialog = super.onCreateDialog(savedInstanceState)
+        dialog.setCanceledOnTouchOutside(isCancelable)
+        return dialog
+    }
+
+    override fun onStart() {
+        super.onStart()
+        dialog?.let {
+            it.setOnKeyListener{_, keyCode, event ->
+                if (keyCode == KeyEvent.KEYCODE_BACK && event.action == KeyEvent.ACTION_UP) {
+                    !isCancelable
+                } else {
+                    false
+                }
+            }
+        }
     }
 
     private fun removeWhiteBackground() {

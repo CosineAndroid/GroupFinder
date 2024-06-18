@@ -317,6 +317,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             val postUUID = data["postUUID"] ?: "error"
             Log.d("FCM", "showJoinRequestDialog: $senderUUID,$postUUID")
             Dialog(
+                isCancelable = false,
                 title = "참가 요청",
                 message = "${participantName}님이 ${participantLane}에 참가를 요청 합니다.",
                 cancelButtonTitle = "거절",
