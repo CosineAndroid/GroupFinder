@@ -130,8 +130,9 @@ class WriteActivity : GroupFinderActivity() {
             tagRecyclerViewAdapter = this
         }
         layoutManager = FlexboxLayoutManager(context)
-        val flexboxItemDecoration = FlexboxItemDecoration(context)
-        addItemDecoration(flexboxItemDecoration)
+        if (itemDecorationCount == 0) {
+            addItemDecoration(FlexboxItemDecoration)
+        }
     }
 
     private fun registerTagViewModel() {

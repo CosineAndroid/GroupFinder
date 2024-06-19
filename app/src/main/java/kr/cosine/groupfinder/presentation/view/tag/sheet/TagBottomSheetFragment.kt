@@ -45,8 +45,9 @@ class TagBottomSheetFragment : BottomSheetDialogFragment() {
     ) = with(recyclerView) {
         adapter = TagAdapter(tags, this@TagBottomSheetFragment::onItemClick)
         layoutManager = FlexboxLayoutManager(context)
-        val flexboxItemDecoration = FlexboxItemDecoration(context)
-        addItemDecoration(flexboxItemDecoration)
+        if (itemDecorationCount == 0) {
+            addItemDecoration(FlexboxItemDecoration)
+        }
     }
 
     private fun onItemClick(tag: String) {
