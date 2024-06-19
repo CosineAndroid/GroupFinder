@@ -1,5 +1,7 @@
 package kr.cosine.groupfinder.presentation.view.account.component
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
@@ -13,9 +15,14 @@ fun AccountScaffold(
     mainBody: @Composable () -> Unit
 ) {
     BaseScaffold(
-        prevBody = prevBody,
-        mainBody = mainBody,
-        modifier = Modifier
-            .padding(30.dp)
-    )
+        prevBody = prevBody
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(30.dp)
+        ) {
+            mainBody()
+        }
+    }
 }
