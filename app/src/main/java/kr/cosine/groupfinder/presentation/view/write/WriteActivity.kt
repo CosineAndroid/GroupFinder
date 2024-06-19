@@ -117,6 +117,8 @@ class WriteActivity : AppCompatActivity() {
         gameModeSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         gameModeSpinner.adapter = gameModeSpinnerAdapter
 
+        gameModeSpinner.dropDownVerticalOffset = 100
+
         gameModeSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>,
@@ -199,11 +201,7 @@ class WriteActivity : AppCompatActivity() {
     private fun setOnAddLaneButtonListener() {
         val addLaneBtn = binding.addLaneCardView
         addLaneBtn.setOnClickListener {
-            if (requireLaneRecyclerViewAdapter.itemCount >= 4) {
-                Toast.makeText(this, "더 이상 라인을 추가할 수 없습니다", Toast.LENGTH_SHORT).show()
-            } else {
                 requireLaneRecyclerViewAdapter.addLane("1")
-            }
         }
     }
 
