@@ -5,14 +5,15 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
 
-abstract class AccountActivity(
-    private val content: @Composable () -> Unit
-) : ComponentActivity() {
+abstract class AccountActivity : ComponentActivity() {
+
+    @Composable
+    abstract fun Screen()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            content()
+            Screen()
         }
     }
 }
