@@ -31,4 +31,12 @@ object BaseColor {
     val RecordRankCategoryText = Color(0xFF55D3B4)
     val RecordPointText = Color(0xFF8F96A1)
     val RecordRatingText = Color(0xFF69717A)
+
+    // Broadcast
+    val BroadcastListDivider = Color(0xFF1F2326)
+    val BroadcastListItemTimeText = Color(0xFFA8A8A8)
+    val BroadcastListArrowBackgroundTint = BroadcastListItemTimeText
+    val BroadcastListWriteButtonBackground = AccountLoginButtonBackground
+    val BroadcastDraftTextFieldBackground = Color(0xFF232323)
+    val BroadcastDraftButtonBackground = AccountLoginButtonBackground
 }

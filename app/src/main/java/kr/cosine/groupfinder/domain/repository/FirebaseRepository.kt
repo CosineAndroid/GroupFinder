@@ -6,11 +6,16 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.EventListener
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.QuerySnapshot
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.tasks.await
 
-interface FirebaseRepository {
+abstract class FirebaseRepository(
+    private val collectionPath: String
+) {
 
-    val reference: CollectionReference
+    protected val reference: CollectionReference
+        get() = Firebase.firestore.collection(collectionPath)
 
     fun addSnapshotListener(listener: EventListener<QuerySnapshot>): ListenerRegistration {
         return reference.addSnapshotListener(listener)

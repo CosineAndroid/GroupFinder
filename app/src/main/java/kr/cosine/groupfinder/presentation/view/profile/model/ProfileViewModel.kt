@@ -20,6 +20,7 @@ import kr.cosine.groupfinder.domain.usecase.GetAccountUseCase
 import kr.cosine.groupfinder.domain.usecase.GetGroupsUseCase
 import kr.cosine.groupfinder.domain.usecase.SetTaggedNicknameUseCase
 import kr.cosine.groupfinder.domain.usecase.WithdrawAccountUseCase
+import kr.cosine.groupfinder.enums.Permission
 import kr.cosine.groupfinder.presentation.view.group.state.item.extension.isJoinedPeople
 import kr.cosine.groupfinder.presentation.view.profile.event.ProfileChangeEvent
 import kr.cosine.groupfinder.presentation.view.profile.event.ProfileEvent
@@ -54,7 +55,8 @@ class ProfileViewModel @Inject constructor(
                 ProfileUiState.Success(
                     nickname = accountEntity.nickname,
                     tag = accountEntity.tag,
-                    groupItem = groupItems
+                    groupItem = groupItems,
+                    isAdmin = accountEntity.permission == Permission.ADMIN
                 )
             }
         }

@@ -16,14 +16,15 @@ import kr.cosine.groupfinder.data.manager.LocalAccountManager
 import kr.cosine.groupfinder.data.registry.LocalAccountRegistry
 import kr.cosine.groupfinder.databinding.FragmentProfileBinding
 import kr.cosine.groupfinder.presentation.view.account.login.LoginActivity
+import kr.cosine.groupfinder.presentation.view.broadcast.BroadcastListActivity
 import kr.cosine.groupfinder.presentation.view.common.RefreshableFragment
 import kr.cosine.groupfinder.presentation.view.common.data.IntentKey
 import kr.cosine.groupfinder.presentation.view.common.extension.applyWhite
 import kr.cosine.groupfinder.presentation.view.common.extension.requireContext
 import kr.cosine.groupfinder.presentation.view.common.extension.setOnClickListenerWithCooldown
 import kr.cosine.groupfinder.presentation.view.common.extension.showToast
-import kr.cosine.groupfinder.presentation.view.common.util.ActivityUtil
-import kr.cosine.groupfinder.presentation.view.common.util.ActivityUtil.startActivity
+import kr.cosine.groupfinder.presentation.view.common.extension.startActivity
+import kr.cosine.groupfinder.presentation.view.common.extension.startNewActivity
 import kr.cosine.groupfinder.presentation.view.detail.DetailActivity
 import kr.cosine.groupfinder.presentation.view.dialog.Dialog
 import kr.cosine.groupfinder.presentation.view.dialog.TaggedNicknameInputDialog
@@ -56,7 +57,8 @@ class ProfileFragment : RefreshableFragment() {
         registerProgressBar()
         registerChangeTaggedNicknameButton()
         registerRecyclerView()
-        registerBlockedUserShowButton()
+        registerBroadcastButton()
+        registerBlockUserButton()
         registerLogoutButton()
         registerWithdrawButton()
         registerPolicyButton()
@@ -89,8 +91,14 @@ class ProfileFragment : RefreshableFragment() {
         }
     }
 
-    private fun registerBlockedUserShowButton() {
-        binding.blockedUserShowButton.setOnClickListenerWithCooldown {
+    private fun registerBroadcastButton() {
+        binding.broadcastButton.setOnClickListenerWithCooldown {
+            requireContext.startActivity(BroadcastListActivity::class)
+        }
+    }
+
+    private fun registerBlockUserButton() {
+        binding.blockUserButton.setOnClickListenerWithCooldown {
             requireContext.startActivity(BlockUserActivity::class)
         }
     }
@@ -99,7 +107,7 @@ class ProfileFragment : RefreshableFragment() {
         binding.logoutButton.setOnClickListenerWithCooldown {
             showDialog(getString(R.string.profile_logout_message)) {
                 resetLocalAccount()
-                ActivityUtil.startNewActivity(requireContext, LoginActivity::class)
+                requireContext.startNewActivity(LoginActivity::class)
             }
         }
     }
@@ -142,6 +150,9 @@ class ProfileFragment : RefreshableFragment() {
                     } else {
                         groupAdpater.setGroup(postItem)
                     }
+                    if (!uiState.isAdmin) {
+                        adminInquiryButton.visibility = View.GONE
+                    }
                 }
             }
         }
@@ -152,7 +163,7 @@ class ProfileFragment : RefreshableFragment() {
 
                     is ProfileEvent.Success -> {
                         resetLocalAccount()
-                        ActivityUtil.startNewActivity(requireContext, LoginActivity::class)
+                        requireContext.startNewActivity(LoginActivity::class)
                     }
                 }
             }

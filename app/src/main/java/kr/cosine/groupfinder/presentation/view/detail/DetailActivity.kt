@@ -23,8 +23,8 @@ import kr.cosine.groupfinder.enums.Lane
 import kr.cosine.groupfinder.enums.TestGlobalUserData.HOST
 import kr.cosine.groupfinder.enums.TestGlobalUserData.PARTICIPANT
 import kr.cosine.groupfinder.presentation.view.common.GroupFinderActivity
-import kr.cosine.groupfinder.presentation.view.common.data.Code
 import kr.cosine.groupfinder.presentation.view.common.data.IntentKey
+import kr.cosine.groupfinder.presentation.view.common.data.ResultCode
 import kr.cosine.groupfinder.presentation.view.common.extension.applyWhite
 import kr.cosine.groupfinder.presentation.view.common.extension.setOnClickListenerWithCooldown
 import kr.cosine.groupfinder.presentation.view.common.extension.showToast
@@ -362,7 +362,7 @@ class DetailActivity : GroupFinderActivity() {
     }
 
     private fun finishWithResult() {
-        setResult(Code.REFRESH)
+        setResult(ResultCode.REFRESH)
         finish()
     }
 }

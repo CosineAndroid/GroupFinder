@@ -74,19 +74,32 @@
             app:layout_constraintTop_toBottomOf="@+id/groupRecyclerView" />
 
         <TextView
-            android:id="@+id/blockedUserShowButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:background="@color/background"
-            android:gravity="center"
-            android:minHeight="48dp"
-            android:text="@string/profile_block_user_title"
-            android:textColor="@color/white"
-            android:textSize="16sp"
+            android:id="@+id/broadcastButton"
+            style="@style/profile_menu"
+            android:text="@string/profile_broadcast_title"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/horizontalLine" />
+
+        <TextView
+            android:id="@+id/blockUserButton"
+            style="@style/profile_menu"
+            android:text="@string/profile_block_user_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/broadcastButton" />
+
+        <TextView
+            android:id="@+id/userInquiryButton"
+            style="@style/profile_menu"
+            android:text="@string/profile_user_inquiry_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/blockUserButton" />
+
+        <TextView
+            android:id="@+id/adminInquiryButton"
+            style="@style/profile_menu"
+            android:text="@string/profile_admin_inquiry_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/userInquiryButton" />
 
         <TextView
             android:id="@+id/logoutButton"
@@ -128,8 +141,8 @@
             android:textColor="@color/white"
             android:textSize="11sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ProgressBar
