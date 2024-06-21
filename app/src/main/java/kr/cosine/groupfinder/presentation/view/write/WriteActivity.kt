@@ -1,17 +1,11 @@
 package kr.cosine.groupfinder.presentation.view.write
-
-import android.annotation.SuppressLint
-import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
-import android.widget.EditText
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -32,7 +26,6 @@ import kr.cosine.groupfinder.presentation.view.common.data.Code
 import kr.cosine.groupfinder.presentation.view.common.data.IntentKey
 import kr.cosine.groupfinder.presentation.view.common.data.Interval
 import kr.cosine.groupfinder.presentation.view.common.extension.setOnClickListenerWithCooldown
-import kr.cosine.groupfinder.presentation.view.common.extension.showToast
 import kr.cosine.groupfinder.presentation.view.common.flexbox.decoration.FlexboxItemDecoration
 import kr.cosine.groupfinder.presentation.view.common.flexbox.manager.FlexboxLayoutManager
 import kr.cosine.groupfinder.presentation.view.tag.adapter.TagAdapter
@@ -87,6 +80,7 @@ class WriteActivity : AppCompatActivity() {
         registerViewModelEvent()
         setGameModeSpinner()
         checkBodyMaxLength()
+        checkTitleMaxLength()
     }
 
 
@@ -104,9 +98,28 @@ class WriteActivity : AppCompatActivity() {
                         binding.bodyEditTextView.setSelection(binding.bodyEditTextView.length())
                         binding.bodyEditTextView.addTextChangedListener(this)
                     }
+                        val currentLength = it.length
+                        val bodyMaxLength = 50
+                        binding.bodyMaxLengthTextView.text = "$currentLength/$bodyMaxLength"
                 }
             }
 
+            override fun afterTextChanged(s: Editable?) {
+            }
+        })
+    }
+
+    private fun checkTitleMaxLength(){
+        binding.titleEditTextView.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                s?.let {
+                    val currentLength = it.length
+                    val titleMaxLength = 20
+                    binding.titleMaxLengthTextView.text = "$currentLength/$titleMaxLength"
+                }
+            }
             override fun afterTextChanged(s: Editable?) {
             }
         })
@@ -119,6 +132,14 @@ class WriteActivity : AppCompatActivity() {
         gameModeSpinner.adapter = gameModeSpinnerAdapter
 
         gameModeSpinner.dropDownVerticalOffset = 100
+
+        val firstMode = mode
+
+        // mode 값이 null이 아닌 경우 spinner의 선택된 항목으로 설정 전체에서 만들었을 때는 일반이 기본값
+        firstMode.let {
+            val position = Mode.entries.indexOf(it)
+            gameModeSpinner.setSelection(position)
+        }
 
         gameModeSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
@@ -133,6 +154,8 @@ class WriteActivity : AppCompatActivity() {
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
     }
+
+
 
     private fun setupTagRecyclerViewAdapter() = with(binding.writeTagRecyclerView) {
         adapter = TagAdapter(tagViewModel.tags.toMutableList(), tagViewModel::removeTag).apply {

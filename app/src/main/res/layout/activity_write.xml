@@ -37,6 +37,18 @@
                 tools:listitem="@layout/item_gamemodespinner" />
 
             <TextView
+                android:id="@+id/titleMaxLengthTextView"
+                android:layout_width="50dp"
+                android:text="0/25"
+                android:textColor="@color/white"
+                android:gravity="end"
+                android:layout_marginBottom="5dp"
+                android:textSize="12sp"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@+id/titleEditTextView"
+                app:layout_constraintEnd_toEndOf="@+id/titleEditTextView" />
+
+            <TextView
                 android:id="@+id/titleTextView1"
                 style="@style/textView_title"
                 android:layout_width="40dp"
@@ -92,6 +104,18 @@
 
                 app:layout_constraintStart_toStartOf="@+id/titleEditTextView"
                 app:layout_constraintTop_toBottomOf="@+id/titleEditTextView" />
+
+            <TextView
+                android:id="@+id/bodyMaxLengthTextView"
+                android:layout_width="50dp"
+                android:text="0/25"
+                android:textColor="@color/white"
+                android:gravity="end"
+                android:layout_marginBottom="5dp"
+                android:textSize="12sp"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@+id/bodyEditTextView"
+                app:layout_constraintEnd_toEndOf="@+id/bodyEditTextView" />
 
 
             <EditText
