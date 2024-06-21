@@ -19,6 +19,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -86,7 +87,7 @@ class WriteActivity : AppCompatActivity() {
         registerViewModelEvent()
         setGameModeSpinner()
         checkBodyMaxLength()
-}
+    }
 
 
     private fun checkBodyMaxLength() {
@@ -201,7 +202,7 @@ class WriteActivity : AppCompatActivity() {
     private fun setOnAddLaneButtonListener() {
         val addLaneBtn = binding.addLaneCardView
         addLaneBtn.setOnClickListener {
-                requireLaneRecyclerViewAdapter.addLane("1")
+            requireLaneRecyclerViewAdapter.addLane("1")
         }
     }
 
@@ -213,15 +214,15 @@ class WriteActivity : AppCompatActivity() {
             val title = binding.titleEditTextView.text.toString()
 
             if (title.isBlank()) {
-                showToast("제목이 입력되지 않았습니다")
+                showSnackbar("제목이 입력되지 않았습니다")
                 return@setOnClickListenerWithCooldown
             }
             if (hasDefaultLane) {
-                showToast("설정하지 않은 라인이 있습니다")
+                showSnackbar("설정하지 않은 라인이 있습니다")
                 return@setOnClickListenerWithCooldown
             }
             if (hasDuplicateLanes) {
-                showToast("중복된 라인이 존재합니다")
+                showSnackbar("중복된 라인이 존재합니다")
                 return@setOnClickListenerWithCooldown
             }
             // 게시글 생성
@@ -240,6 +241,10 @@ class WriteActivity : AppCompatActivity() {
             lanes[selectedMyLane] = ownerUniqueId
             writeViewModel.createPost(mode, title, body, ownerUniqueId, tags, lanes)
         }
+    }
+
+    private fun showSnackbar(message: String) {
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).show()
     }
 
     //중복된 라인 체크
@@ -262,12 +267,12 @@ class WriteActivity : AppCompatActivity() {
             writeViewModel.event.flowWithLifecycle(lifecycle).collectLatest { writeEvent ->
                 when (writeEvent) {
                     is WriteEvent.Success -> {
-                        showToast("생성이 완료되었습니다")
+                        showSnackbar("생성이 완료되었습니다")
                         setResult(Code.REFRESH)
                         finish()
                     }
 
-                    is WriteEvent.Notice -> showToast(writeEvent.message)
+                    is WriteEvent.Notice -> showSnackbar(writeEvent.message)
                 }
             }
         }
