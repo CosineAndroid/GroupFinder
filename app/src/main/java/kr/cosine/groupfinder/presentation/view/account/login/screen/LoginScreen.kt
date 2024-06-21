@@ -61,47 +61,48 @@ fun LoginScreen(
         val localAccountManager = LocalAccountManager(activity)
         LoadingScreen()
         LoginLaunchedEffect(localAccountManager)
-        AutoLoginLaunchedEffect(localAccountManager)
-        Column(
-            verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically),
-            modifier = Modifier
-                .fillMaxSize()
-        ) {
-            val uiState by loginViewModel.uiState.collectAsStateWithLifecycle()
-            BaseTextField(
-                text = uiState.id,
-                hint = stringResource(R.string.login_id_hint),
-                onValueChange = loginViewModel::setId
-            )
-            BaseTextField(
-                text = uiState.password,
-                hint = stringResource(R.string.login_password_hint),
-                visualTransformation = PasswordVisualTransformation(),
-                onValueChange = loginViewModel::setPassword
-            )
-            BaseCheckbox(
-                isChecked = localAccountManager.isAutoLogin(),
-                text = stringResource(R.string.login_auto_login_title),
-                onCheckedChange = localAccountManager::setAutoLogin
-            )
-            Space(
-                height = 10.dp
-            )
-            BaseButton(
-                text = stringResource(R.string.login),
-                containerColor = BaseColor.AccountLoginButtonBackground
+        AutoLoginLaunchedEffect(localAccountManager) {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically),
+                modifier = Modifier
+                    .fillMaxSize()
             ) {
-                loadingViewModel.show()
-                loginViewModel.loginByInput()
-            }
-            val context = LocalContext.current
-            val registerResultLauncher = getRegisterResultLanuncher()
-            BaseButton(
-                text = stringResource(R.string.register),
-                containerColor = BaseColor.Background,
-                elevation = 0.dp
-            ) {
-                context.launch(RegisterActivity::class, registerResultLauncher)
+                val uiState by loginViewModel.uiState.collectAsStateWithLifecycle()
+                BaseTextField(
+                    text = uiState.id,
+                    hint = stringResource(R.string.login_id_hint),
+                    onValueChange = loginViewModel::setId
+                )
+                BaseTextField(
+                    text = uiState.password,
+                    hint = stringResource(R.string.login_password_hint),
+                    visualTransformation = PasswordVisualTransformation(),
+                    onValueChange = loginViewModel::setPassword
+                )
+                BaseCheckbox(
+                    isChecked = localAccountManager.isAutoLogin(),
+                    text = stringResource(R.string.login_auto_login_title),
+                    onCheckedChange = localAccountManager::setAutoLogin
+                )
+                Space(
+                    height = 10.dp
+                )
+                BaseButton(
+                    text = stringResource(R.string.login),
+                    containerColor = BaseColor.AccountLoginButtonBackground
+                ) {
+                    loadingViewModel.show()
+                    loginViewModel.loginByInput()
+                }
+                val context = LocalContext.current
+                val registerResultLauncher = getRegisterResultLanuncher()
+                BaseButton(
+                    text = stringResource(R.string.register),
+                    containerColor = BaseColor.Background,
+                    elevation = 0.dp
+                ) {
+                    context.launch(RegisterActivity::class, registerResultLauncher)
+                }
             }
         }
     }
@@ -136,7 +137,8 @@ private fun LoginLaunchedEffect(
 private fun AutoLoginLaunchedEffect(
     localAccountManager: LocalAccountManager,
     loginViewModel: LoginViewModel = hiltViewModel(),
-    loadingViewModel: LoadingViewModel = viewModel()
+    loadingViewModel: LoadingViewModel = viewModel(),
+    content: @Composable () -> Unit
 ) {
     val uniqueId = localAccountManager.findUniqueId()
     if (!LocalAccountRegistry.isLogout && localAccountManager.isAutoLogin() && uniqueId != null) {
@@ -145,8 +147,10 @@ private fun AutoLoginLaunchedEffect(
             key1 = Unit
         ) {
             loginViewModel.loginByUniqueId(uniqueId)
+            return@LaunchedEffect
         }
     }
+    content()
 }
 
 private suspend fun onLoginEvent(
