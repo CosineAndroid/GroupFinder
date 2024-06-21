@@ -11,11 +11,10 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.tasks.await
 
 abstract class FirebaseRepository(
-    private val collectionPath: String
+    collectionPath: String
 ) {
 
-    protected val reference: CollectionReference
-        get() = Firebase.firestore.collection(collectionPath)
+    protected val reference: CollectionReference = Firebase.firestore.collection(collectionPath)
 
     fun addSnapshotListener(listener: EventListener<QuerySnapshot>): ListenerRegistration {
         return reference.addSnapshotListener(listener)
