@@ -15,7 +15,7 @@ fun Context.showToast(@StringRes stringResourceId: Int, vararg formatArgs: Any) 
     showToast(getString(stringResourceId, *formatArgs))
 }
 
-fun <T : Any> Context.startNewActivity(clazz: KClass<T>) {
+fun <T : Any> Context.startNewActivity(clazz: KClass<out T>) {
     val intent = Intent(this, clazz.java).apply {
         addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
         addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -23,12 +23,12 @@ fun <T : Any> Context.startNewActivity(clazz: KClass<T>) {
     startActivity(intent)
 }
 
-fun <T : Any> Context.startActivity(clazz: KClass<T>, intentScope: Intent.() -> Unit = {}) {
+fun <T : Any> Context.startActivity(clazz: KClass<out T>, intentScope: Intent.() -> Unit = {}) {
     val intent = Intent(this, clazz.java).apply(intentScope)
     startActivity(intent)
 }
 
-fun <T : Any> Context.launch(clazz: KClass<T>, resultLauncher: ActivityResultLauncher<Intent>) {
+fun <T : Any> Context.launch(clazz: KClass<out T>, resultLauncher: ActivityResultLauncher<Intent>) {
     val intent = Intent(this, clazz.java)
     resultLauncher.launch(intent)
 }
