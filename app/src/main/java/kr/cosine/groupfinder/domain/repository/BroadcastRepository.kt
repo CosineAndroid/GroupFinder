@@ -5,9 +5,9 @@ import java.util.UUID
 
 abstract class BroadcastRepository : FirebaseRepository("broadcasts") {
 
-    abstract suspend fun addBroadcast(broadcastResponse: BroadcastResponse)
+    abstract suspend fun createBroadcast(broadcastResponse: BroadcastResponse)
 
-    abstract suspend fun removeBroadcastByUniqueId(uniqueId: UUID)
+    abstract suspend fun deleteBroadcastByUniqueId(uniqueId: UUID)
 
     abstract suspend fun getBroadcasts(): List<BroadcastResponse>
 }

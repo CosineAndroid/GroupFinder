@@ -11,14 +11,14 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
-import kr.cosine.groupfinder.domain.usecase.DraftBroadcastUseCase
+import kr.cosine.groupfinder.domain.usecase.CreateBroadcastUseCase
 import kr.cosine.groupfinder.presentation.view.broadcast.data.BroadcastDraftInfo
 import kr.cosine.groupfinder.presentation.view.broadcast.event.BroadcastDraftEvent
 import javax.inject.Inject
 
 @HiltViewModel
 class BroadcastDraftViewModel @Inject constructor(
-    private val draftBroadcastUseCase: DraftBroadcastUseCase
+    private val createBroadcastUseCase: CreateBroadcastUseCase
 ) : ViewModel() {
 
     private var _draftInfo by mutableStateOf(BroadcastDraftInfo())
@@ -40,7 +40,7 @@ class BroadcastDraftViewModel @Inject constructor(
     }
 
     fun draftBroadcast(title: String, body: String) = viewModelScope.launch(Dispatchers.IO) {
-        draftBroadcastUseCase.invoke(title, body).onSuccess {
+        createBroadcastUseCase.invoke(title, body).onSuccess {
             val event = BroadcastDraftEvent.Success
             _event.emit(event)
         }.onFailure {

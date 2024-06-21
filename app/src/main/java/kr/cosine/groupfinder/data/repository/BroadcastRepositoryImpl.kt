@@ -8,11 +8,11 @@ import javax.inject.Inject
 
 class BroadcastRepositoryImpl @Inject constructor() : BroadcastRepository() {
 
-    override suspend fun addBroadcast(broadcastResponse: BroadcastResponse) {
+    override suspend fun createBroadcast(broadcastResponse: BroadcastResponse) {
         reference.document(broadcastResponse.uniqueId).set(broadcastResponse).await()
     }
 
-    override suspend fun removeBroadcastByUniqueId(uniqueId: UUID) {
+    override suspend fun deleteBroadcastByUniqueId(uniqueId: UUID) {
         reference.document(uniqueId.toString()).delete().await()
     }
 

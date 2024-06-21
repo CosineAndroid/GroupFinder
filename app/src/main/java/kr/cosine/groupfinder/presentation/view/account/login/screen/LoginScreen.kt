@@ -23,7 +23,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.firebase.messaging.FirebaseMessaging
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kr.cosine.groupfinder.R
 import kr.cosine.groupfinder.data.manager.LocalAccountManager
@@ -46,7 +45,7 @@ import kr.cosine.groupfinder.presentation.view.compose.component.LocalSnackbar
 import kr.cosine.groupfinder.presentation.view.compose.component.Space
 import kr.cosine.groupfinder.presentation.view.compose.component.getActivityResultLauncher
 import kr.cosine.groupfinder.presentation.view.compose.data.Snackbar
-import kr.cosine.groupfinder.presentation.view.compose.extension.currentActivity
+import kr.cosine.groupfinder.presentation.view.compose.extension.currentComponentActivity
 import kr.cosine.groupfinder.presentation.view.compose.model.LoadingViewModel
 import kr.cosine.groupfinder.presentation.view.compose.ui.BaseColor
 import kr.cosine.groupfinder.util.MyFirebaseMessagingService
@@ -58,7 +57,7 @@ fun LoginScreen(
     loadingViewModel: LoadingViewModel = viewModel()
 ) {
     AccountScaffold {
-        val activity = LocalContext.currentActivity
+        val activity = LocalContext.currentComponentActivity
         val localAccountManager = LocalAccountManager(activity)
         LoadingScreen()
         LoginLaunchedEffect(localAccountManager)
@@ -115,7 +114,7 @@ private fun LoginLaunchedEffect(
     loginSessionViewModel: LoginSessionViewModel = hiltViewModel(),
     loadingViewModel: LoadingViewModel = viewModel()
 ) {
-    val activity = LocalContext.currentActivity
+    val activity = LocalContext.currentComponentActivity
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     val snackbar = LocalSnackbar.current
     LaunchedEffect(

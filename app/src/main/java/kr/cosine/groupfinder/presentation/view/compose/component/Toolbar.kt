@@ -17,11 +17,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kr.cosine.groupfinder.R
-import kr.cosine.groupfinder.presentation.view.compose.extension.currentActivity
+import kr.cosine.groupfinder.presentation.view.compose.extension.currentComponentActivity
 
 @Composable
 fun Toolbar(title: String) {
-    val activity = LocalContext.currentActivity
+    val activity = LocalContext.currentComponentActivity
     Box(
         modifier = Modifier
             .fillMaxWidth()

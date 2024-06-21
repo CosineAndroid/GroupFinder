@@ -40,7 +40,7 @@ import kr.cosine.groupfinder.presentation.view.common.data.IntentKey
 import kr.cosine.groupfinder.presentation.view.compose.component.BaseScaffold
 import kr.cosine.groupfinder.presentation.view.compose.component.BaseText
 import kr.cosine.groupfinder.presentation.view.compose.component.LoadingScreen
-import kr.cosine.groupfinder.presentation.view.compose.extension.currentActivity
+import kr.cosine.groupfinder.presentation.view.compose.extension.currentComponentActivity
 import kr.cosine.groupfinder.presentation.view.compose.model.LoadingViewModel
 import kr.cosine.groupfinder.presentation.view.compose.ui.BaseColor
 import kr.cosine.groupfinder.presentation.view.record.model.RecordViewModel
@@ -70,7 +70,7 @@ private fun RecordLaunchedEffect(
     loadingViewModel: LoadingViewModel = viewModel(),
     recordViewModel: RecordViewModel = viewModel()
 ) {
-    val activity = LocalContext.currentActivity
+    val activity = LocalContext.currentComponentActivity
     LaunchedEffect(key1 = Unit) {
         val intent = activity.intent
         val nickname = intent.getStringExtra(IntentKey.NICKNAME)!!

@@ -45,7 +45,7 @@ import kr.cosine.groupfinder.presentation.view.compose.component.DefaultTextFiel
 import kr.cosine.groupfinder.presentation.view.compose.component.LoadingScreen
 import kr.cosine.groupfinder.presentation.view.compose.component.LocalSnackbar
 import kr.cosine.groupfinder.presentation.view.compose.data.Snackbar
-import kr.cosine.groupfinder.presentation.view.compose.extension.currentActivity
+import kr.cosine.groupfinder.presentation.view.compose.extension.currentComponentActivity
 import kr.cosine.groupfinder.presentation.view.compose.model.LoadingViewModel
 import kr.cosine.groupfinder.presentation.view.compose.ui.BaseColor
 import kr.cosine.groupfinder.presentation.view.profile.PolicyActivity
@@ -110,7 +110,7 @@ fun RegisterScreen(
                 text = stringResource(R.string.register_age_agreement_title),
                 onCheckedChange = registerViewModel::checkAgeCheckbox
             )
-            val activity = LocalContext.currentActivity
+            val activity = LocalContext.currentComponentActivity
             BaseCheckbox(
                 isChecked = false,
                 text = stringResource(R.string.register_policy_agreement_title),
@@ -137,7 +137,7 @@ private fun RegisterLaunchedEffect(
     registerViewModel: RegisterViewModel = hiltViewModel(),
     loadingViewModel: LoadingViewModel = viewModel()
 ) {
-    val activity = LocalContext.currentActivity
+    val activity = LocalContext.currentComponentActivity
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     val snackbar = LocalSnackbar.current
     LaunchedEffect(

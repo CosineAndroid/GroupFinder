@@ -33,7 +33,7 @@ import kr.cosine.groupfinder.presentation.view.compose.component.LoadingScreen
 import kr.cosine.groupfinder.presentation.view.compose.component.LocalSnackbar
 import kr.cosine.groupfinder.presentation.view.compose.component.Toolbar
 import kr.cosine.groupfinder.presentation.view.compose.data.Snackbar
-import kr.cosine.groupfinder.presentation.view.compose.extension.currentActivity
+import kr.cosine.groupfinder.presentation.view.compose.extension.currentComponentActivity
 import kr.cosine.groupfinder.presentation.view.compose.model.LoadingViewModel
 import kr.cosine.groupfinder.presentation.view.compose.ui.BaseColor
 
@@ -71,7 +71,7 @@ private fun BroadcastDraftLaunchedEffect(
     broadcastDraftViewModel: BroadcastDraftViewModel = hiltViewModel(),
     loadingViewModel: LoadingViewModel = viewModel()
 ) {
-    val activity = LocalContext.currentActivity
+    val activity = LocalContext.currentComponentActivity
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     val snackbar = LocalSnackbar.current
     LaunchedEffect(
