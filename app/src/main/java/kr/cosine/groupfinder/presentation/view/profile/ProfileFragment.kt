@@ -93,7 +93,12 @@ class ProfileFragment : RefreshableFragment() {
 
     private fun registerBroadcastButton() {
         binding.broadcastButton.setOnClickListenerWithCooldown {
-            requireContext.startActivity(BroadcastListActivity::class)
+            val uiState = profileViewModel.uiState.value
+            if (uiState is ProfileUiState.Success) {
+                requireContext.startActivity(BroadcastListActivity::class) {
+                    putExtra(IntentKey.ADMIN, uiState.isAdmin)
+                }
+            }
         }
     }
 
