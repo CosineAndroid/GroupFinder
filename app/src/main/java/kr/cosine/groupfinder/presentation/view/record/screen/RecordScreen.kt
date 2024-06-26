@@ -54,7 +54,8 @@ import kr.cosine.groupfinder.presentation.view.record.state.RecordUiState
 import kr.cosine.groupfinder.presentation.view.record.state.item.ChampionMasteryItem
 import kr.cosine.groupfinder.presentation.view.record.state.item.RankItem
 import kr.cosine.groupfinder.presentation.view.record.state.item.RecordItem
-import kr.cosine.groupfinder.presentation.view.record.state.item.extension.ChampionMasteries
+import kr.cosine.groupfinder.presentation.view.record.state.item.ChampionMasteries
+import kr.cosine.groupfinder.presentation.view.record.state.item.Matches
 import kr.cosine.groupfinder.presentation.view.record.state.item.extension.rating
 
 private val RoundedCornerShape = RoundedCornerShape(16.dp)
@@ -355,6 +356,11 @@ private fun Rank(
             )
         }
     }
+}
+
+@Composable
+private fun MatchColumn(matches: Matches) {
+
 }
 
 @Composable

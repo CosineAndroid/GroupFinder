@@ -6,9 +6,12 @@ import kr.cosine.groupfinder.data.model.riot.RiotAccountResponse
 import kr.cosine.groupfinder.data.model.riot.RiotChampionMasteryResponse
 import kr.cosine.groupfinder.data.model.riot.RiotChampionResponse
 import kr.cosine.groupfinder.data.model.riot.RiotLeagueEntryResponse
+import kr.cosine.groupfinder.data.model.riot.RiotMatchIdsResponse
 import kr.cosine.groupfinder.data.model.riot.RiotMatchResponse
 import kr.cosine.groupfinder.data.model.riot.RiotRealmsResponse
+import kr.cosine.groupfinder.data.model.riot.RiotSpellsResponse
 import kr.cosine.groupfinder.data.model.riot.RiotSummonerResponse
+import kr.cosine.groupfinder.data.model.riot.SpellResponse
 import kr.cosine.groupfinder.data.remote.FirebaseDataSource
 import kr.cosine.groupfinder.data.remote.RiotAsiaDataSource
 import kr.cosine.groupfinder.data.remote.RiotDataDragonDataSource
@@ -31,6 +34,10 @@ class RiotRepositoryImpl @Inject constructor(
         return riotAsiaDataSource.getAccount(gameName, tagLine)
     }
 
+    override suspend fun getMatchIds(puuid: String): RiotMatchIdsResponse {
+        return riotAsiaDataSource.getMatchIds(puuid)
+    }
+
     override suspend fun getMatch(matchId: String): RiotMatchResponse {
         return riotAsiaDataSource.getMatch(matchId)
     }
@@ -49,6 +56,10 @@ class RiotRepositoryImpl @Inject constructor(
 
     override suspend fun getRealms(): RiotRealmsResponse {
         return riotDataDragonDataSource.getRealms()
+    }
+
+    override suspend fun getSpells(version: String): RiotSpellsResponse {
+        return riotDataDragonDataSource.getSpells(version)
     }
 
     override suspend fun findChampion(championId: Long): RiotChampionResponse? {
