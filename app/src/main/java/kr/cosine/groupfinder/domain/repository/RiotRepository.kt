@@ -5,6 +5,7 @@ import kr.cosine.groupfinder.data.model.riot.RiotChampionMasteryResponse
 import kr.cosine.groupfinder.data.model.riot.RiotChampionResponse
 import kr.cosine.groupfinder.data.model.riot.RiotLeagueEntryResponse
 import kr.cosine.groupfinder.data.model.riot.RiotMatchResponse
+import kr.cosine.groupfinder.data.model.riot.RiotRealmsResponse
 import kr.cosine.groupfinder.data.model.riot.RiotSummonerResponse
 
 interface RiotRepository {
@@ -19,5 +20,7 @@ interface RiotRepository {
 
     suspend fun getChampionMastery(puuid: String): RiotChampionMasteryResponse
 
-    suspend fun findChampion(championId: Int): RiotChampionResponse?
+    suspend fun getRealms(): RiotRealmsResponse
+
+    suspend fun findChampion(championId: Long): RiotChampionResponse?
 }

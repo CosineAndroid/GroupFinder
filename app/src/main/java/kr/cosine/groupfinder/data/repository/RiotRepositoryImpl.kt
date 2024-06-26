@@ -7,9 +7,11 @@ import kr.cosine.groupfinder.data.model.riot.RiotChampionMasteryResponse
 import kr.cosine.groupfinder.data.model.riot.RiotChampionResponse
 import kr.cosine.groupfinder.data.model.riot.RiotLeagueEntryResponse
 import kr.cosine.groupfinder.data.model.riot.RiotMatchResponse
+import kr.cosine.groupfinder.data.model.riot.RiotRealmsResponse
 import kr.cosine.groupfinder.data.model.riot.RiotSummonerResponse
 import kr.cosine.groupfinder.data.remote.FirebaseDataSource
 import kr.cosine.groupfinder.data.remote.RiotAsiaDataSource
+import kr.cosine.groupfinder.data.remote.RiotDataDragonDataSource
 import kr.cosine.groupfinder.data.remote.RiotKoreaDataSource
 import kr.cosine.groupfinder.domain.repository.FirebaseRepository
 import kr.cosine.groupfinder.domain.repository.RiotRepository
@@ -18,6 +20,7 @@ import javax.inject.Inject
 class RiotRepositoryImpl @Inject constructor(
     private val riotAsiaDataSource: RiotAsiaDataSource,
     private val riotKoreaDataSource: RiotKoreaDataSource,
+    private val riotDataDragonDataSource: RiotDataDragonDataSource,
     private val firebaseDataSource: FirebaseDataSource
 ) : RiotRepository, FirebaseRepository {
 
@@ -44,7 +47,11 @@ class RiotRepositoryImpl @Inject constructor(
         return riotKoreaDataSource.getChampionMastery(puuid)
     }
 
-    override suspend fun findChampion(championId: Int): RiotChampionResponse? {
+    override suspend fun getRealms(): RiotRealmsResponse {
+        return riotDataDragonDataSource.getRealms()
+    }
+
+    override suspend fun findChampion(championId: Long): RiotChampionResponse? {
         return reference.document(championId.toString()).get().await()
             .toObject(RiotChampionResponse::class.java)
     }
