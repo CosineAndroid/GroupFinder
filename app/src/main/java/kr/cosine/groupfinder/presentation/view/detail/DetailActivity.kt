@@ -28,9 +28,11 @@ import kr.cosine.groupfinder.presentation.view.common.data.ResultCode
 import kr.cosine.groupfinder.presentation.view.common.extension.applyWhite
 import kr.cosine.groupfinder.presentation.view.common.extension.setOnClickListenerWithCooldown
 import kr.cosine.groupfinder.presentation.view.common.extension.showToast
+import kr.cosine.groupfinder.presentation.view.common.extension.startActivity
 import kr.cosine.groupfinder.presentation.view.detail.event.DetailEvent
 import kr.cosine.groupfinder.presentation.view.dialog.Dialog
 import kr.cosine.groupfinder.presentation.view.group.adapter.decoration.GroupTagItemDecoration
+import kr.cosine.groupfinder.presentation.view.record.RecordActivity
 import kr.cosine.groupfinder.util.MyFirebaseMessagingService
 import java.util.UUID
 
@@ -112,8 +114,23 @@ class DetailActivity : GroupFinderActivity() {
     private fun bindDetailInformation(groupDetailEntity: GroupDetailEntity) {
         with(binding) {
             titleTextView.text = groupDetailEntity.title
-            idTextView.text = "${groupDetailEntity.owner.nickname}#${groupDetailEntity.owner.tag}"
+            idTextView.apply {
+                val owner = groupDetailEntity.owner
+                val nickname = owner.nickname
+                val tag = owner.tag
+                text = getString(R.string.tagged_nickname_format, nickname, tag)
+                setOnClickListenerWithCooldown {
+                    startRecordActivity(nickname, tag)
+                }
+            }
             memoTextView.text = groupDetailEntity.body
+        }
+    }
+
+    private fun startRecordActivity(nickname: String, tag: String) {
+        startActivity(RecordActivity::class) {
+            putExtra(IntentKey.NICKNAME, nickname)
+            putExtra(IntentKey.TAG, tag)
         }
     }
 
@@ -250,7 +267,7 @@ class DetailActivity : GroupFinderActivity() {
     }
 
     private fun showReportGroupDialog() {
-        Dialog(title ="방 신고하기", message = "정말 해당 방을 신고하시겠습니까?") {
+        Dialog(title = "방 신고하기", message = "정말 해당 방을 신고하시겠습니까?") {
             getOwnerUniqueId {
                 if (it != uniqueId) {
                     detailViewModel.reportGroup(postUniqueId)
@@ -264,7 +281,7 @@ class DetailActivity : GroupFinderActivity() {
     private fun showReportUserDialog() {
         getOwnerUniqueId {
             Dialog(title = "작성자 신고하기", message = "정말 해당 작성자를 신고하시겠습니까?") {
-                if(it != uniqueId) {
+                if (it != uniqueId) {
                     detailViewModel.reportUser(it)
                 } else {
                     showToast("자기 자신을요?")
@@ -275,7 +292,7 @@ class DetailActivity : GroupFinderActivity() {
 
     private fun showBlockUserDialog() {
         getOwnerUniqueId {
-            Dialog(title = "작성자 차단하기", message =  "정말 해당 작성자를 차단하시겠습니까?") {
+            Dialog(title = "작성자 차단하기", message = "정말 해당 작성자를 차단하시겠습니까?") {
                 if (it != uniqueId) {
                     detailViewModel.blockUser(it)
                 } else {
@@ -329,7 +346,7 @@ class DetailActivity : GroupFinderActivity() {
         rootConstraintLayout.visibility = View.INVISIBLE
         progressBar.visibility = View.VISIBLE
     }
-    
+
     fun showForceExitDialog() {
         Dialog(
             title = "강제 퇴장",
