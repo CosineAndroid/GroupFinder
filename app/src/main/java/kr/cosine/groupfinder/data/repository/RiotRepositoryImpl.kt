@@ -10,13 +10,10 @@ import kr.cosine.groupfinder.data.model.riot.RiotMatchResponse
 import kr.cosine.groupfinder.data.model.riot.RiotRealmsResponse
 import kr.cosine.groupfinder.data.model.riot.RiotSpellsResponse
 import kr.cosine.groupfinder.data.model.riot.RiotSummonerResponse
-import kr.cosine.groupfinder.data.model.riot.SpellResponse
 import kr.cosine.groupfinder.data.model.riot.test.RiotRuneResponse
-import kr.cosine.groupfinder.data.remote.FirebaseDataSource
 import kr.cosine.groupfinder.data.remote.RiotAsiaDataSource
 import kr.cosine.groupfinder.data.remote.RiotDataDragonDataSource
 import kr.cosine.groupfinder.data.remote.RiotKoreaDataSource
-import kr.cosine.groupfinder.domain.repository.FirebaseRepository
 import kr.cosine.groupfinder.domain.repository.RiotRepository
 import javax.inject.Inject
 

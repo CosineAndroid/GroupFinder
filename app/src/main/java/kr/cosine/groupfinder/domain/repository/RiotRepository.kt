@@ -11,25 +11,25 @@ import kr.cosine.groupfinder.data.model.riot.RiotSpellsResponse
 import kr.cosine.groupfinder.data.model.riot.RiotSummonerResponse
 import kr.cosine.groupfinder.data.model.riot.test.RiotRuneResponse
 
-interface RiotRepository {
+abstract class RiotRepository : FirebaseRepository("riot_champions") {
 
-    suspend fun getAccount(gameName: String, tagLine: String): RiotAccountResponse
+    abstract suspend fun getAccount(gameName: String, tagLine: String): RiotAccountResponse
 
-    suspend fun getMatchIds(puuid: String): RiotMatchIdsResponse
+    abstract suspend fun getMatchIds(puuid: String): RiotMatchIdsResponse
 
-    suspend fun getMatch(matchId: String): RiotMatchResponse
+    abstract suspend fun getMatch(matchId: String): RiotMatchResponse
 
-    suspend fun getSummoner(puuid: String): RiotSummonerResponse
+    abstract suspend fun getSummoner(puuid: String): RiotSummonerResponse
 
-    suspend fun getLeagueEntry(summonerId: String): RiotLeagueEntryResponse
+    abstract suspend fun getLeagueEntry(summonerId: String): RiotLeagueEntryResponse
 
-    suspend fun getChampionMastery(puuid: String): RiotChampionMasteryResponse
+    abstract suspend fun getChampionMastery(puuid: String): RiotChampionMasteryResponse
 
-    suspend fun getRealms(): RiotRealmsResponse
+    abstract suspend fun getRealms(): RiotRealmsResponse
 
-    suspend fun getSpells(version: String): RiotSpellsResponse
+    abstract suspend fun getSpells(version: String): RiotSpellsResponse
 
-    suspend fun getRunes(version: String): RiotRuneResponse
+    abstract suspend fun getRunes(version: String): RiotRuneResponse
 
-    suspend fun findChampion(championId: Long): RiotChampionResponse?
+    abstract suspend fun findChampion(championId: Long): RiotChampionResponse?
 }
