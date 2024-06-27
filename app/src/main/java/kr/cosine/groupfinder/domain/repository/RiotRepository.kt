@@ -9,7 +9,7 @@ import kr.cosine.groupfinder.data.model.riot.RiotMatchResponse
 import kr.cosine.groupfinder.data.model.riot.RiotRealmsResponse
 import kr.cosine.groupfinder.data.model.riot.RiotSpellsResponse
 import kr.cosine.groupfinder.data.model.riot.RiotSummonerResponse
-import kr.cosine.groupfinder.data.model.riot.SpellResponse
+import kr.cosine.groupfinder.data.model.riot.test.RiotRuneResponse
 
 interface RiotRepository {
 
@@ -28,6 +28,8 @@ interface RiotRepository {
     suspend fun getRealms(): RiotRealmsResponse
 
     suspend fun getSpells(version: String): RiotSpellsResponse
+
+    suspend fun getRunes(version: String): RiotRuneResponse
 
     suspend fun findChampion(championId: Long): RiotChampionResponse?
 }

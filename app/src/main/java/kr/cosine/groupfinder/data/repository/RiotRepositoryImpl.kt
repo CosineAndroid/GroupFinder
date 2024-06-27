@@ -12,6 +12,7 @@ import kr.cosine.groupfinder.data.model.riot.RiotRealmsResponse
 import kr.cosine.groupfinder.data.model.riot.RiotSpellsResponse
 import kr.cosine.groupfinder.data.model.riot.RiotSummonerResponse
 import kr.cosine.groupfinder.data.model.riot.SpellResponse
+import kr.cosine.groupfinder.data.model.riot.test.RiotRuneResponse
 import kr.cosine.groupfinder.data.remote.FirebaseDataSource
 import kr.cosine.groupfinder.data.remote.RiotAsiaDataSource
 import kr.cosine.groupfinder.data.remote.RiotDataDragonDataSource
@@ -60,6 +61,10 @@ class RiotRepositoryImpl @Inject constructor(
 
     override suspend fun getSpells(version: String): RiotSpellsResponse {
         return riotDataDragonDataSource.getSpells(version)
+    }
+
+    override suspend fun getRunes(version: String): RiotRuneResponse {
+        return riotDataDragonDataSource.getRunes(version)
     }
 
     override suspend fun findChampion(championId: Long): RiotChampionResponse? {

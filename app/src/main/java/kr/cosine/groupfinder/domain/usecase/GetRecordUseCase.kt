@@ -1,6 +1,7 @@
 package kr.cosine.groupfinder.domain.usecase
 
 import dagger.hilt.android.scopes.ViewModelScoped
+import kr.cosine.groupfinder.data.model.riot.ParticipantResponse
 import kr.cosine.groupfinder.data.model.riot.SpellResponse
 import kr.cosine.groupfinder.data.model.riot.VersionResponse
 import kr.cosine.groupfinder.domain.repository.RiotRepository
@@ -109,11 +110,7 @@ class GetRecordUseCase @Inject constructor(
                 val secondSpellResponse = spellMap[participantResponse.summoner2Id]!!
                 val firstSpellItem = getSpellItem(spellVersion, firstSpellResponse)
                 val secondSpellItem = getSpellItem(spellVersion, secondSpellResponse)
-                val statItem = StatItem(
-                    kill = participantResponse.kills,
-                    death = participantResponse.deaths,
-                    assist = participantResponse.assists
-                )
+                val statItem = getStatItem(participantResponse)
 
                 MatchItem(
                     duration = infoResponse.gameDuration,
@@ -149,8 +146,12 @@ class GetRecordUseCase @Inject constructor(
         )
     }
 
-    private fun getStatItem() {
-
+    private fun getStatItem(participantResponse: ParticipantResponse): StatItem {
+        return StatItem(
+            kill = participantResponse.kills,
+            death = participantResponse.deaths,
+            assist = participantResponse.assists
+        )
     }
 
     private companion object {
