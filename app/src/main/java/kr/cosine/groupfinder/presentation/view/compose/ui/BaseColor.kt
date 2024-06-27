@@ -15,6 +15,7 @@ object BaseColor {
     val AccountEnableButtonBackground = Color(0xFF2E3034)
     val AccountDisableButtonBackground = Color(0xFF1E1F20)
     val AccountDisableButtonText = Color(0xFF5A5A5A)
+    val AccountCheckboxBackground = AccountLoginButtonBackground
 
     // Register
     val RegisterEmptyBorder = Color(0xFF505050)
@@ -30,4 +31,17 @@ object BaseColor {
     val RecordRankCategoryText = Color(0xFF55D3B4)
     val RecordPointText = Color(0xFF8F96A1)
     val RecordRatingText = Color(0xFF69717A)
+    val RecordChampionMasteryNameText = Color(0xFFF0E6D2)
+    val RecordChampionMasteryLevelText = Color(0xFFA09B8C)
+    val RecordChampionMasteryPointText = Color(0xFF706C61)
+    val RecordChampionMasteryOuterBorder = Color(0xFFA27D30)
+    val RecordChampionMasteryInnerBorder = Color(0xFF413624)
+
+    // Broadcast
+    val BroadcastListDivider = Color(0xFF1F2326)
+    val BroadcastListItemTimeText = Color(0xFFA8A8A8)
+    val BroadcastListArrowBackgroundTint = BroadcastListItemTimeText
+    val BroadcastListWriteButtonBackground = AccountLoginButtonBackground
+    val BroadcastDraftTextFieldBackground = Color(0xFF232323)
+    val BroadcastDraftButtonBackground = AccountLoginButtonBackground
 }

@@ -13,6 +13,6 @@ sealed interface RegisterErrorUiState {
     data object Password : RegisterErrorUiState
 
     data class Valid(
-        val text: String
+        val text: String = ""
     ) : RegisterErrorUiState
 }

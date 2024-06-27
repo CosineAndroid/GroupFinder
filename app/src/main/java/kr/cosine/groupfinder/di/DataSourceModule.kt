@@ -1,5 +1,6 @@
 package kr.cosine.groupfinder.di
 
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import dagger.Module
@@ -7,10 +8,11 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kr.cosine.groupfinder.data.remote.CloudFunctionDataSource
-import kr.cosine.groupfinder.data.remote.FirebaseDataSource
 import kr.cosine.groupfinder.data.remote.RiotAsiaDataSource
+import kr.cosine.groupfinder.data.remote.RiotDataDragonDataSource
 import kr.cosine.groupfinder.data.remote.RiotKoreaDataSource
 import kr.cosine.groupfinder.di.annotation.RiotAsiaRetrofit
+import kr.cosine.groupfinder.di.annotation.RiotDataDragonRetrofit
 import kr.cosine.groupfinder.di.annotation.RiotKoreaRetrofit
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -22,11 +24,7 @@ import java.util.concurrent.TimeUnit
 class DataSourceModule {
 
     @Provides
-    fun provideFirebaseDataSource(): FirebaseDataSource {
-        return object : FirebaseDataSource {
-            override val firestore = Firebase.firestore
-        }
-    }
+    fun provideFirestore(): FirebaseFirestore = Firebase.firestore
 
     @Provides
     fun provideOkHttpClient(): OkHttpClient {
@@ -62,7 +60,19 @@ class DataSourceModule {
     }
 
     @Provides
-    fun provideRiotAsiaDatasource(
+    @RiotDataDragonRetrofit
+    fun provideRiotDataDragonRetrofit(
+        okHttpClient: OkHttpClient,
+    ): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl("https://ddragon.leagueoflegends.com/")
+            .client(okHttpClient)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+    }
+
+    @Provides
+    fun provideRiotAsiaDataSource(
         @RiotAsiaRetrofit retrofit: Retrofit,
     ): RiotAsiaDataSource {
         return retrofit.create(RiotAsiaDataSource::class.java)
@@ -73,6 +83,13 @@ class DataSourceModule {
         @RiotKoreaRetrofit retrofit: Retrofit,
     ): RiotKoreaDataSource {
         return retrofit.create(RiotKoreaDataSource::class.java)
+    }
+
+    @Provides
+    fun provideRiotDataDragonDataSource(
+        @RiotDataDragonRetrofit retrofit: Retrofit
+    ): RiotDataDragonDataSource {
+        return retrofit.create(RiotDataDragonDataSource::class.java)
     }
 
     @Provides
@@ -87,7 +104,7 @@ class DataSourceModule {
     }
 
     @Provides
-    fun provideCloudFunctionDatasource(
+    fun provideCloudFunctionDataSource(
         retrofit: Retrofit,
     ): CloudFunctionDataSource {
         return retrofit.create(CloudFunctionDataSource::class.java)

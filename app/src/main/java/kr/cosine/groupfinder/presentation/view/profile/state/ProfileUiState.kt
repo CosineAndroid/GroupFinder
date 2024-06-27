@@ -9,6 +9,7 @@ sealed interface ProfileUiState {
     data class Success(
         val nickname: String,
         val tag: String,
-        val groupItem: GroupItem?
+        val groupItem: GroupItem?,
+        val isAdmin: Boolean
     ) : ProfileUiState
 }

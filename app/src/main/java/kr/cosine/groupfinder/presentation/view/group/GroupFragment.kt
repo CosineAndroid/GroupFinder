@@ -1,14 +1,10 @@
 package kr.cosine.groupfinder.presentation.view.group
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.flowWithLifecycle
@@ -19,31 +15,30 @@ import kotlinx.coroutines.launch
 import kr.cosine.groupfinder.R
 import kr.cosine.groupfinder.databinding.FragmentGroupBinding
 import kr.cosine.groupfinder.enums.Mode
-import kr.cosine.groupfinder.presentation.view.common.data.Code
+import kr.cosine.groupfinder.presentation.view.common.RefreshableFragment
 import kr.cosine.groupfinder.presentation.view.common.data.IntentKey
 import kr.cosine.groupfinder.presentation.view.common.data.Interval
 import kr.cosine.groupfinder.presentation.view.common.extension.applyWhite
-import kr.cosine.groupfinder.presentation.view.common.extension.setOnClickListenerWithCooldown
 import kr.cosine.groupfinder.presentation.view.common.extension.requireContext
+import kr.cosine.groupfinder.presentation.view.common.extension.setOnClickListenerWithCooldown
 import kr.cosine.groupfinder.presentation.view.common.extension.setOnRefreshListenerWithCooldown
 import kr.cosine.groupfinder.presentation.view.common.extension.showToast
-import kr.cosine.groupfinder.presentation.view.common.util.ActivityUtil.launch
 import kr.cosine.groupfinder.presentation.view.detail.DetailActivity
 import kr.cosine.groupfinder.presentation.view.group.adapter.GroupAdpater
 import kr.cosine.groupfinder.presentation.view.group.adapter.decoration.GroupTagItemDecoration
 import kr.cosine.groupfinder.presentation.view.group.model.GroupViewModel
 import kr.cosine.groupfinder.presentation.view.group.state.GroupUiState
+import kr.cosine.groupfinder.presentation.view.group.state.item.GroupItem
 import kr.cosine.groupfinder.presentation.view.tag.adapter.TagAdapter
 import kr.cosine.groupfinder.presentation.view.tag.event.TagEvent
 import kr.cosine.groupfinder.presentation.view.tag.model.TagViewModel
-import kr.cosine.groupfinder.presentation.view.group.state.item.GroupItem
 import kr.cosine.groupfinder.presentation.view.tag.sheet.TagBottomSheetFragment
 import kr.cosine.groupfinder.presentation.view.write.WriteActivity
 
 @AndroidEntryPoint
 class GroupFragment(
     val mode: Mode? = null
-) : Fragment() {
+) : RefreshableFragment() {
 
     private var _binding: FragmentGroupBinding? = null
     private val binding: FragmentGroupBinding get() = _binding!!
@@ -53,8 +48,6 @@ class GroupFragment(
 
     private lateinit var groupAdpater: GroupAdpater
     private lateinit var tagAdapter: TagAdapter
-
-    private lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -69,14 +62,18 @@ class GroupFragment(
         super.onViewCreated(view, savedInstanceState)
         resetTagViewModel()
         registerProgressBar()
-        registerWriteActivityResultLauncher()
         registerSwipeRefreshLayout()
         registerGroupRecyclerView()
+        registerTagFrameLayout()
         registerTagRecyclerView()
         registerSearchBarButton()
         registerWriteButton()
         registerGroupViewModelEvent()
         registerTagViewModel()
+    }
+
+    override fun refresh() {
+        groupViewModel.onSearch(mode, tagViewModel.tags)
     }
 
     private fun resetTagViewModel() {
@@ -87,22 +84,13 @@ class GroupFragment(
         binding.progressBar.applyWhite()
     }
 
-    private fun registerWriteActivityResultLauncher() {
-        activityResultLauncher = registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult()
-        ) { result ->
-            if (result.resultCode != Code.REFRESH) return@registerForActivityResult
-            search()
-        }
-    }
-
     private fun registerSwipeRefreshLayout() {
         binding.swipeRefreshLayout.setOnRefreshListenerWithCooldown(
             fail = {
                 requireContext.showToast(R.string.group_refresh_cooldown_message, it)
             }
         ) {
-            search()
+            refresh()
         }
     }
 
@@ -113,8 +101,16 @@ class GroupFragment(
     }
 
     private fun openDetailActivity(group: GroupItem) {
-        activityResultLauncher.launch(requireContext, DetailActivity::class) {
+        launch(DetailActivity::class) {
             putExtra(IntentKey.POST_UNIQUE_ID, group.postUniqueId)
+        }
+    }
+
+    private fun registerTagFrameLayout() {
+        binding.tagFrameLayout.setOnClickListenerWithCooldown {
+            if (tagViewModel.tags.isEmpty()) {
+                showTagBottomSheetFragment()
+            }
         }
     }
 
@@ -133,7 +129,7 @@ class GroupFragment(
             showTagBottomSheetFragment()
         }
         searchImageButton.setOnClickListener {
-            search()
+            refresh()
         }
     }
 
@@ -143,7 +139,7 @@ class GroupFragment(
 
     private fun registerWriteButton() {
         binding.writeImageButton.setOnClickListener {
-            activityResultLauncher.launch(requireContext, WriteActivity::class) {
+            launch(WriteActivity::class) {
                 putExtra(IntentKey.MODE, mode ?: Mode.NORMAL)
             }
         }
@@ -191,10 +187,6 @@ class GroupFragment(
                 }
             }
         }
-    }
-
-    private fun search() {
-        groupViewModel.onSearch(mode, tagViewModel.tags)
     }
 
     override fun onDestroyView() {

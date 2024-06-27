@@ -20,6 +20,7 @@ import kr.cosine.groupfinder.domain.usecase.GetAccountUseCase
 import kr.cosine.groupfinder.domain.usecase.GetGroupsUseCase
 import kr.cosine.groupfinder.domain.usecase.SetTaggedNicknameUseCase
 import kr.cosine.groupfinder.domain.usecase.WithdrawAccountUseCase
+import kr.cosine.groupfinder.enums.Permission
 import kr.cosine.groupfinder.presentation.view.group.state.item.extension.isJoinedPeople
 import kr.cosine.groupfinder.presentation.view.profile.event.ProfileChangeEvent
 import kr.cosine.groupfinder.presentation.view.profile.event.ProfileEvent
@@ -44,9 +45,9 @@ class ProfileViewModel @Inject constructor(
     val changeEvent: SharedFlow<ProfileChangeEvent> get() = _changeEvent.asSharedFlow()
 
     fun loadProfile() = viewModelScope.launch(Dispatchers.IO) {
+        setLoading()
         val uniqueId = LocalAccountRegistry.uniqueId
         getAccountUseCase(uniqueId).onSuccess { accountEntity ->
-            if (accountEntity == null) return@onSuccess
             val groupItems = (getGroupsUseCase(null, emptySet()).getOrNull() ?: emptyList()).firstOrNull {
                 it.isJoinedPeople(uniqueId)
             }
@@ -54,9 +55,16 @@ class ProfileViewModel @Inject constructor(
                 ProfileUiState.Success(
                     nickname = accountEntity.nickname,
                     tag = accountEntity.tag,
-                    groupItem = groupItems
+                    groupItem = groupItems,
+                    isAdmin = accountEntity.permission == Permission.ADMIN
                 )
             }
+        }
+    }
+
+    private fun setLoading() {
+        _uiState.update {
+            ProfileUiState.Loading
         }
     }
 

@@ -8,7 +8,6 @@ import android.view.View
 import android.widget.PopupMenu
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,8 +22,9 @@ import kr.cosine.groupfinder.domain.model.GroupOwnerEntity
 import kr.cosine.groupfinder.enums.Lane
 import kr.cosine.groupfinder.enums.TestGlobalUserData.HOST
 import kr.cosine.groupfinder.enums.TestGlobalUserData.PARTICIPANT
-import kr.cosine.groupfinder.presentation.view.common.data.Code
+import kr.cosine.groupfinder.presentation.view.common.GroupFinderActivity
 import kr.cosine.groupfinder.presentation.view.common.data.IntentKey
+import kr.cosine.groupfinder.presentation.view.common.data.ResultCode
 import kr.cosine.groupfinder.presentation.view.common.extension.applyWhite
 import kr.cosine.groupfinder.presentation.view.common.extension.setOnClickListenerWithCooldown
 import kr.cosine.groupfinder.presentation.view.common.extension.showToast
@@ -35,7 +35,7 @@ import kr.cosine.groupfinder.util.MyFirebaseMessagingService
 import java.util.UUID
 
 @AndroidEntryPoint
-class DetailActivity : AppCompatActivity() {
+class DetailActivity : GroupFinderActivity() {
 
     private val binding by lazy { ActivityDetailBinding.inflate(layoutInflater) }
 
@@ -362,7 +362,7 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun finishWithResult() {
-        setResult(Code.REFRESH)
+        setResult(ResultCode.REFRESH)
         finish()
     }
 }

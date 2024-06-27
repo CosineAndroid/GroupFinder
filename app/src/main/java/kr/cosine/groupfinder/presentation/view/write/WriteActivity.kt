@@ -1,4 +1,5 @@
 package kr.cosine.groupfinder.presentation.view.write
+
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -6,9 +7,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.flowWithLifecycle
@@ -22,9 +21,10 @@ import kr.cosine.groupfinder.data.registry.LocalAccountRegistry
 import kr.cosine.groupfinder.databinding.ActivityWriteBinding
 import kr.cosine.groupfinder.enums.Lane
 import kr.cosine.groupfinder.enums.Mode
-import kr.cosine.groupfinder.presentation.view.common.data.Code
+import kr.cosine.groupfinder.presentation.view.common.GroupFinderActivity
 import kr.cosine.groupfinder.presentation.view.common.data.IntentKey
 import kr.cosine.groupfinder.presentation.view.common.data.Interval
+import kr.cosine.groupfinder.presentation.view.common.data.ResultCode
 import kr.cosine.groupfinder.presentation.view.common.extension.setOnClickListenerWithCooldown
 import kr.cosine.groupfinder.presentation.view.common.flexbox.decoration.FlexboxItemDecoration
 import kr.cosine.groupfinder.presentation.view.common.flexbox.manager.FlexboxLayoutManager
@@ -40,7 +40,7 @@ import kr.cosine.groupfinder.presentation.view.write.model.WriteViewModel
 import java.util.UUID
 
 @AndroidEntryPoint
-class WriteActivity : AppCompatActivity() {
+class WriteActivity : GroupFinderActivity() {
 
     private lateinit var binding: ActivityWriteBinding
 
@@ -58,7 +58,6 @@ class WriteActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         binding = ActivityWriteBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
@@ -162,8 +161,9 @@ class WriteActivity : AppCompatActivity() {
             tagRecyclerViewAdapter = this
         }
         layoutManager = FlexboxLayoutManager(context)
-        val flexboxItemDecoration = FlexboxItemDecoration(context)
-        addItemDecoration(flexboxItemDecoration)
+        if (itemDecorationCount == 0) {
+            addItemDecoration(FlexboxItemDecoration)
+        }
     }
 
     private fun registerTagViewModel() {
@@ -291,7 +291,7 @@ class WriteActivity : AppCompatActivity() {
                 when (writeEvent) {
                     is WriteEvent.Success -> {
                         showSnackbar("생성이 완료되었습니다")
-                        setResult(Code.REFRESH)
+                        setResult(ResultCode.REFRESH)
                         finish()
                     }
 

@@ -9,11 +9,13 @@ object LocalAccountRegistry {
     private var _uniqueId: UUID? = null
     val uniqueId get() = _uniqueId!!
 
+    fun findUniqueId(): UUID? = _uniqueId
+
     fun setUniqueId(uniqueId: UUID?) {
         _uniqueId = uniqueId
     }
 
     fun resetUniqueId() {
-        setUniqueId(null)
+        _uniqueId = null
     }
 }
