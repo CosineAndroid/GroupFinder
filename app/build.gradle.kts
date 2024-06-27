@@ -14,6 +14,8 @@ val properties = Properties().apply {
     load(FileInputStream(rootProject.file("local.properties")))
 }
 
+fun getProperties(key: String): String = properties[key].toString()
+
 android {
     namespace = "kr.cosine.groupfinder"
     compileSdk = 34
@@ -25,16 +27,27 @@ android {
         versionCode = 1
         versionName = "1.0.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField("String", "RIOT_API_KEY", properties["RIOT_API_KEY"].toString())
+        buildConfigField("String", "RIOT_API_KEY", getProperties("RIOT_API_KEY"))
+    }
+
+    signingConfigs {
+        create("release") {
+            storeFile = file(getProperties("key-store-file-path"))
+            storePassword = getProperties("key-store-password")
+            keyAlias = getProperties("key-store-alias")
+            keyPassword = getProperties("key-store-password")
+        }
     }
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("release")
         }
     }
 
