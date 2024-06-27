@@ -250,7 +250,7 @@ class DetailActivity : GroupFinderActivity() {
     }
 
     private fun showReportGroupDialog() {
-        Dialog("방 신고하기", "정말 해당 방을 신고하시겠습니까?") {
+        Dialog(title ="방 신고하기", message = "정말 해당 방을 신고하시겠습니까?") {
             getOwnerUniqueId {
                 if (it != uniqueId) {
                     detailViewModel.reportGroup(postUniqueId)
@@ -263,7 +263,7 @@ class DetailActivity : GroupFinderActivity() {
 
     private fun showReportUserDialog() {
         getOwnerUniqueId {
-            Dialog("작성자 신고하기", "정말 해당 작성자를 신고하시겠습니까?") {
+            Dialog(title = "작성자 신고하기", message = "정말 해당 작성자를 신고하시겠습니까?") {
                 if(it != uniqueId) {
                     detailViewModel.reportUser(it)
                 } else {
@@ -275,7 +275,7 @@ class DetailActivity : GroupFinderActivity() {
 
     private fun showBlockUserDialog() {
         getOwnerUniqueId {
-            Dialog("작성자 차단하기", "정말 해당 작성자를 차단하시겠습니까?") {
+            Dialog(title = "작성자 차단하기", message =  "정말 해당 작성자를 차단하시겠습니까?") {
                 if (it != uniqueId) {
                     detailViewModel.blockUser(it)
                 } else {
