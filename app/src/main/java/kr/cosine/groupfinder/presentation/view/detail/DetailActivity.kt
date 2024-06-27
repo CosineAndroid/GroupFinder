@@ -28,11 +28,9 @@ import kr.cosine.groupfinder.presentation.view.common.data.ResultCode
 import kr.cosine.groupfinder.presentation.view.common.extension.applyWhite
 import kr.cosine.groupfinder.presentation.view.common.extension.setOnClickListenerWithCooldown
 import kr.cosine.groupfinder.presentation.view.common.extension.showToast
-import kr.cosine.groupfinder.presentation.view.common.util.ActivityUtil.startActivity
 import kr.cosine.groupfinder.presentation.view.detail.event.DetailEvent
 import kr.cosine.groupfinder.presentation.view.dialog.Dialog
 import kr.cosine.groupfinder.presentation.view.group.adapter.decoration.GroupTagItemDecoration
-import kr.cosine.groupfinder.presentation.view.record.RecordActivity
 import kr.cosine.groupfinder.util.MyFirebaseMessagingService
 import java.util.UUID
 
@@ -114,18 +112,7 @@ class DetailActivity : GroupFinderActivity() {
     private fun bindDetailInformation(groupDetailEntity: GroupDetailEntity) {
         with(binding) {
             titleTextView.text = groupDetailEntity.title
-            idTextView.apply {
-                val owner = groupDetailEntity.owner
-                val nickname = owner.nickname
-                val tag = owner.tag
-                text = getString(R.string.tagged_nickname_format, nickname, tag)
-                setOnClickListenerWithCooldown {
-                    startActivity(RecordActivity::class) {
-                        putExtra(IntentKey.NICKNAME, nickname)
-                        putExtra(IntentKey.TAG, tag)
-                    }
-                }
-            }
+            idTextView.text = "${groupDetailEntity.owner.nickname}#${groupDetailEntity.owner.tag}"
             memoTextView.text = groupDetailEntity.body
         }
     }
