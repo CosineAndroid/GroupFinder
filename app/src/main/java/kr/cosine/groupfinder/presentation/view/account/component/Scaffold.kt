@@ -13,8 +13,8 @@ fun AccountScaffold(
     mainBody: @Composable () -> Unit
 ) {
     BaseScaffold(
-        prevBody = prevBody,
-        mainBody = mainBody,
+        prevContent = prevBody,
+        content = mainBody,
         modifier = Modifier
             .padding(30.dp)
     )

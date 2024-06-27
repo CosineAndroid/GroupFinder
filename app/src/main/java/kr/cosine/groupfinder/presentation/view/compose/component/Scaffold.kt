@@ -19,12 +19,12 @@ import kr.cosine.groupfinder.presentation.view.compose.ui.BaseColor
 @Composable
 fun BaseScaffold(
     modifier: Modifier = Modifier,
-    prevBody: @Composable (SnackbarHostState) -> Unit = {},
-    mainBody: @Composable () -> Unit
+    prevContent: @Composable (SnackbarHostState) -> Unit = {},
+    content: @Composable () -> Unit
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
     val localFocusManager = LocalFocusManager.current
-    prevBody(snackbarHostState)
+    prevContent(snackbarHostState)
     Scaffold(
         snackbarHost = {
             SnackbarHost(
@@ -43,6 +43,6 @@ fun BaseScaffold(
                 .fillMaxSize()
                 .background(BaseColor.Background)
         )
-        mainBody()
+        content()
     }
 }
