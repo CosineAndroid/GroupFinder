@@ -7,12 +7,12 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -26,7 +26,6 @@ import kr.cosine.groupfinder.presentation.view.common.data.IntentKey
 import kr.cosine.groupfinder.presentation.view.common.data.Interval
 import kr.cosine.groupfinder.presentation.view.common.data.ResultCode
 import kr.cosine.groupfinder.presentation.view.common.extension.setOnClickListenerWithCooldown
-import kr.cosine.groupfinder.presentation.view.common.extension.showToast
 import kr.cosine.groupfinder.presentation.view.common.flexbox.decoration.FlexboxItemDecoration
 import kr.cosine.groupfinder.presentation.view.common.flexbox.manager.FlexboxLayoutManager
 import kr.cosine.groupfinder.presentation.view.tag.adapter.TagAdapter
@@ -80,7 +79,8 @@ class WriteActivity : GroupFinderActivity() {
         registerViewModelEvent()
         setGameModeSpinner()
         checkBodyMaxLength()
-}
+        checkTitleMaxLength()
+    }
 
 
     private fun checkBodyMaxLength() {
@@ -97,9 +97,28 @@ class WriteActivity : GroupFinderActivity() {
                         binding.bodyEditTextView.setSelection(binding.bodyEditTextView.length())
                         binding.bodyEditTextView.addTextChangedListener(this)
                     }
+                        val currentLength = it.length
+                        val bodyMaxLength = 50
+                        binding.bodyMaxLengthTextView.text = "$currentLength/$bodyMaxLength"
                 }
             }
 
+            override fun afterTextChanged(s: Editable?) {
+            }
+        })
+    }
+
+    private fun checkTitleMaxLength(){
+        binding.titleEditTextView.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                s?.let {
+                    val currentLength = it.length
+                    val titleMaxLength = 20
+                    binding.titleMaxLengthTextView.text = "$currentLength/$titleMaxLength"
+                }
+            }
             override fun afterTextChanged(s: Editable?) {
             }
         })
@@ -110,6 +129,16 @@ class WriteActivity : GroupFinderActivity() {
         val gameModeSpinnerAdapter = GameModeSpinnerAdapter(this, Mode.entries.toTypedArray())
         gameModeSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         gameModeSpinner.adapter = gameModeSpinnerAdapter
+
+        gameModeSpinner.dropDownVerticalOffset = 100
+
+        val firstMode = mode
+
+        // mode 값이 null이 아닌 경우 spinner의 선택된 항목으로 설정 전체에서 만들었을 때는 일반이 기본값
+        firstMode.let {
+            val position = Mode.entries.indexOf(it)
+            gameModeSpinner.setSelection(position)
+        }
 
         gameModeSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
@@ -124,6 +153,8 @@ class WriteActivity : GroupFinderActivity() {
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
     }
+
+
 
     private fun setupTagRecyclerViewAdapter() = with(binding.writeTagRecyclerView) {
         adapter = TagAdapter(tagViewModel.tags.toMutableList(), tagViewModel::removeTag).apply {
@@ -194,11 +225,7 @@ class WriteActivity : GroupFinderActivity() {
     private fun setOnAddLaneButtonListener() {
         val addLaneBtn = binding.addLaneCardView
         addLaneBtn.setOnClickListener {
-            if (requireLaneRecyclerViewAdapter.itemCount >= 4) {
-                Toast.makeText(this, "더 이상 라인을 추가할 수 없습니다", Toast.LENGTH_SHORT).show()
-            } else {
-                requireLaneRecyclerViewAdapter.addLane("1")
-            }
+            requireLaneRecyclerViewAdapter.addLane("1")
         }
     }
 
@@ -210,15 +237,15 @@ class WriteActivity : GroupFinderActivity() {
             val title = binding.titleEditTextView.text.toString()
 
             if (title.isBlank()) {
-                showToast("제목이 입력되지 않았습니다")
+                showSnackbar("제목이 입력되지 않았습니다")
                 return@setOnClickListenerWithCooldown
             }
             if (hasDefaultLane) {
-                showToast("설정하지 않은 라인이 있습니다")
+                showSnackbar("설정하지 않은 라인이 있습니다")
                 return@setOnClickListenerWithCooldown
             }
             if (hasDuplicateLanes) {
-                showToast("중복된 라인이 존재합니다")
+                showSnackbar("중복된 라인이 존재합니다")
                 return@setOnClickListenerWithCooldown
             }
             // 게시글 생성
@@ -237,6 +264,10 @@ class WriteActivity : GroupFinderActivity() {
             lanes[selectedMyLane] = ownerUniqueId
             writeViewModel.createPost(mode, title, body, ownerUniqueId, tags, lanes)
         }
+    }
+
+    private fun showSnackbar(message: String) {
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).show()
     }
 
     //중복된 라인 체크
@@ -259,12 +290,12 @@ class WriteActivity : GroupFinderActivity() {
             writeViewModel.event.flowWithLifecycle(lifecycle).collectLatest { writeEvent ->
                 when (writeEvent) {
                     is WriteEvent.Success -> {
-                        showToast("생성이 완료되었습니다")
+                        showSnackbar("생성이 완료되었습니다")
                         setResult(ResultCode.REFRESH)
                         finish()
                     }
 
-                    is WriteEvent.Notice -> showToast(writeEvent.message)
+                    is WriteEvent.Notice -> showSnackbar(writeEvent.message)
                 }
             }
         }
