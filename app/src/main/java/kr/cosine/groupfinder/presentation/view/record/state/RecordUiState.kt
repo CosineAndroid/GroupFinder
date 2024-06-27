@@ -4,7 +4,7 @@ import kr.cosine.groupfinder.presentation.view.record.state.item.RecordItem
 
 sealed interface RecordUiState {
 
-    data object Init : RecordUiState
+    data object Loading : RecordUiState
 
     open class Notice(
         val message: String

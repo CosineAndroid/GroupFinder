@@ -9,12 +9,10 @@ import kr.cosine.groupfinder.presentation.view.compose.component.BaseScaffold
 
 @Composable
 fun AccountScaffold(
-    prevBody: @Composable (SnackbarHostState) -> Unit = {},
-    mainBody: @Composable () -> Unit
+    content: @Composable () -> Unit
 ) {
     BaseScaffold(
-        prevBody = prevBody,
-        mainBody = mainBody,
+        content = content,
         modifier = Modifier
             .padding(30.dp)
     )

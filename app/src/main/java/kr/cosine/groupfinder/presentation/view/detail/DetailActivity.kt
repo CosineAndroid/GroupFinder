@@ -23,15 +23,18 @@ import kr.cosine.groupfinder.enums.Lane
 import kr.cosine.groupfinder.enums.TestGlobalUserData.HOST
 import kr.cosine.groupfinder.enums.TestGlobalUserData.PARTICIPANT
 import kr.cosine.groupfinder.presentation.view.common.GroupFinderActivity
-import kr.cosine.groupfinder.presentation.view.common.data.Code
 import kr.cosine.groupfinder.presentation.view.common.data.IntentKey
+import kr.cosine.groupfinder.presentation.view.common.data.ResultCode
 import kr.cosine.groupfinder.presentation.view.common.extension.applyWhite
 import kr.cosine.groupfinder.presentation.view.common.extension.setOnClickListenerWithCooldown
 import kr.cosine.groupfinder.presentation.view.common.extension.showToast
 import kr.cosine.groupfinder.presentation.view.common.flexbox.decoration.FlexboxItemDecoration
 import kr.cosine.groupfinder.presentation.view.common.flexbox.manager.FlexboxLayoutManager
+import kr.cosine.groupfinder.presentation.view.common.util.ActivityUtil.startActivity
 import kr.cosine.groupfinder.presentation.view.detail.event.DetailEvent
 import kr.cosine.groupfinder.presentation.view.dialog.Dialog
+import kr.cosine.groupfinder.presentation.view.group.adapter.decoration.GroupTagItemDecoration
+import kr.cosine.groupfinder.presentation.view.record.RecordActivity
 import kr.cosine.groupfinder.util.MyFirebaseMessagingService
 import java.util.UUID
 
@@ -121,10 +124,9 @@ class DetailActivity : GroupFinderActivity() {
     private fun bindCategoriesFromData(tags: List<String>) {
         with(binding.tags) {
             adapter = categoryAdapter
-            layoutManager = FlexboxLayoutManager(context)
-            if (itemDecorationCount == 0) {
-                addItemDecoration(FlexboxItemDecoration)
-            }
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            removeItemDecoration(GroupTagItemDecoration)
+            addItemDecoration(GroupTagItemDecoration)
         }
         categoryAdapter.categoriesUpdate(tags)
     }

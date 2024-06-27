@@ -22,9 +22,9 @@ import kr.cosine.groupfinder.databinding.ActivityWriteBinding
 import kr.cosine.groupfinder.enums.Lane
 import kr.cosine.groupfinder.enums.Mode
 import kr.cosine.groupfinder.presentation.view.common.GroupFinderActivity
-import kr.cosine.groupfinder.presentation.view.common.data.Code
 import kr.cosine.groupfinder.presentation.view.common.data.IntentKey
 import kr.cosine.groupfinder.presentation.view.common.data.Interval
+import kr.cosine.groupfinder.presentation.view.common.data.ResultCode
 import kr.cosine.groupfinder.presentation.view.common.extension.setOnClickListenerWithCooldown
 import kr.cosine.groupfinder.presentation.view.common.extension.showToast
 import kr.cosine.groupfinder.presentation.view.common.flexbox.decoration.FlexboxItemDecoration
@@ -260,7 +260,7 @@ class WriteActivity : GroupFinderActivity() {
                 when (writeEvent) {
                     is WriteEvent.Success -> {
                         showToast("생성이 완료되었습니다")
-                        setResult(Code.REFRESH)
+                        setResult(ResultCode.REFRESH)
                         finish()
                     }
 

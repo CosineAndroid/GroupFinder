@@ -7,7 +7,10 @@
     <string name="group_refresh_cooldown_message">%d초 후에 다시 시도해주세요.</string>
     <string name="title_replacer">제목</string>
     <string name="tagged_nickname_format">%s#%s</string>
+    <string name="profile_broadcast_title">공지사항</string>
     <string name="profile_block_user_title">차단한 유저</string>
+    <string name="profile_user_inquiry_title">문의하기</string>
+    <string name="profile_admin_inquiry_title">문의 확인</string>
     <string name="profile_logout_title">로그아웃</string>
     <string name="profile_withdraw_title">탈퇴하기</string>
     <string name="group_people_format">%d/%d</string>
@@ -28,6 +31,9 @@
     <string name="dialog_confirm">확인</string>
     <string name="profile_logout_message">로그아웃 하시겠습니까?</string>
     <string name="profile_withdraw_message">탈퇴 하시겠습니까?</string>
+    <string name="broadcast_title">공지사항</string>
+    <string name="broadcast_draft_title">공지사항 등록</string>
+    <string name="broadcast_draft_button_title">등록하기</string>
     <string name="open_navigation">메뉴 열기</string>
     <string name="close_navigation">메뉴 닫기</string>
     <string name="navigation_menu_all">전체</string>
@@ -42,11 +48,11 @@
     <string name="policy_title">개인정보처리방침</string>
     <string name="profile_vertical_line_title">|</string>
     <string name="detail_lane_select">원하는 라인을 선택하세요.</string>
-    <string name="write_title">제목</string>
     <string name="write_create_group_title">생성</string>
-    <string name="write_explanation">내용</string>
-    <string name="write_title_hint">제목을 입력하세요</string>
-    <string name="write_explanation_hint">내용을 입력하세요</string>
+    <string name="title">제목</string>
+    <string name="body">내용</string>
+    <string name="title_hint">제목을 입력하세요.</string>
+    <string name="body_hint">내용을 입력하세요.</string>
     <string name="write_my_lane">내 라인</string>
     <string name="write_add_lane">필요한 라인</string>
     <string name="tagged_nickname_input_dialog_title">닉네임 및 태그 변경</string>

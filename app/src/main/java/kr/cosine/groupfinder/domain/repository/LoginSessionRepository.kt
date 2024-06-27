@@ -2,9 +2,9 @@ package kr.cosine.groupfinder.domain.repository
 
 import java.util.UUID
 
-interface LoginSessionRepository : FirebaseRepository {
+abstract class LoginSessionRepository : FirebaseRepository("logion_sessions") {
 
-    suspend fun addLoginSession(uniqueId: UUID)
+    abstract suspend fun addLoginSession(uniqueId: UUID)
 
-    suspend fun removeLoginSession(uniqueId: UUID)
+    abstract suspend fun removeLoginSession(uniqueId: UUID)
 }

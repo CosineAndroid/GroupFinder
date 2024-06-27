@@ -6,11 +6,13 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.scopes.ViewModelScoped
 import kr.cosine.groupfinder.data.repository.AccountRepositoryImpl
+import kr.cosine.groupfinder.data.repository.BroadcastRepositoryImpl
 import kr.cosine.groupfinder.data.repository.GroupRepositoryImpl
 import kr.cosine.groupfinder.data.repository.LoginSessionRepositoryImpl
 import kr.cosine.groupfinder.data.repository.PostRepositoryImpl
 import kr.cosine.groupfinder.data.repository.RiotRepositoryImpl
 import kr.cosine.groupfinder.domain.repository.AccountRepository
+import kr.cosine.groupfinder.domain.repository.BroadcastRepository
 import kr.cosine.groupfinder.domain.repository.GroupRepository
 import kr.cosine.groupfinder.domain.repository.LoginSessionRepository
 import kr.cosine.groupfinder.domain.repository.PostRepository
@@ -49,4 +51,10 @@ abstract class ViewModelModule {
     abstract fun bindLoginSessionRepository(
         loginSessionRepositoryImpl: LoginSessionRepositoryImpl
     ): LoginSessionRepository
+
+    @Binds
+    @ViewModelScoped
+    abstract fun bindBroadcastRepository(
+        broadcastRepositoryImpl: BroadcastRepositoryImpl
+    ) : BroadcastRepository
 }

@@ -9,6 +9,7 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.TextUnit
 import kr.cosine.groupfinder.presentation.view.compose.ui.Font
 
@@ -20,7 +21,8 @@ fun BaseText(
     textAlign: TextAlign? = null,
     fontWeight: FontWeight = FontWeight.Normal,
     color: Color = Color.White,
-    underline: Boolean = false
+    underline: Boolean = false,
+    overflow: TextOverflow = TextOverflow.Clip
 ) {
     Text(
         text = text.toString(),
@@ -36,6 +38,7 @@ fun BaseText(
                 TextDecoration.None
             }
         ),
+        overflow = overflow,
         modifier = modifier
     )
 }
