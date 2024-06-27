@@ -1,21 +1,14 @@
 package kr.cosine.groupfinder.data.repository
 
-import com.google.firebase.firestore.CollectionReference
 import kotlinx.coroutines.tasks.await
 import kr.cosine.groupfinder.data.extension.isJoinedPeople
 import kr.cosine.groupfinder.data.model.PostResponse
 import kr.cosine.groupfinder.data.registry.LocalAccountRegistry
-import kr.cosine.groupfinder.data.remote.FirebaseDataSource
 import kr.cosine.groupfinder.domain.repository.PostRepository
 import java.util.UUID
 import javax.inject.Inject
 
-class PostRepositoryImpl @Inject constructor(
-    private val firebaseDataSource: FirebaseDataSource
-) : PostRepository {
-
-    override val reference: CollectionReference
-        get() = firebaseDataSource.firestore.collection(COLLECTION_PATH)
+class PostRepositoryImpl @Inject constructor() : PostRepository() {
 
     override suspend fun createPost(postResponse: PostResponse) {
         reference.document(postResponse.postUniqueId).set(postResponse).await()
@@ -45,7 +38,6 @@ class PostRepositoryImpl @Inject constructor(
     }
 
     private companion object {
-        const val COLLECTION_PATH = "posts"
         const val TAGS_FIELD = "tags"
     }
 }

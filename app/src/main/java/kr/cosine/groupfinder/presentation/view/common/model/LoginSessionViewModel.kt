@@ -30,9 +30,7 @@ class LoginSessionViewModel @Inject constructor(
     }
 
     fun registerLoginSessionListener(activity: Activity, onDuplicatedLogin: () -> Unit) {
-        loginSessionRepository.addSnapshotListener(activity) { querySnapshot, _ ->
-            if (querySnapshot == null) return@addSnapshotListener
-            if (querySnapshot.metadata.isFromCache) return@addSnapshotListener
+        loginSessionRepository.addSnapshotListener(activity) { querySnapshot ->
             val isLogin = querySnapshot.documentChanges.any {
                 it.type == DocumentChange.Type.ADDED &&
                         (UUID.fromString(it.document.id) == LocalAccountRegistry.uniqueId)

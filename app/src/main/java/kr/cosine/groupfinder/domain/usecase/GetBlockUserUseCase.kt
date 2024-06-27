@@ -19,9 +19,9 @@ class GetBlockUserUseCase @Inject constructor(
                     val blockedUserUniqueId = UUID.fromString(it)
                     val blockedUserAccount = accountRepository.getAccountByUniqueId(blockedUserUniqueId)
                     BlockUserItem(
-                        blockedUserUniqueId,
-                        blockedUserAccount.nickname,
-                        blockedUserAccount.tag
+                        uniqueId = blockedUserUniqueId,
+                        nickname = blockedUserAccount.nickname,
+                        tag = blockedUserAccount.tag
                     )
                 }.getOrNull()
             }

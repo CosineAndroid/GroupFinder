@@ -9,3 +9,7 @@ annotation class RiotAsiaRetrofit
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
 annotation class RiotKoreaRetrofit
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class RiotDataDragonRetrofit

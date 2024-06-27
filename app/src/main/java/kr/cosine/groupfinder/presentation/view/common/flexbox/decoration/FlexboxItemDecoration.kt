@@ -1,19 +1,21 @@
 package kr.cosine.groupfinder.presentation.view.common.flexbox.decoration
 
-import android.content.Context
-import androidx.appcompat.content.res.AppCompatResources
-import com.google.android.flexbox.FlexboxItemDecoration
-import kr.cosine.groupfinder.R
+import android.graphics.Rect
+import android.view.View
+import androidx.recyclerview.widget.RecyclerView
+import kr.cosine.groupfinder.presentation.view.common.decoration.AbstractTagItemDecoration
 
-class FlexboxItemDecoration(
-    context: Context
-) : FlexboxItemDecoration(context) {
+object FlexboxItemDecoration : AbstractTagItemDecoration() {
 
-    init {
-        val flexboxTagDecorationDrawable = AppCompatResources.getDrawable(
-            context,
-            R.drawable.flexbox_grid_tag_decoration
-        )
-        setDrawable(flexboxTagDecorationDrawable)
+    private const val MARGIN = 6
+
+    override fun getItemOffsets(
+        outRect: Rect,
+        view: View,
+        parent: RecyclerView,
+        state: RecyclerView.State
+    ) {
+        outRect.right = MARGIN.dp
+        outRect.bottom = MARGIN.dp
     }
 }

@@ -64,6 +64,7 @@ class GroupFragment(
         registerProgressBar()
         registerSwipeRefreshLayout()
         registerGroupRecyclerView()
+        registerTagFrameLayout()
         registerTagRecyclerView()
         registerSearchBarButton()
         registerWriteButton()
@@ -102,6 +103,14 @@ class GroupFragment(
     private fun openDetailActivity(group: GroupItem) {
         launch(DetailActivity::class) {
             putExtra(IntentKey.POST_UNIQUE_ID, group.postUniqueId)
+        }
+    }
+
+    private fun registerTagFrameLayout() {
+        binding.tagFrameLayout.setOnClickListenerWithCooldown {
+            if (tagViewModel.tags.isEmpty()) {
+                showTagBottomSheetFragment()
+            }
         }
     }
 

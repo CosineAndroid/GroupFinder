@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class RiotMatchResponse(
     val metadata: MetadataResponse?,
-    val info: InfoResponse?
+    val info: InfoResponse
 )
 
 data class MetadataResponse(
@@ -16,7 +16,7 @@ data class MetadataResponse(
 data class InfoResponse(
     val endOfGameResult: String?,
     val gameCreation: Long?,
-    val gameDuration: Int?,
+    val gameDuration: Long,
     val gameEndTimestamp: Long?,
     val gameId: Long?,
     val gameMode: String?,
@@ -25,17 +25,17 @@ data class InfoResponse(
     val gameType: String?,
     val gameVersion: String?,
     val mapId: Int?,
-    val participants: List<ParticipantResponse>?,
+    val participants: List<ParticipantResponse>,
     val platformId: String?,
     val queueId: Int?,
-    val teams: List<TeamResponse>?,
+    val teams: List<TeamResponse>,
     val tournamentCode: String?
 )
 
 data class ParticipantResponse(
     val allInPings: Int?,
     val assistMePings: Int?,
-    val assists: Int?,
+    val assists: Int,
     val baronKills: Int?,
     val basicPings: Int?,
     val bountyLevel: Int?,
@@ -43,7 +43,7 @@ data class ParticipantResponse(
     val champExperience: Int?,
     val champLevel: Int?,
     val championId: Int?,
-    val championName: String?,
+    val championName: String,
     val championTransform: Int?,
     val commandPings: Int?,
     val consumablesPurchased: Int?,
@@ -52,7 +52,7 @@ data class ParticipantResponse(
     val damageDealtToTurrets: Int?,
     val damageSelfMitigated: Int?,
     val dangerPings: Int?,
-    val deaths: Int?,
+    val deaths: Int,
     val detectorWardsPlaced: Int?,
     val doubleKills: Int?,
     val dragonKills: Int?,
@@ -82,7 +82,7 @@ data class ParticipantResponse(
     val item6: Int?,
     val itemsPurchased: Int?,
     val killingSprees: Int?,
-    val kills: Int?,
+    val kills: Int,
     val lane: String?,
     val largestCriticalStrike: Int?,
     val largestKillingSpree: Int?,
@@ -125,15 +125,15 @@ data class ParticipantResponse(
     val spell3Casts: Int?,
     val spell4Casts: Int?,
     val subteamPlacement: Int?,
-    val summoner1Casts: Int?,
-    val summoner1Id: Int?,
-    val summoner2Casts: Int?,
-    val summoner2Id: Int?,
+    val summoner1Casts: Int,
+    val summoner1Id: Int,
+    val summoner2Casts: Int,
+    val summoner2Id: Int,
     val summonerId: String?,
     val summonerLevel: Int?,
     val summonerName: String?,
     val teamEarlySurrendered: Boolean?,
-    val teamId: Int?,
+    val teamId: Int,
     val teamPosition: String?,
     val timeCCingOthers: Int?,
     val timePlayed: Int?,
@@ -162,7 +162,7 @@ data class ParticipantResponse(
     val visionWardsBoughtInGame: Int?,
     val wardsKilled: Int?,
     val wardsPlaced: Int?,
-    val win: Boolean?
+    val win: Boolean
 )
 
 data class ChallengesResponse(
@@ -340,8 +340,8 @@ data class SelectionResponse(
 data class TeamResponse(
     val bans: List<BanResponse>?,
     val objectives: ObjectivesResponse?,
-    val teamId: Int?,
-    val win: Boolean?
+    val teamId: Int,
+    val win: Boolean
 )
 
 data class BanResponse(

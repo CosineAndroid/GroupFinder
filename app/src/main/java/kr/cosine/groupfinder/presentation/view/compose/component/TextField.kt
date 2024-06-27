@@ -24,6 +24,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PlatformImeOptions
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kr.cosine.groupfinder.presentation.view.compose.ui.BaseColor
@@ -41,11 +43,11 @@ fun DefaultTextField(
 ) {
     var input by rememberSaveable { mutableStateOf("") }
     BaseTextField(
-        modifier,
-        input,
-        hint,
-        visualTransformation,
-        borderColor
+        text = input,
+        hint = hint,
+        visualTransformation = visualTransformation,
+        borderColor = borderColor,
+        modifier = modifier
     ) {
         input = it
         onValueChange(it)
@@ -57,16 +59,20 @@ fun BaseTextField(
     modifier: Modifier = Modifier,
     text: String = "",
     hint: String = "",
+    hintFontSize: TextUnit = 16.sp,
+    height: Dp = 50.dp,
     visualTransformation: VisualTransformation = VisualTransformation.None,
+    backgroundColor: Color = BaseColor.AccountTextFieldBackground,
     borderColor: Color? = null,
+    singleLine: Boolean = true,
     onValueChange: (String) -> Unit = {}
 ) {
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .height(50.dp)
+            .height(height)
             .background(
-                color = BaseColor.AccountTextFieldBackground,
+                color = backgroundColor,
                 shape = RoundedCornerShape(8.dp)
             )
             .run {
@@ -80,15 +86,15 @@ fun BaseTextField(
                     this
                 }
             }
-            .padding(horizontal = 15.dp)
+            .padding(11.dp)
     ) {
         if (text.isEmpty()) {
             BaseText(
                 text = hint,
-                fontSize = 16.sp,
+                fontSize = hintFontSize,
                 color = BaseColor.AccountTextFieldHint,
                 modifier = Modifier
-                    .align(Alignment.CenterStart)
+                    .align(Alignment.TopStart)
             )
         }
         BasicTextField(
@@ -105,10 +111,10 @@ fun BaseTextField(
             keyboardOptions = KeyboardOptions.Default.copy(
                 platformImeOptions = PlatformImeOptions(DEFAULT_ENGLISH_KEYBOARD)
             ),
-            singleLine = true,
+            singleLine = singleLine,
             decorationBox = { innerTextField ->
                 Row(
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.Top
                 ) {
                     innerTextField()
                 }

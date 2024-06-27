@@ -1,6 +1,6 @@
 package kr.cosine.groupfinder.presentation.view.common.data
 
-object Code {
+object ResultCode {
 
     const val SUCCESS_REGISTER_ACCOUNT = 1
 
