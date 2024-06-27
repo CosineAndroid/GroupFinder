@@ -1,18 +1,15 @@
 package kr.cosine.groupfinder.presentation.view.account.register
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
+import androidx.compose.runtime.Composable
 import dagger.hilt.android.AndroidEntryPoint
+import kr.cosine.groupfinder.presentation.view.account.AccountActivity
 import kr.cosine.groupfinder.presentation.view.account.register.screen.RegisterScreen
 
 @AndroidEntryPoint
-class RegisterActivity : ComponentActivity() {
+class RegisterActivity : AccountActivity() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            RegisterScreen()
-        }
+    @Composable
+    override fun Screen() {
+        RegisterScreen()
     }
 }
