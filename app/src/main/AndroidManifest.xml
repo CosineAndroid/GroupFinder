@@ -40,6 +40,12 @@
             android:name=".presentation.view.record.RecordActivity"
             android:exported="true" />
         <activity
+            android:name=".presentation.view.broadcast.BroadcastListActivity"
+            android:exported="true" />
+        <activity
+            android:name=".presentation.view.broadcast.BroadcastDraftActivity"
+            android:exported="true" />
+        <activity
             android:name=".presentation.view.profile.BlockUserActivity"
             android:exported="true" />
         <activity

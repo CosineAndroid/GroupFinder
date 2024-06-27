@@ -1,5 +1,6 @@
 package kr.cosine.groupfinder.di
 
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import dagger.Module
@@ -7,7 +8,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kr.cosine.groupfinder.data.remote.CloudFunctionDataSource
-import kr.cosine.groupfinder.data.remote.FirebaseDataSource
 import kr.cosine.groupfinder.data.remote.RiotAsiaDataSource
 import kr.cosine.groupfinder.data.remote.RiotDataDragonDataSource
 import kr.cosine.groupfinder.data.remote.RiotKoreaDataSource
@@ -24,11 +24,7 @@ import java.util.concurrent.TimeUnit
 class DataSourceModule {
 
     @Provides
-    fun provideFirebaseDataSource(): FirebaseDataSource {
-        return object : FirebaseDataSource {
-            override val firestore = Firebase.firestore
-        }
-    }
+    fun provideFirestore(): FirebaseFirestore = Firebase.firestore
 
     @Provides
     fun provideOkHttpClient(): OkHttpClient {
@@ -83,7 +79,7 @@ class DataSourceModule {
     }
 
     @Provides
-    fun provideRiotKoreaDataSource(
+    fun provideRiotKoreaDatasource(
         @RiotKoreaRetrofit retrofit: Retrofit,
     ): RiotKoreaDataSource {
         return retrofit.create(RiotKoreaDataSource::class.java)

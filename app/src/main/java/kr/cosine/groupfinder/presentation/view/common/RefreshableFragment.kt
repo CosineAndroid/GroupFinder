@@ -6,7 +6,7 @@ import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
-import kr.cosine.groupfinder.presentation.view.common.data.Code
+import kr.cosine.groupfinder.presentation.view.common.data.ResultCode
 import kotlin.reflect.KClass
 
 abstract class RefreshableFragment : Fragment() {
@@ -22,7 +22,7 @@ abstract class RefreshableFragment : Fragment() {
         activityResultLauncher = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()
         ) { result ->
-            if (result.resultCode != Code.REFRESH) return@registerForActivityResult
+            if (result.resultCode != ResultCode.REFRESH) return@registerForActivityResult
             refresh()
         }
     }

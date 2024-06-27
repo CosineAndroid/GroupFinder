@@ -1,6 +1,5 @@
 package kr.cosine.groupfinder.presentation.view.record.screen
 
-import androidx.activity.ComponentActivity
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -47,6 +46,7 @@ import kr.cosine.groupfinder.presentation.view.common.data.IntentKey
 import kr.cosine.groupfinder.presentation.view.compose.component.BaseScaffold
 import kr.cosine.groupfinder.presentation.view.compose.component.BaseText
 import kr.cosine.groupfinder.presentation.view.compose.component.LoadingScreen
+import kr.cosine.groupfinder.presentation.view.compose.extension.currentComponentActivity
 import kr.cosine.groupfinder.presentation.view.compose.model.LoadingViewModel
 import kr.cosine.groupfinder.presentation.view.compose.ui.BaseColor
 import kr.cosine.groupfinder.presentation.view.record.model.RecordViewModel
@@ -82,7 +82,7 @@ private fun RecordLaunchedEffect(
     loadingViewModel: LoadingViewModel = viewModel(),
     recordViewModel: RecordViewModel = hiltViewModel()
 ) {
-    val activity = LocalContext.current as ComponentActivity
+    val activity = LocalContext.currentComponentActivity
     LaunchedEffect(
         key1 = Unit
     ) {

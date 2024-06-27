@@ -1,21 +1,14 @@
 package kr.cosine.groupfinder.data.repository
 
-import com.google.firebase.firestore.CollectionReference
 import kotlinx.coroutines.tasks.await
 import kr.cosine.groupfinder.data.model.AccountResponse
-import kr.cosine.groupfinder.data.remote.FirebaseDataSource
 import kr.cosine.groupfinder.domain.exception.AccountNotExistsException
 import kr.cosine.groupfinder.domain.repository.AccountRepository
 import org.mindrot.jbcrypt.BCrypt
 import java.util.UUID
 import javax.inject.Inject
 
-class AccountRepositoryImpl @Inject constructor(
-    private val firebaseDataSource: FirebaseDataSource
-) : AccountRepository {
-
-    override val reference: CollectionReference
-        get() = firebaseDataSource.firestore.collection(COLLECTION_PATH)
+class AccountRepositoryImpl @Inject constructor() : AccountRepository() {
 
     override suspend fun isAccount(id: String): Boolean {
         return !reference.whereEqualTo(ID_FIELD, id).get().await().isEmpty
@@ -69,7 +62,6 @@ class AccountRepositoryImpl @Inject constructor(
     }
 
     private companion object {
-        const val COLLECTION_PATH = "accounts"
         const val ID_FIELD = "id"
         const val NICKNAME_FIELD = "nickname"
         const val TAG_FIELD = "tag"
