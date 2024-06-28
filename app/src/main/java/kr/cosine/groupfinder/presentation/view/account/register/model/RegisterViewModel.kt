@@ -16,8 +16,8 @@ import kr.cosine.groupfinder.domain.exception.IdAlreadyExistsException
 import kr.cosine.groupfinder.domain.exception.TaggedNicknameAlreadyExistsException
 import kr.cosine.groupfinder.domain.usecase.RegisterAccountUseCase
 import kr.cosine.groupfinder.presentation.view.account.register.event.RegisterEvent
-import kr.cosine.groupfinder.presentation.view.account.register.state.RegisterUiState
 import kr.cosine.groupfinder.presentation.view.account.register.state.RegisterErrorUiState
+import kr.cosine.groupfinder.presentation.view.account.register.state.RegisterUiState
 import kr.cosine.groupfinder.presentation.view.common.extension.containsBlank
 import javax.inject.Inject
 
@@ -32,6 +32,7 @@ class RegisterViewModel @Inject constructor(
     private val _event = MutableSharedFlow<RegisterEvent>()
     val event: SharedFlow<RegisterEvent> get() = _event.asSharedFlow()
 
+    private val idRegex = Regex("^[a-z0-9]+$")
     private val passwordRegex = Regex("^.*(?=^.{8,20}\$)(?=.*\\d)(?=.*[a-zA-Z])(?=.*[!*@#\$%^&+=]).*\$")
 
     private val RegisterErrorUiState.text get() = (this as RegisterErrorUiState.Valid).text
@@ -42,7 +43,8 @@ class RegisterViewModel @Inject constructor(
                 id = when {
                     id.isBlank() -> RegisterErrorUiState.Blank
                     id.containsBlank() -> RegisterErrorUiState.ContainBlank
-                    id.length < ID_MIN_LENGTH -> RegisterErrorUiState.Length
+                    id.length !in idLengthRange -> RegisterErrorUiState.Length
+                    !idRegex.matches(id) -> RegisterErrorUiState.Id
                     else -> RegisterErrorUiState.Valid(id)
                 }
             )
@@ -89,6 +91,30 @@ class RegisterViewModel @Inject constructor(
         }
     }
 
+    fun checkAgeCheckbox(isChecked: Boolean) {
+        _uiState.update { prevUiState ->
+            prevUiState.copy(
+                ageCheckbox = if (isChecked) {
+                    RegisterErrorUiState.Valid()
+                } else {
+                    RegisterErrorUiState.Blank
+                }
+            )
+        }
+    }
+
+    fun checkPolicyCheckbox(isChecked: Boolean) {
+        _uiState.update { prevUiState ->
+            prevUiState.copy(
+                policyCheckbox = if (isChecked) {
+                    RegisterErrorUiState.Valid()
+                } else {
+                    RegisterErrorUiState.Blank
+                }
+            )
+        }
+    }
+
     fun checkButtonEnable() {
         _uiState.update { prevUiState ->
             prevUiState.copy(
@@ -96,6 +122,8 @@ class RegisterViewModel @Inject constructor(
                         && prevUiState.password is RegisterErrorUiState.Valid
                         && prevUiState.nickname is RegisterErrorUiState.Valid
                         && prevUiState.tag is RegisterErrorUiState.Valid
+                        && prevUiState.ageCheckbox is RegisterErrorUiState.Valid
+                        && prevUiState.policyCheckbox is RegisterErrorUiState.Valid
             )
         }
     }
@@ -123,7 +151,7 @@ class RegisterViewModel @Inject constructor(
     }
 
     private companion object {
-        const val ID_MIN_LENGTH = 5
+        val idLengthRange = 5..15
         const val INFO_MAX_LENGTH = 16
     }
 }

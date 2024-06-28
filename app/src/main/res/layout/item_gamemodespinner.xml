@@ -5,9 +5,7 @@
 
     <TextView
         android:id="@+id/gameModeTextView"
-        android:text="일반 모드"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="10dp"
+        android:text="칼바람 나락"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         style="@style/spinner_mode"/>

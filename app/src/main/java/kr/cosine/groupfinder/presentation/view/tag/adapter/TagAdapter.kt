@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kr.cosine.groupfinder.databinding.ItemTagBinding
-import kr.cosine.groupfinder.presentation.view.common.extension.setOnClickListenerWithCooldown
 import kr.cosine.groupfinder.presentation.view.common.data.Interval
+import kr.cosine.groupfinder.presentation.view.common.extension.setOnClickListenerWithCooldown
 
 class TagAdapter(
     private val tags: MutableList<String> = mutableListOf(),

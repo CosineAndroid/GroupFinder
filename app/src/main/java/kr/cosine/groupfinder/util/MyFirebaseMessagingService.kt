@@ -11,6 +11,7 @@ import com.google.firebase.messaging.RemoteMessage
 import kr.cosine.groupfinder.GroupFinderApplication
 import kr.cosine.groupfinder.data.registry.LocalAccountRegistry.uniqueId
 import kr.cosine.groupfinder.enums.Lane
+import kr.cosine.groupfinder.presentation.MainActivity
 import kr.cosine.groupfinder.presentation.view.detail.DetailActivity
 import kr.cosine.groupfinder.presentation.view.dialog.Dialog
 import okhttp3.Call
@@ -47,10 +48,18 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                     }
                 }
                 "force_exit" -> {
-                    if(currentActivity is DetailActivity) {
-                        currentActivity.showForceExitDialog()
-                    } else {
-                        showForceExitDialog(myApp.getCurrentActivity())
+                    when (currentActivity) {
+                        is DetailActivity -> {
+                            currentActivity.showForceExitDialog()
+                        }
+
+                        is MainActivity -> {
+                            currentActivity.showForceExitDialog()
+                        }
+
+                        else -> {
+                            showForceExitDialog(myApp.getCurrentActivity())
+                        }
                     }
                 }
                 "already_cancel_request" -> showCanceledRequestDialog(myApp.getCurrentActivity())
@@ -317,6 +326,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             val postUUID = data["postUUID"] ?: "error"
             Log.d("FCM", "showJoinRequestDialog: $senderUUID,$postUUID")
             Dialog(
+                isCancelable = false,
                 title = "참가 요청",
                 message = "${participantName}님이 ${participantLane}에 참가를 요청 합니다.",
                 cancelButtonTitle = "거절",

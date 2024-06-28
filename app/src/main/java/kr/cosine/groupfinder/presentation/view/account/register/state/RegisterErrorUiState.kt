@@ -8,9 +8,11 @@ sealed interface RegisterErrorUiState {
 
     data object Length : RegisterErrorUiState
 
+    data object Id : RegisterErrorUiState
+
     data object Password : RegisterErrorUiState
 
     data class Valid(
-        val text: String
+        val text: String = ""
     ) : RegisterErrorUiState
 }

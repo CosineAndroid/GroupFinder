@@ -9,4 +9,6 @@ object Interval {
     const val CLICK_BUTTON = 500
 
     const val CREATE_GROUP = 1000
+
+    const val REFRESH = 3000
 }

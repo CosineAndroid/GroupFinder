@@ -11,10 +11,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kr.cosine.groupfinder.R
 import kr.cosine.groupfinder.databinding.FragmentTagBottomSheetBinding
-import kr.cosine.groupfinder.presentation.view.tag.adapter.TagAdapter
-import kr.cosine.groupfinder.presentation.view.tag.model.TagViewModel
 import kr.cosine.groupfinder.presentation.view.common.flexbox.decoration.FlexboxItemDecoration
 import kr.cosine.groupfinder.presentation.view.common.flexbox.manager.FlexboxLayoutManager
+import kr.cosine.groupfinder.presentation.view.tag.adapter.TagAdapter
+import kr.cosine.groupfinder.presentation.view.tag.model.TagViewModel
 
 class TagBottomSheetFragment : BottomSheetDialogFragment() {
 
@@ -45,8 +45,9 @@ class TagBottomSheetFragment : BottomSheetDialogFragment() {
     ) = with(recyclerView) {
         adapter = TagAdapter(tags, this@TagBottomSheetFragment::onItemClick)
         layoutManager = FlexboxLayoutManager(context)
-        val flexboxItemDecoration = FlexboxItemDecoration(context)
-        addItemDecoration(flexboxItemDecoration)
+        if (itemDecorationCount == 0) {
+            addItemDecoration(FlexboxItemDecoration)
+        }
     }
 
     private fun onItemClick(tag: String) {

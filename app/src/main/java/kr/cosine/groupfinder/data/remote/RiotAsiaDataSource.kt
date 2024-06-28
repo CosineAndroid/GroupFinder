@@ -2,6 +2,7 @@ package kr.cosine.groupfinder.data.remote
 
 import kr.cosine.groupfinder.BuildConfig
 import kr.cosine.groupfinder.data.model.riot.RiotAccountResponse
+import kr.cosine.groupfinder.data.model.riot.RiotMatchIdsResponse
 import kr.cosine.groupfinder.data.model.riot.RiotMatchResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -13,12 +14,19 @@ interface RiotAsiaDataSource {
     suspend fun getAccount(
         @Path("gameName") gameName: String,
         @Path("tagLine") tagLine: String,
-        @Query("api_key") apiKey: String = BuildConfig.LOL_API_KEY
+        @Query("api_key") apiKey: String = BuildConfig.RIOT_API_KEY
     ): RiotAccountResponse
+
+    @GET("/lol/match/v5/matches/by-puuid/{puuid}/ids")
+    suspend fun getMatchIds(
+        @Path("puuid") puuid: String,
+        @Query("count") count: Int = 10,
+        @Query("api_key") apiKey: String = BuildConfig.RIOT_API_KEY
+    ): RiotMatchIdsResponse
 
     @GET("/lol/match/v5/matches/{matchId}")
     suspend fun getMatch(
         @Path("matchId") matchId: String,
-        @Query("api_key") apiKey: String = BuildConfig.LOL_API_KEY
+        @Query("api_key") apiKey: String = BuildConfig.RIOT_API_KEY
     ): RiotMatchResponse
 }

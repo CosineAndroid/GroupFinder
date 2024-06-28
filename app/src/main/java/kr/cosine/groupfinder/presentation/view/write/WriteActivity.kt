@@ -1,16 +1,18 @@
 package kr.cosine.groupfinder.presentation.view.write
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.MotionEvent
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
-import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -19,26 +21,26 @@ import kr.cosine.groupfinder.data.registry.LocalAccountRegistry
 import kr.cosine.groupfinder.databinding.ActivityWriteBinding
 import kr.cosine.groupfinder.enums.Lane
 import kr.cosine.groupfinder.enums.Mode
-import kr.cosine.groupfinder.presentation.view.tag.adapter.TagAdapter
-import kr.cosine.groupfinder.presentation.view.common.data.Code
-import kr.cosine.groupfinder.presentation.view.common.extension.setOnClickListenerWithCooldown
+import kr.cosine.groupfinder.presentation.view.common.GroupFinderActivity
 import kr.cosine.groupfinder.presentation.view.common.data.IntentKey
-import kr.cosine.groupfinder.presentation.view.tag.model.TagViewModel
 import kr.cosine.groupfinder.presentation.view.common.data.Interval
-import kr.cosine.groupfinder.presentation.view.common.extension.showToast
-import kr.cosine.groupfinder.presentation.view.tag.event.TagEvent
-import kr.cosine.groupfinder.presentation.view.tag.sheet.TagBottomSheetFragment
-import kr.cosine.groupfinder.presentation.view.write.adapter.RequireLaneRecyclerViewAdapter
-import kr.cosine.groupfinder.presentation.view.write.adapter.SpinnerAdapter
+import kr.cosine.groupfinder.presentation.view.common.data.ResultCode
+import kr.cosine.groupfinder.presentation.view.common.extension.setOnClickListenerWithCooldown
 import kr.cosine.groupfinder.presentation.view.common.flexbox.decoration.FlexboxItemDecoration
 import kr.cosine.groupfinder.presentation.view.common.flexbox.manager.FlexboxLayoutManager
+import kr.cosine.groupfinder.presentation.view.tag.adapter.TagAdapter
+import kr.cosine.groupfinder.presentation.view.tag.event.TagEvent
+import kr.cosine.groupfinder.presentation.view.tag.model.TagViewModel
+import kr.cosine.groupfinder.presentation.view.tag.sheet.TagBottomSheetFragment
 import kr.cosine.groupfinder.presentation.view.write.adapter.GameModeSpinnerAdapter
+import kr.cosine.groupfinder.presentation.view.write.adapter.RequireLaneRecyclerViewAdapter
+import kr.cosine.groupfinder.presentation.view.write.adapter.SpinnerAdapter
 import kr.cosine.groupfinder.presentation.view.write.event.WriteEvent
 import kr.cosine.groupfinder.presentation.view.write.model.WriteViewModel
 import java.util.UUID
 
 @AndroidEntryPoint
-class WriteActivity : AppCompatActivity() {
+class WriteActivity : GroupFinderActivity() {
 
     private lateinit var binding: ActivityWriteBinding
 
@@ -56,7 +58,6 @@ class WriteActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         binding = ActivityWriteBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
@@ -77,8 +78,51 @@ class WriteActivity : AppCompatActivity() {
         addTagsButton()
         registerViewModelEvent()
         setGameModeSpinner()
+        checkBodyMaxLength()
+        checkTitleMaxLength()
     }
 
+
+    private fun checkBodyMaxLength() {
+        binding.bodyEditTextView.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                s?.let {
+                    val lines = it.split("\n")
+                    if (lines.size > 3) {
+                        binding.bodyEditTextView.removeTextChangedListener(this)
+                        binding.bodyEditTextView.setText(it.subSequence(0, start))
+                        binding.bodyEditTextView.setSelection(binding.bodyEditTextView.length())
+                        binding.bodyEditTextView.addTextChangedListener(this)
+                    }
+                        val currentLength = it.length
+                        val bodyMaxLength = 50
+                        binding.bodyMaxLengthTextView.text = "$currentLength/$bodyMaxLength"
+                }
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+            }
+        })
+    }
+
+    private fun checkTitleMaxLength(){
+        binding.titleEditTextView.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                s?.let {
+                    val currentLength = it.length
+                    val titleMaxLength = 20
+                    binding.titleMaxLengthTextView.text = "$currentLength/$titleMaxLength"
+                }
+            }
+            override fun afterTextChanged(s: Editable?) {
+            }
+        })
+    }
 
     private fun setGameModeSpinner() {
         val gameModeSpinner = binding.gameModeSpinner
@@ -86,21 +130,40 @@ class WriteActivity : AppCompatActivity() {
         gameModeSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         gameModeSpinner.adapter = gameModeSpinnerAdapter
 
+        gameModeSpinner.dropDownVerticalOffset = 100
+
+        val firstMode = mode
+
+        // mode 값이 null이 아닌 경우 spinner의 선택된 항목으로 설정 전체에서 만들었을 때는 일반이 기본값
+        firstMode.let {
+            val position = Mode.entries.indexOf(it)
+            gameModeSpinner.setSelection(position)
+        }
+
         gameModeSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
                 mode = Mode.entries.toTypedArray()[position]
             }
+
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
     }
+
+
 
     private fun setupTagRecyclerViewAdapter() = with(binding.writeTagRecyclerView) {
         adapter = TagAdapter(tagViewModel.tags.toMutableList(), tagViewModel::removeTag).apply {
             tagRecyclerViewAdapter = this
         }
         layoutManager = FlexboxLayoutManager(context)
-        val flexboxItemDecoration = FlexboxItemDecoration(context)
-        addItemDecoration(flexboxItemDecoration)
+        if (itemDecorationCount == 0) {
+            addItemDecoration(FlexboxItemDecoration)
+        }
     }
 
     private fun registerTagViewModel() {
@@ -124,7 +187,11 @@ class WriteActivity : AppCompatActivity() {
 
     //리싸이클러뷰 어댑터
     private fun setupRequireLaneRecyclerViewAdapter() {
-        requireLaneRecyclerViewAdapter = RequireLaneRecyclerViewAdapter(requireLaneList)
+        requireLaneRecyclerViewAdapter =
+            RequireLaneRecyclerViewAdapter(requireLaneList, onLaneCountChanged = {
+                binding.addLaneCardView.visibility =
+                    if (requireLaneRecyclerViewAdapter.itemCount < 4) View.VISIBLE else View.INVISIBLE
+            })
         binding.requireLanesRecyclerView.apply {
             adapter = requireLaneRecyclerViewAdapter
             itemAnimator = null
@@ -156,12 +223,9 @@ class WriteActivity : AppCompatActivity() {
 
     //라인 더하는 기능
     private fun setOnAddLaneButtonListener() {
-        binding.addLaneCardView.setOnClickListener {
-            if (requireLaneRecyclerViewAdapter.itemCount >= 4) {
-                Toast.makeText(this, "더 이상 라인을 추가할 수 없습니다", Toast.LENGTH_SHORT).show()
-            } else {
-                requireLaneRecyclerViewAdapter.addLane("1")
-            }
+        val addLaneBtn = binding.addLaneCardView
+        addLaneBtn.setOnClickListener {
+            requireLaneRecyclerViewAdapter.addLane("1")
         }
     }
 
@@ -173,15 +237,15 @@ class WriteActivity : AppCompatActivity() {
             val title = binding.titleEditTextView.text.toString()
 
             if (title.isBlank()) {
-                showToast("제목이 입력되지 않았습니다")
+                showSnackbar("제목이 입력되지 않았습니다")
                 return@setOnClickListenerWithCooldown
             }
             if (hasDefaultLane) {
-                showToast("설정하지 않은 라인이 있습니다")
+                showSnackbar("설정하지 않은 라인이 있습니다")
                 return@setOnClickListenerWithCooldown
             }
             if (hasDuplicateLanes) {
-                showToast("중복된 라인이 존재합니다")
+                showSnackbar("중복된 라인이 존재합니다")
                 return@setOnClickListenerWithCooldown
             }
             // 게시글 생성
@@ -200,6 +264,10 @@ class WriteActivity : AppCompatActivity() {
             lanes[selectedMyLane] = ownerUniqueId
             writeViewModel.createPost(mode, title, body, ownerUniqueId, tags, lanes)
         }
+    }
+
+    private fun showSnackbar(message: String) {
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).show()
     }
 
     //중복된 라인 체크
@@ -222,14 +290,22 @@ class WriteActivity : AppCompatActivity() {
             writeViewModel.event.flowWithLifecycle(lifecycle).collectLatest { writeEvent ->
                 when (writeEvent) {
                     is WriteEvent.Success -> {
-                        showToast("생성이 완료되었습니다")
-                        setResult(Code.SUCCESS_POST_TASK)
+                        showSnackbar("생성이 완료되었습니다")
+                        setResult(ResultCode.REFRESH)
                         finish()
                     }
 
-                    is WriteEvent.Notice -> showToast(writeEvent.message)
+                    is WriteEvent.Notice -> showSnackbar(writeEvent.message)
                 }
             }
         }
     }
+
+    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+        val imm: InputMethodManager =
+            getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
+        return super.dispatchTouchEvent(ev)
+    }
+
 }

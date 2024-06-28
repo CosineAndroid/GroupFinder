@@ -2,9 +2,9 @@ package kr.cosine.groupfinder.presentation
 
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
@@ -13,11 +13,13 @@ import dagger.hilt.android.AndroidEntryPoint
 import kr.cosine.groupfinder.R
 import kr.cosine.groupfinder.databinding.ActivityMainBinding
 import kr.cosine.groupfinder.enums.Mode
+import kr.cosine.groupfinder.presentation.view.common.GroupFinderActivity
+import kr.cosine.groupfinder.presentation.view.dialog.Dialog
 import kr.cosine.groupfinder.presentation.view.group.GroupFragment
 import kr.cosine.groupfinder.presentation.view.profile.ProfileFragment
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : GroupFinderActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
 
@@ -77,9 +79,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private fun replaceFragment(fragment: Fragment) {
         binding.toolbar.title = when (fragment) {
-            is GroupFragment -> fragment.mode?.displayName ?: ALL_CATEGORY
-            is ProfileFragment -> PROFILE_CATEGORY
-            else -> EMPTY_CATEGORY
+            is GroupFragment -> fragment.mode?.displayName ?: getString(R.string.group_all_category)
+            is ProfileFragment -> getString(R.string.group_profile_category)
+            else -> getString(R.string.group_unknown_category)
         }
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, fragment)
@@ -92,16 +94,42 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
                     drawerLayout.closeDrawer(GravityCompat.START)
                 } else {
-                    finish()
+                    val fragments = supportFragmentManager.fragments
+                    val hasGroupFragment = fragments.any { it is GroupFragment && it.mode == null }
+                    if (fragments.isEmpty() || hasGroupFragment) {
+                        showExitDialog()
+                    } else {
+                        replaceFragment(GroupFragment())
+                    }
                 }
             }
         }
         onBackPressedDispatcher.addCallback(this, backPressedCallback)
     }
 
-    private companion object {
-        const val ALL_CATEGORY = "전체"
-        const val PROFILE_CATEGORY = "프로필"
-        const val EMPTY_CATEGORY = " "
+    private fun showExitDialog() {
+        Dialog(
+            message = getString(R.string.group_exit_message),
+        ) {
+            finish()
+        }.show(supportFragmentManager, Dialog.TAG)
+    }
+
+    private fun getCurrentFragment(): Fragment? {
+        return supportFragmentManager.findFragmentById(R.id.fragment_container)
+    }
+
+    fun showForceExitDialog() {
+        Dialog(
+            title = "강제 퇴장",
+            message = "강제 퇴장되었습니다.",
+            cancelButtonVisibility = View.GONE,
+            onConfirmClick = {
+                val currentFragment = getCurrentFragment()
+                if (currentFragment is GroupFragment) {
+                    currentFragment.doRefresh()
+                }
+            }
+        ).show(supportFragmentManager, Dialog.TAG)
     }
 }

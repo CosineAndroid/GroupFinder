@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
-import kr.cosine.groupfinder.data.registry.LocalAccountRegistry.uniqueId
+import kr.cosine.groupfinder.data.registry.LocalAccountRegistry
 import kr.cosine.groupfinder.domain.exception.AlreadyBlockUserException
 import kr.cosine.groupfinder.domain.exception.AlreadyReportException
 import kr.cosine.groupfinder.domain.model.GroupDetailEntity
@@ -51,14 +51,16 @@ class DetailViewModel @Inject constructor(
 
     private fun checkRole() {
         _groupRole.value = when {
-            uniqueId == postDetail.value?.owner?.uniqueId -> HOST
-            postDetail.value?.laneMap?.values?.any { it?.uniqueId == uniqueId } == true -> PARTICIPANT
+            LocalAccountRegistry.uniqueId == postDetail.value?.owner?.uniqueId -> HOST
+            postDetail.value?.laneMap?.values?.any {
+                it?.uniqueId == LocalAccountRegistry.uniqueId
+            } == true -> PARTICIPANT
             else -> NONE
         }
     }
 
     fun reportGroup(groupUniqueId: UUID) = viewModelScope.launch(Dispatchers.IO) {
-        reportGroupUseCase(groupUniqueId).onSuccess {
+        reportGroupUseCase(LocalAccountRegistry.uniqueId, groupUniqueId).onSuccess {
             val event = DetailEvent.ReportGroupSuccess
             _event.emit(event)
         }.onFailure { throwable ->
@@ -72,7 +74,7 @@ class DetailViewModel @Inject constructor(
     }
 
     fun reportUser(userUniqueId: UUID) = viewModelScope.launch(Dispatchers.IO) {
-        reportUserUseCase(userUniqueId).onSuccess {
+        reportUserUseCase(LocalAccountRegistry.uniqueId, userUniqueId).onSuccess {
             val event = DetailEvent.ReportUserSuccess
             _event.emit(event)
         }.onFailure { throwable ->
@@ -86,7 +88,7 @@ class DetailViewModel @Inject constructor(
     }
 
     fun blockUser(userUniqueId: UUID) = viewModelScope.launch(Dispatchers.IO) {
-        blockUserUseCase(userUniqueId).onSuccess {
+        blockUserUseCase(LocalAccountRegistry.uniqueId, userUniqueId).onSuccess {
             val event = DetailEvent.BlockUserSuccess
             _event.emit(event)
         }.onFailure { throwable ->

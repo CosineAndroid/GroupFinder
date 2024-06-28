@@ -8,7 +8,6 @@ import android.view.View
 import android.widget.PopupMenu
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,19 +22,22 @@ import kr.cosine.groupfinder.domain.model.GroupOwnerEntity
 import kr.cosine.groupfinder.enums.Lane
 import kr.cosine.groupfinder.enums.TestGlobalUserData.HOST
 import kr.cosine.groupfinder.enums.TestGlobalUserData.PARTICIPANT
-import kr.cosine.groupfinder.presentation.view.common.data.Code
+import kr.cosine.groupfinder.presentation.view.common.GroupFinderActivity
 import kr.cosine.groupfinder.presentation.view.common.data.IntentKey
+import kr.cosine.groupfinder.presentation.view.common.data.ResultCode
 import kr.cosine.groupfinder.presentation.view.common.extension.applyWhite
 import kr.cosine.groupfinder.presentation.view.common.extension.setOnClickListenerWithCooldown
 import kr.cosine.groupfinder.presentation.view.common.extension.showToast
+import kr.cosine.groupfinder.presentation.view.common.extension.startActivity
 import kr.cosine.groupfinder.presentation.view.detail.event.DetailEvent
 import kr.cosine.groupfinder.presentation.view.dialog.Dialog
 import kr.cosine.groupfinder.presentation.view.group.adapter.decoration.GroupTagItemDecoration
+import kr.cosine.groupfinder.presentation.view.record.RecordActivity
 import kr.cosine.groupfinder.util.MyFirebaseMessagingService
 import java.util.UUID
 
 @AndroidEntryPoint
-class DetailActivity : AppCompatActivity() {
+class DetailActivity : GroupFinderActivity() {
 
     private val binding by lazy { ActivityDetailBinding.inflate(layoutInflater) }
 
@@ -112,8 +114,23 @@ class DetailActivity : AppCompatActivity() {
     private fun bindDetailInformation(groupDetailEntity: GroupDetailEntity) {
         with(binding) {
             titleTextView.text = groupDetailEntity.title
-            idTextView.text = "${groupDetailEntity.owner.nickname}#${groupDetailEntity.owner.tag}"
+            idTextView.apply {
+                val owner = groupDetailEntity.owner
+                val nickname = owner.nickname
+                val tag = owner.tag
+                text = getString(R.string.tagged_nickname_format, nickname, tag)
+                setOnClickListenerWithCooldown {
+                    startRecordActivity(nickname, tag)
+                }
+            }
             memoTextView.text = groupDetailEntity.body
+        }
+    }
+
+    private fun startRecordActivity(nickname: String, tag: String) {
+        startActivity(RecordActivity::class) {
+            putExtra(IntentKey.NICKNAME, nickname)
+            putExtra(IntentKey.TAG, tag)
         }
     }
 
@@ -191,8 +208,7 @@ class DetailActivity : AppCompatActivity() {
                         targetUUID = userUUID
                     )
                     if (detailViewModel.groupRole.value == PARTICIPANT) {
-                        setResult(Code.SUCCESS_POST_TASK)
-                        finish()
+                        finishWithResult()
                     }
                 }
             }
@@ -246,28 +262,42 @@ class DetailActivity : AppCompatActivity() {
 
     private fun registerCloseButton() {
         binding.closeImageButton.setOnClickListenerWithCooldown {
-            finish()
+            finishWithResult()
         }
     }
 
     private fun showReportGroupDialog() {
-        Dialog("방 신고하기", "정말 해당 방을 신고하시겠습니까?") {
-            detailViewModel.reportGroup(postUniqueId)
+        Dialog(title = "방 신고하기", message = "정말 해당 방을 신고하시겠습니까?") {
+            getOwnerUniqueId {
+                if (it != uniqueId) {
+                    detailViewModel.reportGroup(postUniqueId)
+                } else {
+                    showToast("자기 자신을요?")
+                }
+            }
         }.show(supportFragmentManager, Dialog.TAG)
     }
 
     private fun showReportUserDialog() {
         getOwnerUniqueId {
-            Dialog("작성자 신고하기", "정말 해당 작성자를 신고하시겠습니까?") {
-                detailViewModel.reportUser(it)
+            Dialog(title = "작성자 신고하기", message = "정말 해당 작성자를 신고하시겠습니까?") {
+                if (it != uniqueId) {
+                    detailViewModel.reportUser(it)
+                } else {
+                    showToast("자기 자신을요?")
+                }
             }.show(supportFragmentManager, Dialog.TAG)
         }
     }
 
     private fun showBlockUserDialog() {
         getOwnerUniqueId {
-            Dialog("작성자 차단하기", "정말 해당 작성자를 차단하시겠습니까?") {
-                detailViewModel.blockUser(it)
+            Dialog(title = "작성자 차단하기", message = "정말 해당 작성자를 차단하시겠습니까?") {
+                if (it != uniqueId) {
+                    detailViewModel.blockUser(it)
+                } else {
+                    showToast("자기 자신을요?")
+                }
             }.show(supportFragmentManager, Dialog.TAG)
         }
     }
@@ -293,8 +323,7 @@ class DetailActivity : AppCompatActivity() {
             onConfirmClick = {
                 showProgressBar()
                 MyFirebaseMessagingService().sendDeleteGroupRequest(postUniqueId) {
-                    setResult(Code.SUCCESS_POST_TASK)
-                    finish()
+                    finishWithResult()
                 }
             }
         ).show(supportFragmentManager, Dialog.TAG)
@@ -305,8 +334,7 @@ class DetailActivity : AppCompatActivity() {
             detailViewModel.event.flowWithLifecycle(lifecycle).collectLatest { event ->
                 if (event is DetailEvent.Notice) {
                     if (event is DetailEvent.Success && event !is DetailEvent.ReportUserSuccess) {
-                        setResult(Code.SUCCESS_POST_TASK)
-                        finish()
+                        finishWithResult()
                     }
                     showToast(event.message)
                 }
@@ -318,14 +346,14 @@ class DetailActivity : AppCompatActivity() {
         rootConstraintLayout.visibility = View.INVISIBLE
         progressBar.visibility = View.VISIBLE
     }
-    
+
     fun showForceExitDialog() {
         Dialog(
             title = "강제 퇴장",
             message = "강제 퇴장되었습니다.",
             cancelButtonVisibility = View.GONE,
             onConfirmClick = {
-                finish()
+                finishWithResult()
             }
         ).show(supportFragmentManager, Dialog.TAG)
     }
@@ -343,10 +371,15 @@ class DetailActivity : AppCompatActivity() {
         backPressedCallback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 if (binding.progressBar.visibility != View.VISIBLE) {
-                    finish()
+                    finishWithResult()
                 }
             }
         }
         onBackPressedDispatcher.addCallback(this, backPressedCallback)
+    }
+
+    private fun finishWithResult() {
+        setResult(ResultCode.REFRESH)
+        finish()
     }
 }

@@ -3,7 +3,6 @@ package kr.cosine.groupfinder.presentation.view.profile
 import android.os.Bundle
 import android.widget.LinearLayout
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.isVisible
 import androidx.lifecycle.flowWithLifecycle
@@ -14,16 +13,16 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kr.cosine.groupfinder.R
 import kr.cosine.groupfinder.databinding.ActivityBlockUserBinding
+import kr.cosine.groupfinder.presentation.view.common.GroupFinderActivity
 import kr.cosine.groupfinder.presentation.view.common.extension.applyWhite
 import kr.cosine.groupfinder.presentation.view.common.extension.setOnClickListenerWithCooldown
 import kr.cosine.groupfinder.presentation.view.common.extension.showToast
 import kr.cosine.groupfinder.presentation.view.profile.adapter.BlockUserAdapter
 import kr.cosine.groupfinder.presentation.view.profile.model.BlockUserViewModel
 import kr.cosine.groupfinder.presentation.view.profile.state.BlockUserUiState
-import kr.cosine.groupfinder.presentation.view.profile.state.item.BlockUserItem
 
 @AndroidEntryPoint
-class BlockUserActivity : AppCompatActivity() {
+class BlockUserActivity : GroupFinderActivity() {
 
     private val binding by lazy { ActivityBlockUserBinding.inflate(layoutInflater) }
 

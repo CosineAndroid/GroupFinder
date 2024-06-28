@@ -20,11 +20,11 @@ import kr.cosine.groupfinder.domain.usecase.GetAccountUseCase
 import kr.cosine.groupfinder.domain.usecase.GetGroupsUseCase
 import kr.cosine.groupfinder.domain.usecase.SetTaggedNicknameUseCase
 import kr.cosine.groupfinder.domain.usecase.WithdrawAccountUseCase
+import kr.cosine.groupfinder.enums.Permission
 import kr.cosine.groupfinder.presentation.view.group.state.item.extension.isJoinedPeople
 import kr.cosine.groupfinder.presentation.view.profile.event.ProfileChangeEvent
 import kr.cosine.groupfinder.presentation.view.profile.event.ProfileEvent
 import kr.cosine.groupfinder.presentation.view.profile.state.ProfileUiState
-import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
@@ -45,9 +45,9 @@ class ProfileViewModel @Inject constructor(
     val changeEvent: SharedFlow<ProfileChangeEvent> get() = _changeEvent.asSharedFlow()
 
     fun loadProfile() = viewModelScope.launch(Dispatchers.IO) {
+        setLoading()
         val uniqueId = LocalAccountRegistry.uniqueId
         getAccountUseCase(uniqueId).onSuccess { accountEntity ->
-            if (accountEntity == null) return@onSuccess
             val groupItems = (getGroupsUseCase(null, emptySet()).getOrNull() ?: emptyList()).firstOrNull {
                 it.isJoinedPeople(uniqueId)
             }
@@ -55,17 +55,21 @@ class ProfileViewModel @Inject constructor(
                 ProfileUiState.Success(
                     nickname = accountEntity.nickname,
                     tag = accountEntity.tag,
-                    groupItem = groupItems
+                    groupItem = groupItems,
+                    isAdmin = accountEntity.permission == Permission.ADMIN
                 )
             }
         }
     }
 
-    fun setTaggedNickname(
-        nickname: String,
-        tag: String
-    ) = viewModelScope.launch(Dispatchers.IO) {
-        setTaggedNicknameUseCase(nickname, tag).onSuccess {
+    private fun setLoading() {
+        _uiState.update {
+            ProfileUiState.Loading
+        }
+    }
+
+    fun setTaggedNickname(nickname: String, tag: String) = viewModelScope.launch(Dispatchers.IO) {
+        setTaggedNicknameUseCase(LocalAccountRegistry.uniqueId, nickname, tag).onSuccess {
             val event = ProfileChangeEvent.Success(nickname, tag)
             _changeEvent.emit(event)
         }.onFailure { throwable ->
@@ -79,8 +83,8 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
-    fun withdraw(uniqueId: UUID) = viewModelScope.launch(Dispatchers.IO) {
-        withdrawAccountUseCase(uniqueId).onSuccess {
+    fun withdraw() = viewModelScope.launch(Dispatchers.IO) {
+        withdrawAccountUseCase(LocalAccountRegistry.uniqueId).onSuccess {
             val event = ProfileEvent.Success
             _event.emit(event)
         }.onFailure { throwable ->

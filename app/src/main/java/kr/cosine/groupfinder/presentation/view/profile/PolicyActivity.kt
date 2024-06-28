@@ -1,11 +1,13 @@
 package kr.cosine.groupfinder.presentation.view.profile
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import dagger.hilt.android.AndroidEntryPoint
 import kr.cosine.groupfinder.databinding.ActivityPolicyBinding
+import kr.cosine.groupfinder.presentation.view.common.GroupFinderActivity
 import kr.cosine.groupfinder.presentation.view.common.extension.setOnClickListenerWithCooldown
 
-class PolicyActivity : AppCompatActivity() {
+@AndroidEntryPoint
+class PolicyActivity : GroupFinderActivity() {
 
     private val binding by lazy { ActivityPolicyBinding.inflate(layoutInflater) }
 

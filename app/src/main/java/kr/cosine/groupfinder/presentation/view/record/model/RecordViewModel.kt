@@ -18,7 +18,7 @@ class RecordViewModel @Inject constructor(
     private val getRecordUseCase: GetRecordUseCase
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow<RecordUiState>(RecordUiState.Init)
+    private val _uiState = MutableStateFlow<RecordUiState>(RecordUiState.Loading)
     val uiState: StateFlow<RecordUiState> get() = _uiState.asStateFlow()
 
     fun onSearch(nickname: String, tag: String) = viewModelScope.launch(Dispatchers.IO) {

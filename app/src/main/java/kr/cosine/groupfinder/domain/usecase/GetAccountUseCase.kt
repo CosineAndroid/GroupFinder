@@ -14,13 +14,13 @@ class GetAccountUseCase @Inject constructor(
     private val accountRepository: AccountRepository
 ) {
 
-    suspend operator fun invoke(uniqueId: UUID): Result<AccountEntity?> {
+    suspend operator fun invoke(uniqueId: UUID): Result<AccountEntity> {
         return runCatching {
-            accountRepository.findAccountByUniqueId(uniqueId)?.toEntity()
+            accountRepository.getAccountByUniqueId(uniqueId).toEntity()
         }
     }
 
-    suspend operator fun invoke(id: String, password: String): Result<AccountEntity?> {
+    suspend operator fun invoke(id: String, password: String): Result<AccountEntity> {
         return runCatching {
             if (id.isBlank()) {
                 throw IdBlankException()
@@ -28,7 +28,7 @@ class GetAccountUseCase @Inject constructor(
             if (password.isBlank()) {
                 throw PasswordBlankException()
             }
-            accountRepository.findAccountByIdAndPassword(id, password)?.toEntity()
+            accountRepository.getAccountByIdAndPassword(id, password).toEntity()
         }
     }
 }

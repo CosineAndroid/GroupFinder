@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -18,32 +19,35 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.PlatformImeOptions
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kr.cosine.groupfinder.presentation.view.compose.ui.BaseColor
 import kr.cosine.groupfinder.presentation.view.compose.ui.Font
+
+private const val DEFAULT_ENGLISH_KEYBOARD = "defaultInputmode=english;"
 
 @Composable
 fun DefaultTextField(
     modifier: Modifier = Modifier,
     hint: String = "",
     visualTransformation: VisualTransformation = VisualTransformation.None,
-    backgroundHorizontalPadding: Dp = 30.dp,
     borderColor: Color? = null,
     onValueChange: (String) -> Unit = {}
 ) {
     var input by rememberSaveable { mutableStateOf("") }
     BaseTextField(
-        modifier,
-        input,
-        hint,
-        visualTransformation,
-        backgroundHorizontalPadding,
-        borderColor
+        text = input,
+        hint = hint,
+        visualTransformation = visualTransformation,
+        borderColor = borderColor,
+        modifier = modifier
     ) {
         input = it
         onValueChange(it)
@@ -55,20 +59,20 @@ fun BaseTextField(
     modifier: Modifier = Modifier,
     text: String = "",
     hint: String = "",
+    hintFontSize: TextUnit = 16.sp,
+    height: Dp = 50.dp,
     visualTransformation: VisualTransformation = VisualTransformation.None,
-    backgroundHorizontalPadding: Dp = 30.dp,
+    backgroundColor: Color = BaseColor.AccountTextFieldBackground,
     borderColor: Color? = null,
+    singleLine: Boolean = true,
     onValueChange: (String) -> Unit = {}
 ) {
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .height(50.dp)
-            .padding(
-                horizontal = backgroundHorizontalPadding
-            )
+            .height(height)
             .background(
-                color = BaseColor.AccountTextFieldBackground,
+                color = backgroundColor,
                 shape = RoundedCornerShape(8.dp)
             )
             .run {
@@ -82,15 +86,15 @@ fun BaseTextField(
                     this
                 }
             }
-            .padding(horizontal = 15.dp)
+            .padding(11.dp)
     ) {
         if (text.isEmpty()) {
             BaseText(
                 text = hint,
-                fontSize = 16.sp,
+                fontSize = hintFontSize,
                 color = BaseColor.AccountTextFieldHint,
                 modifier = Modifier
-                    .align(Alignment.CenterStart)
+                    .align(Alignment.TopStart)
             )
         }
         BasicTextField(
@@ -104,15 +108,19 @@ fun BaseTextField(
                 fontWeight = FontWeight.Normal,
                 color = BaseColor.AccountTextFieldContent
             ),
-            singleLine = true,
+            keyboardOptions = KeyboardOptions.Default.copy(
+                platformImeOptions = PlatformImeOptions(DEFAULT_ENGLISH_KEYBOARD)
+            ),
+            singleLine = singleLine,
             decorationBox = { innerTextField ->
                 Row(
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.Top
                 ) {
                     innerTextField()
                 }
             },
             visualTransformation = visualTransformation,
+            cursorBrush = SolidColor(BaseColor.AccountTextFieldCursor),
             modifier = Modifier
                 .fillMaxSize()
         )
