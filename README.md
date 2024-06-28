@@ -18,7 +18,7 @@
 | API 통신 | <img src="https://img.shields.io/badge/Retrofit-373737"> <img src="https://img.shields.io/badge/OkHttp-373737">  |
 | 타사 API | <img src="https://img.shields.io/badge/Riot(League of Legends)-03C75A"> |
 | 이미지 로더 | <img src="https://img.shields.io/badge/Coil-18BED4"> |
-| UI Framework | <img src="https://img.shields.io/badge/Fragment-492f64"> <img src="https://img.shields.io/badge/RecyclerView-492f64"> <img src="https://img.shields.io/badge/XML-492f64"> <img src="https://img.shields.io/badge/ViewPager2-492f64"> <img src="https://img.shields.io/badge/SwipeRefreshLayout-492f64"> <img src="https://img.shields.io/badge/Flexbox-492f64"> |
+| UI Framework | <img src="https://img.shields.io/badge/Fragment-492f64"> <img src="https://img.shields.io/badge/RecyclerView-492f64"> <img src="https://img.shields.io/badge/XML-492f64"> <img src="https://img.shields.io/badge/ViewPager-492f64"> <img src="https://img.shields.io/badge/SwipeRefreshLayout-492f64"> <img src="https://img.shields.io/badge/Flexbox-492f64"> |
 
 ## 개발자 및 담당한 기능
 ### 팀장
