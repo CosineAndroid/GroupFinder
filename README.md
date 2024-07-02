@@ -1,4 +1,4 @@
-![배경](https://github.com/CosineAndroid/GroupFinder/assets/100404990/321fb655-9385-4611-97f5-5780b4a4781a)  
+![배경](https://github.com/CosineAndroid/GroupFinder/assets/100404990/e37e774c-f5f8-4eae-bce8-7305139c1f6e)  
 
 # 띱 - 리그 오브 레전드 그룹 찾기
 #### 💡 리그 오브 레전드를 같이할 그룹을 찾아보세요!  
