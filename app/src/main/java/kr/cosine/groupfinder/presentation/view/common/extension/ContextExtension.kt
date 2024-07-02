@@ -2,6 +2,7 @@ package kr.cosine.groupfinder.presentation.view.common.extension
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.annotation.StringRes
@@ -31,4 +32,9 @@ fun <T : Any> Context.startActivity(clazz: KClass<out T>, intentScope: Intent.()
 fun <T : Any> Context.launch(clazz: KClass<out T>, resultLauncher: ActivityResultLauncher<Intent>) {
     val intent = Intent(this, clazz.java)
     resultLauncher.launch(intent)
+}
+
+fun Context.startWebSite(url: String) {
+    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+    startActivity(intent)
 }

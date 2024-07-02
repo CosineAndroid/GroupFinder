@@ -37,7 +37,9 @@ import kr.cosine.groupfinder.presentation.view.account.register.screen.component
 import kr.cosine.groupfinder.presentation.view.account.register.state.RegisterErrorUiState
 import kr.cosine.groupfinder.presentation.view.common.data.IntentKey
 import kr.cosine.groupfinder.presentation.view.common.data.ResultCode
+import kr.cosine.groupfinder.presentation.view.common.data.Url
 import kr.cosine.groupfinder.presentation.view.common.extension.startActivity
+import kr.cosine.groupfinder.presentation.view.common.extension.startWebSite
 import kr.cosine.groupfinder.presentation.view.compose.component.BaseButton
 import kr.cosine.groupfinder.presentation.view.compose.component.BaseCheckbox
 import kr.cosine.groupfinder.presentation.view.compose.component.BaseText
@@ -48,7 +50,6 @@ import kr.cosine.groupfinder.presentation.view.compose.data.Snackbar
 import kr.cosine.groupfinder.presentation.view.compose.extension.currentComponentActivity
 import kr.cosine.groupfinder.presentation.view.compose.model.LoadingViewModel
 import kr.cosine.groupfinder.presentation.view.compose.ui.BaseColor
-import kr.cosine.groupfinder.presentation.view.profile.PolicyActivity
 
 private val RegisterErrorUiState.color
     get() = when (this) {
@@ -186,7 +187,5 @@ private suspend fun onRegisterEvent(
 }
 
 private fun Context.startPolicyActivity() {
-    startActivity(PolicyActivity::class) {
-        putExtra(IntentKey.USE_LOGIN_SESSION, false)
-    }
+    startWebSite(Url.POLICY)
 }

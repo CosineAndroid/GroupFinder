@@ -19,12 +19,14 @@ import kr.cosine.groupfinder.presentation.view.account.login.LoginActivity
 import kr.cosine.groupfinder.presentation.view.broadcast.BroadcastListActivity
 import kr.cosine.groupfinder.presentation.view.common.RefreshableFragment
 import kr.cosine.groupfinder.presentation.view.common.data.IntentKey
+import kr.cosine.groupfinder.presentation.view.common.data.Url
 import kr.cosine.groupfinder.presentation.view.common.extension.applyWhite
 import kr.cosine.groupfinder.presentation.view.common.extension.requireContext
 import kr.cosine.groupfinder.presentation.view.common.extension.setOnClickListenerWithCooldown
 import kr.cosine.groupfinder.presentation.view.common.extension.showToast
 import kr.cosine.groupfinder.presentation.view.common.extension.startActivity
 import kr.cosine.groupfinder.presentation.view.common.extension.startNewActivity
+import kr.cosine.groupfinder.presentation.view.common.extension.startWebSite
 import kr.cosine.groupfinder.presentation.view.detail.DetailActivity
 import kr.cosine.groupfinder.presentation.view.dialog.Dialog
 import kr.cosine.groupfinder.presentation.view.dialog.TaggedNicknameInputDialog
@@ -61,6 +63,7 @@ class ProfileFragment : RefreshableFragment() {
         registerBlockUserButton()
         registerLogoutButton()
         registerWithdrawButton()
+        registerTermsButton()
         registerPolicyButton()
         registerViewModelEvent()
     }
@@ -132,9 +135,15 @@ class ProfileFragment : RefreshableFragment() {
         ).show(parentFragmentManager, Dialog.TAG)
     }
 
+    private fun registerTermsButton() {
+        binding.termsButton.setOnClickListenerWithCooldown {
+            requireContext.startWebSite(Url.TERMS)
+        }
+    }
+
     private fun registerPolicyButton() {
         binding.policyButton.setOnClickListenerWithCooldown {
-            requireContext.startActivity(PolicyActivity::class)
+            requireContext.startWebSite(Url.POLICY)
         }
     }
 
@@ -155,9 +164,9 @@ class ProfileFragment : RefreshableFragment() {
                     } else {
                         groupAdpater.setGroup(postItem)
                     }
-                    if (!uiState.isAdmin) {
+                    /*if (!uiState.isAdmin) {
                         adminInquiryButton.visibility = View.GONE
-                    }
+                    }*/
                 }
             }
         }

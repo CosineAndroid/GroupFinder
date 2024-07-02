@@ -88,20 +88,6 @@
             app:layout_constraintTop_toBottomOf="@+id/broadcastButton" />
 
         <TextView
-            android:id="@+id/userInquiryButton"
-            style="@style/profile_menu"
-            android:text="@string/profile_user_inquiry_title"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/blockUserButton" />
-
-        <TextView
-            android:id="@+id/adminInquiryButton"
-            style="@style/profile_menu"
-            android:text="@string/profile_admin_inquiry_title"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/userInquiryButton" />
-
-        <TextView
             android:id="@+id/logoutButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -126,14 +112,30 @@
             android:text="@string/profile_withdraw_title"
             android:textColor="@color/profile_hide_button"
             android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/policyButton"
             app:layout_constraintEnd_toEndOf="parent" />
 
         <TextView
-            android:id="@+id/policyButton"
-            android:layout_width="wrap_content"
+            android:id="@+id/termsButton"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
+            android:layout_marginStart="40dp"
+            android:background="@color/background"
+            android:gravity="center"
+            android:minHeight="48dp"
+            android:text="@string/terms_title"
+            android:textColor="@color/white"
+            android:textSize="11sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/policyButton"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/policyButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="40dp"
             android:background="@color/background"
             android:gravity="center"
             android:minHeight="48dp"
@@ -142,7 +144,8 @@
             android:textSize="11sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/termsButton" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ProgressBar
